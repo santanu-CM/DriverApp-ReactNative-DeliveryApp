@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-progress-circle/src/index.js b/node_modules/react-native-progress-circle/src/index.js
+index 50cb271..51265fe 100644
+--- a/node_modules/react-native-progress-circle/src/index.js
++++ b/node_modules/react-native-progress-circle/src/index.js
+@@ -5,7 +5,7 @@ import { StyleSheet, View, ViewPropTypes,I18nManager } from 'react-native'
+ // compatability for react-native versions < 0.44
+ const ViewPropTypesStyle = ViewPropTypes
+   ? ViewPropTypes.style
+-  : View.propTypes.style
++  : {}
+ let direction = I18nManager.isRTL? 'right' : 'left';
+ const styles = StyleSheet.create({
+   outerCircle: {
