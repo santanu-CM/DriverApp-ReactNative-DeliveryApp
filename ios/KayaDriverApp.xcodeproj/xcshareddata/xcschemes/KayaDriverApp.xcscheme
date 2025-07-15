@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "GroupTravel.app"
-               BlueprintName = "GroupTravel"
-               ReferencedContainer = "container:GroupTravel.xcodeproj">
+               BuildableName = "KayaDriverApp.app"
+               BlueprintName = "KayaDriverApp"
+               ReferencedContainer = "container:KayaDriverApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "GroupTravelTests.xctest"
-               BlueprintName = "GroupTravelTests"
-               ReferencedContainer = "container:GroupTravel.xcodeproj">
+               BuildableName = "KayaDriverAppTests.xctest"
+               BlueprintName = "KayaDriverAppTests"
+               ReferencedContainer = "container:KayaDriverApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "GroupTravel.app"
-            BlueprintName = "GroupTravel"
-            ReferencedContainer = "container:GroupTravel.xcodeproj">
+            BuildableName = "KayaDriverApp.app"
+            BlueprintName = "KayaDriverApp"
+            ReferencedContainer = "container:KayaDriverApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "GroupTravel.app"
-            BlueprintName = "GroupTravel"
-            ReferencedContainer = "container:GroupTravel.xcodeproj">
+            BuildableName = "KayaDriverApp.app"
+            BlueprintName = "KayaDriverApp"
+            ReferencedContainer = "container:KayaDriverApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

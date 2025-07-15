@@ -1,4 +1,4 @@
-package com.travel.travelapp
+package com.kaya.driverapp
 
 import android.os.Bundle
 import com.facebook.react.ReactActivity
@@ -14,7 +14,7 @@ class MainActivity : ReactActivity() {
     super.onCreate(savedInstanceState)
   }
 
-  override fun getMainComponentName(): String = "Group Travel"
+  override fun getMainComponentName(): String = "Kaya Driver App"
 
   override fun createReactActivityDelegate(): ReactActivityDelegate =
     DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
