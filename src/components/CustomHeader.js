@@ -113,7 +113,7 @@ export default function CustomHeader({
     };
 
     useEffect(() => {
-        getLocation();
+        //getLocation();
     }, []);
 
     useEffect(() => {
