@@ -1,40 +1,21 @@
 {
   "project_info": {
-    "project_number": "323164360540",
-    "project_id": "grouptourproject",
-    "storage_bucket": "grouptourproject.firebasestorage.app"
+    "project_number": "961524537832",
+    "project_id": "kaya-14e2a",
+    "storage_bucket": "kaya-14e2a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:323164360540:android:dc4c05a5cc012a47963b99",
+        "mobilesdk_app_id": "1:961524537832:android:f7cad3491f2502a4c86c5d",
         "android_client_info": {
-          "package_name": "com.travel.travelapp"
+          "package_name": "com.kaya.driverapp"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDIjUHoULegSoVa1aUjTF327vD2r4frkEI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:323164360540:android:17d10beab826470d963b99",
-        "android_client_info": {
-          "package_name": "com.travel.travelappagent"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDIjUHoULegSoVa1aUjTF327vD2r4frkEI"
+          "current_key": "AIzaSyCoDg7uZrBBC3R6h4RFaC66SEN1287ardE"
         }
       ],
       "services": {
