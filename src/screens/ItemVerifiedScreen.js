@@ -520,7 +520,7 @@ const ItemVerifiedScreen = ({ navigation, route }) => {
                                 disabled={false}
                                 maxStars={5}
                                 rating={starCount}
-                                selectedStar={(rating) => setStarCount(rating)}
+                                onChange={(rating) => setStarCount(rating)}
                                 fullStarColor={'#FFCB45'}
                                 starSize={40}
                             />

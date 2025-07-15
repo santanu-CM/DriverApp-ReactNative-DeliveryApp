@@ -142,7 +142,7 @@ export default function ReviewScreenShipment({ navigation }) {
                                     disabled={true}
                                     maxStars={5}
                                     rating={starCount}
-                                    selectedStar={(rating) => setStarCount(rating)}
+                                    onChange={(rating) => setStarCount(rating)}
                                     fullStarColor={'#FFCB45'}
                                     starSize={20}
                                 />
