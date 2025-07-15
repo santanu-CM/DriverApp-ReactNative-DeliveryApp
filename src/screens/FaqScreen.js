@@ -51,7 +51,7 @@ export default function FaqScreen({ navigation }) {
 
     const fetchTerms = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/get-help-support`,
+            axios.get(`${process.env.API_URL}/api/driver/get-help-support`,
                 {
                     headers: {
                         "Authorization": 'Bearer ' + usertoken,

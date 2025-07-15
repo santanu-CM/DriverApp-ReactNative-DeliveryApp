@@ -112,7 +112,7 @@ const DocumentsUpload = ({ navigation, route }) => {
                 name: 'photo.jpg',
             });
             console.log(JSON.stringify(formData),'form data')
-            axios.post(`${API_URL}/api/driver/driver-upload-documents`, formData, {
+            axios.post(`${process.env.API_URL}/api/driver/driver-upload-documents`, formData, {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',
@@ -232,7 +232,7 @@ const DocumentsUpload = ({ navigation, route }) => {
             formData.append("gtInsuranceExpDate", moment(selectedDate3).format('YYYY-MM-DD'));
 
             console.log(formData)
-            axios.post(`${API_URL}/api/driver/submitDocuments`, formData, {
+            axios.post(`${process.env.API_URL}/api/driver/submitDocuments`, formData, {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',

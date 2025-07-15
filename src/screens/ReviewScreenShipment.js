@@ -63,7 +63,7 @@ export default function ReviewScreenShipment({ navigation }) {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             console.log(usertoken);
 
-            axios.get(`${API_URL}/api/driver/list-shipment-rates`, {
+            axios.get(`${process.env.API_URL}/api/driver/list-shipment-rates`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

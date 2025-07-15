@@ -63,7 +63,6 @@
     "react-native-confetti-cannon": "^1.5.2",
     "react-native-country-codes-picker": "^2.3.5",
     "react-native-date-picker": "^5.0.13",
-    "react-native-dotenv": "^3.4.11",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-fbsdk-next": "^13.4.1",
     "react-native-file-viewer": "^2.1.5",
@@ -136,6 +135,7 @@
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "2.8.8",
+    "react-native-dotenv": "^3.4.11",
     "react-test-renderer": "19.1.0",
     "typescript": "5.0.4"
   },

@@ -46,7 +46,7 @@ const NewShippingOrderScreen = () => {
 
     const fetchDeclineReasons = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/decline-list`, {
+            axios.get(`${process.env.API_URL}/api/driver/decline-list`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -71,7 +71,7 @@ const NewShippingOrderScreen = () => {
 
         console.log(option)
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/api/driver/notification-accept-for-driver`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/notification-accept-for-driver`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -147,7 +147,7 @@ const NewShippingOrderScreen = () => {
             "cancellation_reason": reason
         };
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/api/driver/notification-accept-for-driver`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/notification-accept-for-driver`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -186,7 +186,7 @@ const NewShippingOrderScreen = () => {
 
     const fetchNewOrders = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/api/driver/shipping-pending`, {}, {
+            axios.post(`${process.env.API_URL}/api/driver/shipping-pending`, {}, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

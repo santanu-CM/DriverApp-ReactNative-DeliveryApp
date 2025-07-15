@@ -87,7 +87,7 @@ export default function Report({ navigation }) {
 
     const fetchBatch = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/get-all-batch`, {
+            axios.get(`${process.env.API_URL}/api/driver/get-all-batch`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -137,7 +137,7 @@ export default function Report({ navigation }) {
     const fetchOrderByBatchId = (id) => {
         console.log(id, 'iiiiiiiiidddddddddd')
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/get-item-by-batch-id/${id}`, {
+            axios.get(`${process.env.API_URL}/api/driver/get-item-by-batch-id/${id}`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -243,7 +243,7 @@ export default function Report({ navigation }) {
             formData.append("location", address);
             console.log(JSON.stringify(formData))
             AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/api/driver/submit-delivery-report`, formData, {
+            axios.post(`${process.env.API_URL}/api/driver/submit-delivery-report`, formData, {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',

@@ -39,7 +39,7 @@ const Pickup = ({ batchId, currentLat, currentLong }) => {
     const fetchBatchDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             console.log(batchId, 'mmm')
-            axios.get(`${API_URL}/api/driver/get-batch-by-id/${batchId}?status=Accepted`, {
+            axios.get(`${process.env.API_URL}/api/driver/get-batch-by-id/${batchId}?status=Accepted`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -183,7 +183,7 @@ const Warehouse = ({ batchId, currentLat, currentLong }) => {
     const fetchBatchDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             console.log(batchId, 'mmm')
-            axios.get(`${API_URL}/api/driver/get-batch-by-id/${batchId}?status=Accepted`, {
+            axios.get(`${process.env.API_URL}/api/driver/get-batch-by-id/${batchId}?status=Accepted`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -323,7 +323,7 @@ const Delivery = ({ batchId, currentLat, currentLong }) => {
     const fetchBatchDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             console.log(batchId, 'mmm')
-            axios.get(`${API_URL}/api/driver/get-batch-by-id/${batchId}?status=Accepted`, {
+            axios.get(`${process.env.API_URL}/api/driver/get-batch-by-id/${batchId}?status=Accepted`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

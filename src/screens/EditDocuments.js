@@ -92,7 +92,7 @@ export default function EditDocuments({ navigation }) {
 
     const fetchProfileDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/driver-profile`, {
+            axios.get(`${process.env.API_URL}/api/driver/driver-profile`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -273,7 +273,7 @@ export default function EditDocuments({ navigation }) {
             console.log(JSON.stringify(formData), 'form datatatattatatatatatatat')
             setIsLoading(true)
             AsyncStorage.getItem('userToken', (err, usertoken) => {
-                axios.post(`${API_URL}/api/driver/submitDocuments`, formData, {
+                axios.post(`${process.env.API_URL}/api/driver/submitDocuments`, formData, {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'multipart/form-data',

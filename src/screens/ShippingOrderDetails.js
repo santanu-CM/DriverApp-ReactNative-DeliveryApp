@@ -289,7 +289,7 @@ const ShippingOrderDetails = ({ navigation, route }) => {
             "shipping_id": shippingId
         }
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/api/driver/single-shipment-details`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/single-shipment-details`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

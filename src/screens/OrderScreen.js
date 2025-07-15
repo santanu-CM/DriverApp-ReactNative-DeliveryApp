@@ -34,7 +34,7 @@ const Accepted = () => {
 
   const fetchInvoice = (orderId) => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/invoice/print/${orderId}?type=pdf`, {
+      axios.get(`${process.env.API_URL}/api/driver/invoice/print/${orderId}?type=pdf`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -95,7 +95,7 @@ const Accepted = () => {
   };
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/get-all-order-item`, {
+      axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -165,7 +165,7 @@ const Accepted = () => {
     //console.log(myArr)
     console.log(option)
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.post(`${API_URL}/api/driver/update-order-item-status`, option, {
+      axios.post(`${process.env.API_URL}/api/driver/update-order-item-status`, option, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -360,7 +360,7 @@ const Completed = () => {
 
   const fetchInvoice = (orderId) => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/invoice/print/${orderId}?type=pdf`, {
+      axios.get(`${process.env.API_URL}/api/driver/invoice/print/${orderId}?type=pdf`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -423,7 +423,7 @@ const Completed = () => {
 
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/get-all-order-item`, {
+      axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -632,7 +632,7 @@ const Declined = () => {
 
   const fetchInvoice = (orderId) => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/invoice/print/${orderId}?type=pdf`, {
+      axios.get(`${process.env.API_URL}/api/driver/invoice/print/${orderId}?type=pdf`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -680,7 +680,7 @@ const Declined = () => {
   }
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/get-all-order-item`, {
+      axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -741,7 +741,7 @@ const Declined = () => {
     //console.log(myArr)
     console.log(option)
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.post(`${API_URL}/api/driver/update-order-item-status`, option, {
+      axios.post(`${process.env.API_URL}/api/driver/update-order-item-status`, option, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'

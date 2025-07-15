@@ -39,7 +39,7 @@ const EditContactInformation = ({ navigation, route }) => {
 
   const fetchProfileDetails = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/driver-profile`, {
+      axios.get(`${process.env.API_URL}/api/driver/driver-profile`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -106,7 +106,7 @@ const EditContactInformation = ({ navigation, route }) => {
         name: 'photo.jpg',
       });
       console.log(JSON.stringify(formData),'bbb')
-      axios.post(`${API_URL}/api/driver/driver-upload-documents`, formData, {
+      axios.post(`${process.env.API_URL}/api/driver/driver-upload-documents`, formData, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'multipart/form-data',
@@ -173,7 +173,7 @@ const EditContactInformation = ({ navigation, route }) => {
           "city": city
         }
       }
-      axios.post(`${API_URL}/api/driver/updateInformation`, option, {
+      axios.post(`${process.env.API_URL}/api/driver/updateInformation`, option, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'multipart/form-data',

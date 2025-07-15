@@ -46,7 +46,7 @@ const ItemVerifiedScreen = ({ navigation, route }) => {
 
     const fetchProfileDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/me`, {
+            axios.get(`${process.env.API_URL}/api/driver/me`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -177,7 +177,7 @@ const ItemVerifiedScreen = ({ navigation, route }) => {
             setIsLoading(true)
             console.log(JSON.stringify(formData))
             AsyncStorage.getItem('userToken', (err, usertoken) => {
-                axios.post(`${API_URL}/api/driver/upload-delivery-documents`, formData, {
+                axios.post(`${process.env.API_URL}/api/driver/upload-delivery-documents`, formData, {
                     headers: {
                         Accept: 'application/json',
                         "Authorization": 'Bearer ' + usertoken,
@@ -251,7 +251,7 @@ const ItemVerifiedScreen = ({ navigation, route }) => {
                 "user_id": forWhich
             }
             console.log(option)
-            axios.post(`${API_URL}/api/driver/add-rating`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/add-rating`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -324,7 +324,7 @@ const ItemVerifiedScreen = ({ navigation, route }) => {
 
             console.log(option, '-----')
 
-            axios.post(`${API_URL}/api/driver/update-order-item-status`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/update-order-item-status`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

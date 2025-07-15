@@ -3,10 +3,11 @@ module.exports = {
   plugins: [
     ['react-native-reanimated/plugin',],
     [
-      "module:react-native-dotenv",
+      'module:react-native-dotenv',
       {
-        moduleName: "@env",
-        path: ".env",
+        envName: 'APP_ENV',
+        moduleName: '@env',
+        path: '.env',
       },
     ],
   ],

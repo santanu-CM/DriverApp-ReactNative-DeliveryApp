@@ -54,7 +54,7 @@ export default function TermsScreen({ navigation }) {
 
     const fetchTerms = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/get-page-by-slug?slug=driver-terms-and-conditions`,
+            axios.get(`${process.env.API_URL}/api/driver/get-page-by-slug?slug=driver-terms-and-conditions`,
                 {
                     headers: {
                         "Authorization": 'Bearer ' + usertoken,

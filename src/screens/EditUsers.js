@@ -46,7 +46,7 @@ const EditUsers = ({ navigation, route }) => {
             "flag": 'approve'
         }
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/public/api/user/requestingaction`, option, {
+            axios.post(`${process.env.API_URL}/public/api/user/requestingaction`, option, {
                 headers: {
                     Accept: 'application/json',
                     "Authorization": 'Bearer ' + usertoken,
@@ -134,7 +134,7 @@ const EditUsers = ({ navigation, route }) => {
                 formData.append("userId", route?.params?.userid);
                 //console.log(formData)
 
-                axios.post(`${API_URL}/public/api/user/editeusers`, formData, {
+                axios.post(`${process.env.API_URL}/public/api/user/editeusers`, formData, {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'multipart/form-data',

@@ -37,7 +37,7 @@ const AvailabilityScreen = ({ navigation }) => {
 
     const fetchProfileDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/driver-profile`, { 
+            axios.get(`${process.env.API_URL}/api/driver/driver-profile`, { 
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -110,7 +110,7 @@ const AvailabilityScreen = ({ navigation }) => {
                 "friday": isEnabledFriday ? 1 : 2,
                 "saturday": isEnabledSaturday ? 1 : 2
             }
-            axios.post(`${API_URL}/api/driver/update-driver-ability`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/update-driver-ability`, option, {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',

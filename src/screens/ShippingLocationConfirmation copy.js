@@ -142,7 +142,7 @@ const ShippingLocationConfirmation = ({ navigation, route }) => {
             "shipping_id": orderId
         }
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/api/driver/single-shipment-details`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/single-shipment-details`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -228,7 +228,7 @@ const ShippingLocationConfirmation = ({ navigation, route }) => {
 
             console.log(option, '-----')
 
-            axios.post(`${API_URL}/api/driver/update-order-item-status`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/update-order-item-status`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

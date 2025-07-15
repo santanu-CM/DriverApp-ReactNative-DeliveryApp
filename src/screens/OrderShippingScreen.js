@@ -46,7 +46,7 @@ const Accepted = () => {
 
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.post(`${API_URL}/api/driver/shipping-accept`, {}, {
+      axios.post(`${process.env.API_URL}/api/driver/shipping-accept`, {}, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -180,7 +180,7 @@ const Accepted = () => {
 
 //   const fetchNewOrders = () => {
 //     AsyncStorage.getItem('userToken', (err, usertoken) => {
-//       axios.get(`${API_URL}/api/driver/get-all-order-item`, {
+//       axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
 //         headers: {
 //           "Authorization": 'Bearer ' + usertoken,
 //           "Content-Type": 'application/json'
@@ -314,7 +314,7 @@ const Completed = () => {
 
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.post(`${API_URL}/api/driver/shipping-completed`, {}, {
+      axios.post(`${process.env.API_URL}/api/driver/shipping-completed`, {}, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -349,7 +349,7 @@ const Completed = () => {
     }
     AsyncStorage.getItem('userToken', (err, usertoken) => {
       setIsLoading(true)
-      axios.post(`${API_URL}/api/driver/add-shipment-rate`, option, {
+      axios.post(`${process.env.API_URL}/api/driver/add-shipment-rate`, option, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'multipart/form-data',

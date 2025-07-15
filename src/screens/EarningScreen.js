@@ -186,7 +186,7 @@ export default function EarningScreen({ navigation }) {
         }
 
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/get-driver-earning?status=Completed&to=${toDate}&from=${formDate}`, {
+            axios.get(`${process.env.API_URL}/api/driver/get-driver-earning?status=Completed&to=${toDate}&from=${formDate}`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

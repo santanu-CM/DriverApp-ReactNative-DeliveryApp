@@ -95,6 +95,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+         release {
+            storeFile file('driverapp.keystore')
+            storePassword 'driverappcm'
+            keyAlias 'driver_alias'
+            keyPassword 'driverappcm'
+        }
     }
     buildTypes {
         debug {
@@ -113,6 +119,10 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+
+    implementation project(':react-native-android-location-services-dialog-box')// add this line for location dialog box
+
+    implementation("com.google.firebase:firebase-analytics")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

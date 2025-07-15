@@ -25,9 +25,9 @@ function App() {
   const [notifications, setNotifications] = useState([]);
   const [notifyStatus, setnotifyStatus] = useState(false)
 
-//   useEffect(() => {
-//     startLocationTracking();
-// }, []);
+  useEffect(() => {
+    startLocationTracking();
+}, []);
 
   useEffect(() => {
     setTimeout(() => {

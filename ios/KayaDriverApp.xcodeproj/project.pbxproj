@@ -11,6 +11,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		6B084044CD774ADBA4830CB2 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD8C412F78D9478F9586BE22 /* Inter-Bold.ttf */; };
+		34022300CBB9451791A3BD20 /* Outfit-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9AACF4A7D2E248378ADF536A /* Outfit-Black.ttf */; };
+		F6F2B278766F450BBD9E2BAC /* Outfit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 05D26FE7975D4CF291279DD9 /* Outfit-Regular.ttf */; };
+		A6A8873FDB3F48BE82CCB05C /* Outfit-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B106470BA4F945D4BF8FCC7F /* Outfit-Thin.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +39,10 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = KayaDriverApp/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "KayaDriverApp/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		AD8C412F78D9478F9586BE22 /* Inter-Bold.ttf */ = {isa = PBXFileReference; name = "Inter-Bold.ttf"; path = "../src/assets/fonts/Inter-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9AACF4A7D2E248378ADF536A /* Outfit-Black.ttf */ = {isa = PBXFileReference; name = "Outfit-Black.ttf"; path = "../src/assets/fonts/Outfit-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		05D26FE7975D4CF291279DD9 /* Outfit-Regular.ttf */ = {isa = PBXFileReference; name = "Outfit-Regular.ttf"; path = "../src/assets/fonts/Outfit-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B106470BA4F945D4BF8FCC7F /* Outfit-Thin.ttf */ = {isa = PBXFileReference; name = "Outfit-Thin.ttf"; path = "../src/assets/fonts/Outfit-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +101,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				ECA22898C11E4BEB8E3DE9F0 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -115,6 +124,18 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		ECA22898C11E4BEB8E3DE9F0 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				AD8C412F78D9478F9586BE22 /* Inter-Bold.ttf */,
+				9AACF4A7D2E248378ADF536A /* Outfit-Black.ttf */,
+				05D26FE7975D4CF291279DD9 /* Outfit-Regular.ttf */,
+				B106470BA4F945D4BF8FCC7F /* Outfit-Thin.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -185,6 +206,10 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6B084044CD774ADBA4830CB2 /* Inter-Bold.ttf in Resources */,
+				34022300CBB9451791A3BD20 /* Outfit-Black.ttf in Resources */,
+				F6F2B278766F450BBD9E2BAC /* Outfit-Regular.ttf in Resources */,
+				A6A8873FDB3F48BE82CCB05C /* Outfit-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +319,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "KayaDriverApp/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "Kaya Driver App";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kaya Driver App";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -322,7 +347,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = "KayaDriverApp/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "Kaya Driver App";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kaya Driver App";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

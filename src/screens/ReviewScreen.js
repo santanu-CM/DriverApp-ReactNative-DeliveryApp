@@ -69,7 +69,7 @@ export default function ReviewScreen({ navigation }) {
     const fetchReview = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             AsyncStorage.getItem('userInfo', (err, userInfo) => {
-                axios.get(`${API_URL}/api/driver/get-rating`, {
+                axios.get(`${process.env.API_URL}/api/driver/get-rating`, {
                     headers: {
                         "Authorization": 'Bearer ' + usertoken,
                         "Content-Type": 'application/json'

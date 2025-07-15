@@ -17,7 +17,7 @@ const RequestScreen = ({ navigation, route }) => {
 
   const fetchData = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/public/api/user/pendinglist`, {
+      axios.get(`${process.env.API_URL}/public/api/user/pendinglist`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -52,7 +52,7 @@ const RequestScreen = ({ navigation, route }) => {
             "flag": 'block'
           }
           AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${API_URL}/public/api/user/requestingaction`, option, {
+            axios.post(`${process.env.API_URL}/public/api/user/requestingaction`, option, {
               headers: {
                 Accept: 'application/json',
                 "Authorization": 'Bearer ' + usertoken,

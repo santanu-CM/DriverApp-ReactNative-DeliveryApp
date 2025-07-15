@@ -129,7 +129,7 @@ const PersonalInformation = ({ navigation, route }) => {
         }
       }
       
-      axios.post(`${API_URL}/api/driver/updateInformation`, option, { 
+      axios.post(`${process.env.API_URL}/api/driver/updateInformation`, option, { 
         headers: {
           Accept: 'application/json',
           "Authorization": 'Bearer ' + route?.params?.usertoken,

@@ -45,7 +45,7 @@ const OtpScreen = ({ navigation, route }) => {
             "code": route?.params?.counterycode,
             "userId": route?.params?.userid,
         }
-        axios.post(`${API_URL}/api/driver/validate-opt`, option)
+        axios.post(`${process.env.API_URL}/api/driver/validate-opt`, option)
             .then(res => {
                 console.log(res.data)
                 if (res.data.response.status.code === 200) {
@@ -84,7 +84,7 @@ const OtpScreen = ({ navigation, route }) => {
             "phone": route?.params?.phoneno,
         }
         console.log(option)
-        axios.post(`${API_URL}/api/driver/registration`, option)
+        axios.post(`${process.env.API_URL}/api/driver/registration`, option)
             .then(res => {
                 console.log(JSON.stringify(res.data))
                 if (res.data.response.status.code === 200) {

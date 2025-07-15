@@ -102,7 +102,7 @@ const LoginScreen = ({ navigation }) => {
         console.log(option)
         console.log(API_URL,'yyy');
         
-        axios.post(`${API_URL}/api/driver/registration`, option, {
+        axios.post(`${process.env.API_URL}/api/driver/registration`, option, {
           headers: {
             'Accept': 'application/json',
             //'Content-Type': 'multipart/form-data',

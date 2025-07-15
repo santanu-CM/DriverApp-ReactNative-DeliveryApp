@@ -50,7 +50,7 @@ export default function CustomHeader({
             }
 
             // Fetch user profile details
-            const response = await axios.get(`${API_URL}/api/driver/me`, {
+            const response = await axios.get(`${process.env.API_URL}/api/driver/me`, {
                 headers: {
                     "Authorization": `Bearer ${usertoken}`,
                     "Content-Type": 'application/json'

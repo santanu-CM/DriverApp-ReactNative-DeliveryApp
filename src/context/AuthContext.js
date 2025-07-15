@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = (token) => {
         setIsLoading(true);
-        axios.get(`${API_URL}/api/driver/driver-profile`, { 
+        axios.get(`${process.env.API_URL}/api/driver/driver-profile`, { 
             headers: {
                 "Authorization": 'Bearer ' + token,
                 "Content-Type": 'application/json'

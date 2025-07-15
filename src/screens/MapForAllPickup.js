@@ -84,7 +84,7 @@ const MapForAllPickup = ({ navigation, route }) => {
   }, [])
   // const fetchOrderDetails = () => {
   //   AsyncStorage.getItem('userToken', (err, usertoken) => {
-  //     axios.get(`${API_URL}/api/driver/get-batch-order-by-status`, {
+  //     axios.get(`${process.env.API_URL}/api/driver/get-batch-order-by-status`, {
   //       headers: {
   //         "Authorization": 'Bearer ' + usertoken,
   //         "Content-Type": 'application/json'
@@ -162,7 +162,7 @@ const MapForAllPickup = ({ navigation, route }) => {
 
   const fetchOrderDetails = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/get-batch-order-by-status`, {
+      axios.get(`${process.env.API_URL}/api/driver/get-batch-order-by-status`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'

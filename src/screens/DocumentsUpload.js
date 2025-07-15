@@ -144,7 +144,7 @@ const DocumentsUpload = ({ navigation, route }) => {
     //     }else if (forwhat == 'CarRegistration') {
 
     //     }
-    //     axios.post(`${API_URL}/api/driver/submitDocuments`, formData, {
+    //     axios.post(`${process.env.API_URL}/api/driver/submitDocuments`, formData, {
     //         headers: {
     //             Accept: 'application/json',
     //             'Content-Type': 'multipart/form-data',
@@ -246,7 +246,7 @@ const DocumentsUpload = ({ navigation, route }) => {
             formData.append("ghanaCardNo", ghanaCardImage);
 
             console.log(formData)
-            axios.post(`${API_URL}/api/driver/submitDocuments`, formData, {
+            axios.post(`${process.env.API_URL}/api/driver/submitDocuments`, formData, {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',

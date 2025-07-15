@@ -30,7 +30,7 @@ const ProfileScreen = ({ navigation }) => {
 
   const fetchProfileDetails = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/driver-profile`, {
+      axios.get(`${process.env.API_URL}/api/driver/driver-profile`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'

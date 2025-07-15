@@ -38,7 +38,7 @@ const EditCapacityInformation = ({ navigation, route }) => {
 
     const fetchProfileDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/driver-profile`, {
+            axios.get(`${process.env.API_URL}/api/driver/driver-profile`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -128,7 +128,7 @@ const EditCapacityInformation = ({ navigation, route }) => {
                     "vehicleContCapacity": Vehiclecontainerwidth,
                     "vehicleContCapacityHeight": Vehiclecontainerheight
                 }
-                axios.post(`${API_URL}/api/driver/submit-info`, option, {
+                axios.post(`${process.env.API_URL}/api/driver/submit-info`, option, {
                     headers: {
                         Accept: 'application/json',
                         "Authorization": 'Bearer ' + usertoken,

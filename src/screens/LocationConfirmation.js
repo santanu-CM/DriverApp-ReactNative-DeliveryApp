@@ -219,7 +219,7 @@ const LocationConfirmation = ({ navigation, route }) => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             console.log(orderId)
             console.log(orderType)
-            axios.get(`${API_URL}/api/driver/get-batch-order-by-id/${orderId}`, {
+            axios.get(`${process.env.API_URL}/api/driver/get-batch-order-by-id/${orderId}`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -309,7 +309,7 @@ const LocationConfirmation = ({ navigation, route }) => {
 
             console.log(option, '-----')
 
-            axios.post(`${API_URL}/api/driver/update-order-item-status`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/update-order-item-status`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'

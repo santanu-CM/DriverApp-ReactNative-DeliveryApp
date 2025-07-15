@@ -29,7 +29,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 import CustomHeader from '../components/CustomHeader';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URL } from '@env'
+// import { API_URL } from '@env'
 import { useFocusEffect } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import messaging from '@react-native-firebase/messaging';
@@ -74,7 +74,7 @@ export default function HomeScreen({ navigation }) {
 
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.get(`${API_URL}/api/driver/get-all-order-item`, {
+      axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -105,7 +105,7 @@ export default function HomeScreen({ navigation }) {
 
   const fetchNewShippingOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
-      axios.post(`${API_URL}/api/driver/shipping-pending`, {}, {
+      axios.post(`${process.env.API_URL}/api/driver/shipping-pending`, {}, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'
@@ -279,7 +279,7 @@ export default function HomeScreen({ navigation }) {
       }
 
       console.log(option)
-      axios.post(`${API_URL}/api/driver/order-item-status-count`, option, {
+      axios.post(`${process.env.API_URL}/api/driver/order-item-status-count`, option, {
         headers: {
           "Authorization": 'Bearer ' + usertoken,
           "Content-Type": 'application/json'

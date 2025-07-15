@@ -97,7 +97,7 @@ const CapacityDetails = ({ navigation, route }) => {
           "vehicleContCapacity": Vehiclecontainerwidth,
           "vehicleContCapacityHeight": Vehiclecontainerheight
         }
-      axios.post(`${API_URL}/api/driver/submit-info`, option, {
+      axios.post(`${process.env.API_URL}/api/driver/submit-info`, option, {
         headers: {
           Accept: 'application/json',
           "Authorization": 'Bearer ' + route?.params?.usertoken,

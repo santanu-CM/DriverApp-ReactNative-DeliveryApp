@@ -46,7 +46,7 @@ const ShippingItemVerifiedScreen = ({ navigation, route }) => {
 
     const fetchProfileDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.get(`${API_URL}/api/driver/me`, {
+            axios.get(`${process.env.API_URL}/api/driver/me`, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -184,7 +184,7 @@ const ShippingItemVerifiedScreen = ({ navigation, route }) => {
             setIsLoading(true)
             console.log(JSON.stringify(formData))
             AsyncStorage.getItem('userToken', (err, usertoken) => {
-                axios.post(`${API_URL}/api/driver/upload-pickup-delivery`, formData, {
+                axios.post(`${process.env.API_URL}/api/driver/upload-pickup-delivery`, formData, {
                     headers: {
                         Accept: 'application/json',
                         "Authorization": 'Bearer ' + usertoken,
@@ -276,7 +276,7 @@ const ShippingItemVerifiedScreen = ({ navigation, route }) => {
                 "user_id": forWhich
             }
             console.log(option)
-            axios.post(`${API_URL}/api/driver/add-rating`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/add-rating`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -339,7 +339,7 @@ const ShippingItemVerifiedScreen = ({ navigation, route }) => {
         console.log(option)
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             setIsLoading(true)
-            axios.post(`${API_URL}/api/driver/add-shipment-rate`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/add-shipment-rate`, option, {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',
@@ -404,7 +404,7 @@ const ShippingItemVerifiedScreen = ({ navigation, route }) => {
 
             console.log(option, '-----')
 
-            axios.post(`${API_URL}/api/driver/update-order-item-status`, option, {
+            axios.post(`${process.env.API_URL}/api/driver/update-order-item-status`, option, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
