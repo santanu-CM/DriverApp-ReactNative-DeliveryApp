@@ -32,7 +32,7 @@ import Modal from "react-native-modal";
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Entypo';
 import moment from "moment"
-import DocumentPicker from '@react-native-documents/picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField';
 
@@ -135,50 +135,103 @@ export default function EditDocuments({ navigation }) {
         )
     }
 
+    // const pickDocument = async (forwhat) => {
+    //     try {
+    //         const result = await DocumentPicker.pick({
+    //             type: [DocumentPicker.types.allFiles],
+    //         });
+
+    //         console.log('URI: ', result[0].uri);
+    //         console.log('Type: ', result[0].type);
+    //         console.log('Name: ', result[0].name);
+    //         console.log('Size: ', result[0].size);
+    //         if (forwhat == 'DrivingLicenseFront') {
+    //             setPickedDrivingLicenseFront(result[0]);
+    //             setPickedDrivingLicenseFrontIMG(result[0].uri)
+    //             setDrivingLicenseFrontError('')
+    //             //fileUpload('DrivingLicenseFront')
+    //         } else if (forwhat == 'DrivingLicenseBack') {
+    //             setPickedDrivingLicenseback(result[0])
+    //             setPickedDrivingLicensebackIMG(result[0].uri)
+    //             setDrivingLicenseBackError('')
+    //         } else if (forwhat == 'CarInsurance') {
+    //             setPickedCarInsurance(result[0])
+    //             setPickedCarInsuranceIMG(result[0].uri)
+    //             setCarInsuranceError('')
+    //         } else if (forwhat == 'TransitInsurance') {
+    //             setPickedTransitInsurance(result[0])
+    //             setPickedTransitInsuranceIMG(result[0].uri)
+    //             setTransitInsuranceError('')
+    //         } else if (forwhat == 'VehicleImage') {
+    //             setpickedVehicleImage(result[0])
+    //             setpickedVehicleImageIMG(result[0].uri)
+    //             setVehicleImageError('')
+    //         } else if (forwhat == 'CarRegistration') {
+    //             setCarRegistration(result[0])
+    //             setCarRegistrationIMG(result[0].uri)
+    //         }
+
+
+    //     } catch (err) {
+    //         if (DocumentPicker.isCancel(err)) {
+    //             // User cancelled the document picker
+    //             console.log('Document picker was cancelled');
+    //         } else {
+    //             console.error('Error picking document', err);
+    //         }
+    //     }
+    // };
+
     const pickDocument = async (forwhat) => {
         try {
-            const result = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
+            const result = await launchImageLibrary({
+                mediaType: 'photo',
+                includeBase64: false, // Set to true if you need base64 data
             });
-
-            console.log('URI: ', result[0].uri);
-            console.log('Type: ', result[0].type);
-            console.log('Name: ', result[0].name);
-            console.log('Size: ', result[0].size);
-            if (forwhat == 'DrivingLicenseFront') {
-                setPickedDrivingLicenseFront(result[0]);
-                setPickedDrivingLicenseFrontIMG(result[0].uri)
-                setDrivingLicenseFrontError('')
+    
+            if (result.didCancel) {
+                console.log('Image picker was cancelled');
+                return;
+            }
+    
+            if (result.errorCode) {
+                console.error('Error picking image', result.errorMessage);
+                return;
+            }
+    
+            const image = result.assets[0]; // react-native-image-picker returns assets array
+            console.log('URI: ', image.uri);
+            console.log('Type: ', image.type);
+            console.log('Name: ', image.fileName || 'image.jpg'); // fileName may be undefined
+            console.log('Size: ', image.fileSize);
+    
+            if (forwhat === 'DrivingLicenseFront') {
+                setPickedDrivingLicenseFront(image);
+                setPickedDrivingLicenseFrontIMG(image.uri);
+                setDrivingLicenseFrontError('');
                 //fileUpload('DrivingLicenseFront')
-            } else if (forwhat == 'DrivingLicenseBack') {
-                setPickedDrivingLicenseback(result[0])
-                setPickedDrivingLicensebackIMG(result[0].uri)
-                setDrivingLicenseBackError('')
-            } else if (forwhat == 'CarInsurance') {
-                setPickedCarInsurance(result[0])
-                setPickedCarInsuranceIMG(result[0].uri)
-                setCarInsuranceError('')
-            } else if (forwhat == 'TransitInsurance') {
-                setPickedTransitInsurance(result[0])
-                setPickedTransitInsuranceIMG(result[0].uri)
-                setTransitInsuranceError('')
-            } else if (forwhat == 'VehicleImage') {
-                setpickedVehicleImage(result[0])
-                setpickedVehicleImageIMG(result[0].uri)
-                setVehicleImageError('')
-            } else if (forwhat == 'CarRegistration') {
-                setCarRegistration(result[0])
-                setCarRegistrationIMG(result[0].uri)
+            } else if (forwhat === 'DrivingLicenseBack') {
+                setPickedDrivingLicenseBack(image);
+                setPickedDrivingLicenseBackIMG(image.uri);
+                setDrivingLicenseBackError('');
+            } else if (forwhat === 'CarInsurance') {
+                setPickedCarInsurance(image);
+                setPickedCarInsuranceIMG(image.uri);
+                setCarInsuranceError('');
+            } else if (forwhat === 'TransitInsurance') {
+                setPickedTransitInsurance(image);
+                setPickedTransitInsuranceIMG(image.uri);
+                setTransitInsuranceError('');
+            } else if (forwhat === 'VehicleImage') {
+                setPickedVehicleImage(image);
+                setPickedVehicleImageIMG(image.uri);
+                setVehicleImageError('');
+            } else if (forwhat === 'CarRegistration') {
+                setCarRegistration(image);
+                setCarRegistrationIMG(image.uri);
             }
-
-
         } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                // User cancelled the document picker
-                console.log('Document picker was cancelled');
-            } else {
-                console.error('Error picking document', err);
-            }
+            console.error('Error picking image', err);
         }
     };
 

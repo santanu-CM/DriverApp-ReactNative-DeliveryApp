@@ -15,7 +15,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Modal from "react-native-modal";
 import ImagePicker from 'react-native-image-crop-picker';
-import DocumentPicker from '@react-native-documents/picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import SignatureScreen from "react-native-signature-canvas";
 import StarRating from 'react-native-star-rating-widget';
 import InputField from '../components/InputField';
@@ -117,29 +117,54 @@ const ItemVerifiedScreen = ({ navigation, route }) => {
         });
     };
 
+    // const pickDocument = async () => {
+    //     try {
+    //         const result = await DocumentPicker.pick({
+    //             type: [DocumentPicker.types.allFiles],
+    //         });
+
+    //         console.log('URI: ', result[0].uri);
+    //         console.log('Type: ', result[0].type);
+    //         console.log('Name: ', result[0].name);
+    //         console.log('Size: ', result[0].size);
+
+    //         setPickedDocs(result[0]);
+    //         setPickedDocsError('')
+
+    //     } catch (err) {
+    //         if (DocumentPicker.isCancel(err)) {
+    //             // User cancelled the document picker
+    //             console.log('Document picker was cancelled');
+    //         } else {
+    //             console.error('Error picking document', err);
+    //         }
+    //     }
+    // };
+
     const pickDocument = async () => {
-        try {
-            const result = await DocumentPicker.pick({
-                type: [DocumentPicker.types.allFiles],
-            });
-
-            console.log('URI: ', result[0].uri);
-            console.log('Type: ', result[0].type);
-            console.log('Name: ', result[0].name);
-            console.log('Size: ', result[0].size);
-
-            setPickedDocs(result[0]);
-            setPickedDocsError('')
-
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                // User cancelled the document picker
-                console.log('Document picker was cancelled');
-            } else {
-                console.error('Error picking document', err);
-            }
-        }
-    };
+        const options = {
+          mediaType: 'mixed', // You can also use 'photo' or 'video'
+          selectionLimit: 1,  // Only pick one file
+        };
+      
+        launchImageLibrary(options, (response) => {
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.errorCode) {
+            console.error('ImagePicker Error:', response.errorMessage);
+          } else if (response.assets && response.assets.length > 0) {
+            const asset = response.assets[0];
+      
+            console.log('URI:', asset.uri);
+            console.log('Type:', asset.type);
+            console.log('Name:', asset.fileName);
+            console.log('Size:', asset.fileSize);
+      
+            setPickedDocs(asset);          // Store selected image/video object
+            setPickedDocsError('');        // Clear any previous error
+          }
+        });
+      };
 
     const itemCollectedSubmit = () => {
 

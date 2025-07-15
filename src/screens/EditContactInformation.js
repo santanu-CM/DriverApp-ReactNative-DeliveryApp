@@ -4,7 +4,8 @@ import CheckBox from '@react-native-community/checkbox'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import DocumentPicker from '@react-native-documents/picker';
+
+import {launchImageLibrary} from 'react-native-image-picker';
 import { TextInput, LongPressGestureHandler, State } from 'react-native-gesture-handler'
 import { deleteImg, editImg, phoneImg, plus, searchImg, userPhoto } from '../utils/Images'
 import CustomHeader from '../components/CustomHeader'
@@ -74,28 +75,65 @@ const EditContactInformation = ({ navigation, route }) => {
     fetchProfileDetails()
   }, [])
 
+  // const pickDocument = async () => {
+  //   try {
+  //     const result = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.allFiles],
+  //     });
+
+  //     //console.log('URI: ', result[0].uri);
+  //     //console.log('Type: ', result[0].type);
+  //     //console.log('Name: ', result[0].name);
+  //     //console.log('Size: ', result[0].size);
+
+  //     setPickedDocument(result[0]);
+  //     await fileUpload(result[0].uri)
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err)) {
+  //       // User cancelled the document picker
+  //       console.log('Document picker was cancelled');
+  //     } else {
+  //       console.error('Error picking document', err);
+  //     }
+  //   }
+  // };
   const pickDocument = async () => {
     try {
-      const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
+        const options = {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
 
-      //console.log('URI: ', result[0].uri);
-      //console.log('Type: ', result[0].type);
-      //console.log('Name: ', result[0].name);
-      //console.log('Size: ', result[0].size);
+        launchImageLibrary(options, async (response) => {
+            if (response.didCancel) {
+                console.log('Document picker was cancelled');
+                return;
+            }
+            
+            if (response.errorMessage) {
+                console.error('Error picking document', response.errorMessage);
+                return;
+            }
 
-      setPickedDocument(result[0]);
-      await fileUpload(result[0].uri)
+            if (response.assets && response.assets.length > 0) {
+                const pickedDocument = response.assets[0];
+                
+                //console.log('URI: ', pickedDocument.uri);
+                //console.log('Type: ', pickedDocument.type);
+                //console.log('Name: ', pickedDocument.fileName);
+                //console.log('Size: ', pickedDocument.fileSize);
+
+                setPickedDocument(pickedDocument);
+                await fileUpload(pickedDocument.uri);
+            }
+        });
+
     } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the document picker
-        console.log('Document picker was cancelled');
-      } else {
         console.error('Error picking document', err);
-      }
     }
-  };
+};
 
   const fileUpload = async (uri) => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
