@@ -17,6 +17,7 @@ import { API_URL } from '@env'
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 
 
 const data = [
@@ -25,8 +26,8 @@ const data = [
     { label: 'Super Admin', value: 'superadmin' },
 ];
 
-const EditUsers = ({ navigation, route }) => {
- 
+const EditUsers = ({ route }) => {
+    const navigation = useNavigation();
     const [userInfo, setuserInfo] = useState([])
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);

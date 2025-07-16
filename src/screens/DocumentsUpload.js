@@ -27,8 +27,10 @@ import axios from 'axios';
 import { API_URL } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Entypo from 'react-native-vector-icons/Entypo';
+import { useNavigation } from '@react-navigation/native';
 
-const DocumentsUpload = ({ navigation, route }) => {
+const DocumentsUpload = ({ route }) => {
+    const navigation = useNavigation();
     const [pickedDrivingLicenseFront, setPickedDrivingLicenseFront] = useState(null);
     const [DrivingLicenseFrontError, setDrivingLicenseFrontError] = useState('')
     const [pickedDrivingLicenseBack, setPickedDrivingLicenseback] = useState(null);

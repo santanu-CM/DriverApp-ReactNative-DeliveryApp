@@ -548,7 +548,8 @@ const renderScene = SceneMap({
   second: Completed
 });
 
-const OrderShippingScreen = ({ navigation, route }) => {
+const OrderShippingScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { logout } = useContext(AuthContext);
   const [userInfo, setuserInfo] = useState([])
   const [isLoading, setIsLoading] = useState(false)

@@ -10,7 +10,8 @@ import NoNotification from './NoNotification';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { useNavigation } from '@react-navigation/native';
 
-const NotificationScreen = ({ navigation }) => {
+const NotificationScreen = ({  }) => {
+  const navigation = useNavigation();
   const [notifications, setNotifications] = useState([]);
   const [notifyStatus, setnotifyStatus] = useState(false)
   

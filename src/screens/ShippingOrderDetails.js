@@ -243,7 +243,8 @@ const renderScene = (props, shippingId, getorders, currentLat, currentLong) => {
     }
 };
 
-const ShippingOrderDetails = ({ navigation, route }) => {
+const ShippingOrderDetails = ({ route }) => {
+    const navigation = useNavigation();
     const { logout } = useContext(AuthContext);
     const [userInfo, setuserInfo] = useState([])
     const [index, setIndex] = React.useState(0);

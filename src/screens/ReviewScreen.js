@@ -37,7 +37,7 @@ import StarRating from 'react-native-star-rating-widget';
 // import SwitchSelector from "react-native-switch-selector";
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import moment from 'moment';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const BannerWidth = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(BannerWidth * 0.7)
@@ -45,8 +45,8 @@ const { height, width } = Dimensions.get('screen')
 
 
 
-export default function ReviewScreen({ navigation }) {
-
+export default function ReviewScreen({  }) {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { data: products, status } = useSelector(state => state.products)
     //const { userInfo } = useContext(AuthContext)

@@ -17,9 +17,11 @@ import { API_URL } from '@env'
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 
 
-const EditCapacityInformation = ({ navigation, route }) => {
+const EditCapacityInformation = ({ route }) => {
+    const navigation = useNavigation();
     // const { userInfo } = useContext(AuthContext);
     const [isFocus, setIsFocus] = useState(false);
     const [isLoading, setIsLoading] = useState(true)

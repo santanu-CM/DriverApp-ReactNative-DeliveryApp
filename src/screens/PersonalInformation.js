@@ -24,8 +24,10 @@ import axios from 'axios';
 import { API_URL,GOOGLE_MAP_KEY_ANDROID, GOOGLE_MAP_KEY_IOS } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { useNavigation } from '@react-navigation/native';
 
-const PersonalInformation = ({ navigation, route }) => {
+const PersonalInformation = ({ route }) => {
+  const navigation = useNavigation();
   const concatNo =  route?.params?.countrycode +'-'+ route?.params?.phoneno;
   const [phoneno, setPhoneno] = useState(concatNo);
   const [firstname, setFirstname] = useState('');

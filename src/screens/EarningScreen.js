@@ -35,7 +35,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import RNFetchBlob from 'rn-fetch-blob';
 import Toast from 'react-native-toast-message';
 import moment from 'moment';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const BannerWidth = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(BannerWidth * 0.7)
@@ -46,8 +46,8 @@ const data = [
     { label: 'Date Wise', value: '2' },
 ];
 
-export default function EarningScreen({ navigation }) {
-
+export default function EarningScreen({  }) {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { data: products, status } = useSelector(state => state.products)
     const { userInfo } = useContext(AuthContext)

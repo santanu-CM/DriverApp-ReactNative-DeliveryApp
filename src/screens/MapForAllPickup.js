@@ -26,8 +26,8 @@ import GetLocation from 'react-native-get-location'
 import haversine from 'haversine-distance';
 const RADIUS_OF_EARTH = 6378;
 
-const MapForAllPickup = ({ navigation, route }) => {
-
+const MapForAllPickup = ({ route }) => {
+  const navigation = useNavigation();
   const [markers, setMarkers] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
   const [currentLat, setCurrentLat] = useState('')

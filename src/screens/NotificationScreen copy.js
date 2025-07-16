@@ -7,8 +7,10 @@ import { notifyImg } from '../utils/Images'
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoNotification from './NoNotification';
+import { useNavigation } from '@react-navigation/native';
 
-const NotificationScreen = ({ navigation }) => {
+const NotificationScreen = ({  }) => {
+  const navigation = useNavigation();
   const [notifications, setNotifications] = useState([]);
   const [notifyStatus, setnotifyStatus] = useState(false)
 

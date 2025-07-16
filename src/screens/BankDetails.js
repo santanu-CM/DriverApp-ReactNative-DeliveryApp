@@ -24,6 +24,7 @@ import axios from 'axios';
 import { API_URL } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Dropdown } from 'react-native-element-dropdown';
+import { useNavigation } from '@react-navigation/native';
 
 const data = [
   { label: 'Absa Bank Ghana Limited', value: 'Absa Bank Ghana Limited' },
@@ -31,7 +32,8 @@ const data = [
   { label: 'Agricultural Development Bank Plc', value: 'Agricultural Development Bank Plc' },
 ];
 
-const BankDetails = ({ navigation, route }) => {
+const BankDetails = ({ route }) => {
+  const navigation = useNavigation();
   const [accountno, setaccountno] = useState('');
   const [accountnoError, setaccountnoError] = useState('')
   const [reaccountno, setreaccountno] = useState('');

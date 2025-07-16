@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { Text, Image, View, Platform } from 'react-native';
 
@@ -39,7 +39,8 @@ import { useFocusEffect } from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const HomeStack = ({ navigation }) => {
+const HomeStack = ({ }) => {
+  const navigation = useNavigation();
   useFocusEffect(
     React.useCallback(() => {
       // Reset to the initial screen (TherapistList) whenever the tab is focused
@@ -93,7 +94,8 @@ const HomeStack = ({ navigation }) => {
   );
 };
 
-const ShippingStack = ({ navigation }) => {
+const ShippingStack = ({  }) => {
+  const navigation = useNavigation();
   useFocusEffect(
     React.useCallback(() => {
       // Reset to the initial screen (TherapistList) whenever the tab is focused
@@ -152,7 +154,8 @@ const ShippingStack = ({ navigation }) => {
 
 };
 
-const OrderStack = ({ navigation }) => {
+const OrderStack = ({  }) => {
+  const navigation = useNavigation();
   useFocusEffect(
     React.useCallback(() => {
       // Reset to the initial screen (TherapistList) whenever the tab is focused
@@ -196,7 +199,8 @@ const OrderStack = ({ navigation }) => {
 
 };
 
-const ProfileStack = ({ navigation }) => {
+const ProfileStack = ({  }) => {
+  const navigation = useNavigation();
   useFocusEffect(
     React.useCallback(() => {
       // Reset to the initial screen (TherapistList) whenever the tab is focused

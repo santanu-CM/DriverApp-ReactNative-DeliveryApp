@@ -32,13 +32,14 @@ import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
 import data from '../model/data' 
 import CustomButton from '../components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const BannerWidth = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(BannerWidth * 0.7)
 const { height, width } = Dimensions.get('screen')
 
-export default function FaqScreen({ navigation }) {
-
+export default function FaqScreen({  }) {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { data: products, status } = useSelector(state => state.products)
     const { userInfo } = useContext(AuthContext)

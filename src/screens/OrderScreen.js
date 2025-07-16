@@ -927,7 +927,8 @@ const renderScene = SceneMap({
   third: Declined
 });
 
-const OrderScreen = ({ navigation, route }) => {
+const OrderScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { logout } = useContext(AuthContext);
   const [userInfo, setuserInfo] = useState([])
   const [isLoading, setIsLoading] = useState(false)

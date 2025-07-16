@@ -11,7 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import { API_URL } from '@env'
 import Loader from '../utils/Loader'
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Modal from "react-native-modal";
 import ImagePicker from 'react-native-image-crop-picker';
@@ -22,7 +22,8 @@ import InputField from '../components/InputField';
 import RNFetchBlob from 'rn-fetch-blob';
 import Toast from 'react-native-toast-message';
 
-const ShippingItemVerifiedScreen = ({ navigation, route }) => {
+const ShippingItemVerifiedScreen = ({ route }) => {
+    const navigation = useNavigation();
     const { logout } = useContext(AuthContext);
     const [userInfo, setuserInfo] = useState([])
     const [isLoading, setIsLoading] = useState(false)

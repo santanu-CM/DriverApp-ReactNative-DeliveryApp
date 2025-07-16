@@ -23,8 +23,10 @@ import Loader from '../utils/Loader';
 import axios from 'axios';
 import { API_URL } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useNavigation } from '@react-navigation/native';
 
-const CapacityDetails = ({ navigation, route }) => {
+const CapacityDetails = ({ route }) => {
+  const navigation = useNavigation();
   const [vehicleType, setvehicleType] = useState('');
   const [vehicleTypeError, setvehicleTypeError] = useState('')
   const [VehicleRegistration, setVehicleRegistration] = useState('');

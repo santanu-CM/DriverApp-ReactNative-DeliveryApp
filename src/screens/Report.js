@@ -29,6 +29,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField'; 
 import GetLocation from 'react-native-get-location'
+import { useNavigation } from '@react-navigation/native';
 
 
 // const batchdata = [
@@ -41,8 +42,8 @@ const BannerWidth = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(BannerWidth * 0.7)
 const { height, width } = Dimensions.get('screen')
 
-export default function Report({ navigation }) {
-
+export default function Report({  }) {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { data: products, status } = useSelector(state => state.products)
     //const { userInfo } = useContext(AuthContext)

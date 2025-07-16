@@ -13,9 +13,10 @@ import Icon from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { API_URL } from '@env'
 import Loader from '../utils/Loader'
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-const ContactInformation = ({ navigation }) => {
+const ContactInformation = ({  }) => {
+    const navigation = useNavigation();
     const { logout } = useContext(AuthContext);
     const [userInfo, setuserInfo] = useState([])
     const [isLoading, setIsLoading] = useState(true)

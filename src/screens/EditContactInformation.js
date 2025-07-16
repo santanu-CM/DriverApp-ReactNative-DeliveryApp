@@ -18,9 +18,11 @@ import { API_URL } from '@env'
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 
 
-const EditContactInformation = ({ navigation, route }) => {
+const EditContactInformation = ({ route }) => {
+  const navigation = useNavigation();
   const { userInfo } = useContext(AuthContext);
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);

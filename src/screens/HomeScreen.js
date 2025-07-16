@@ -30,7 +30,7 @@ import CustomHeader from '../components/CustomHeader';
 import Carousel from 'react-native-snap-carousel';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { API_URL } from '@env'
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import messaging from '@react-native-firebase/messaging';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
@@ -44,8 +44,8 @@ const data = [
   { label: 'Date Wise', value: '2' },
 ];
 
-export default function HomeScreen({ navigation }) {
-
+export default function HomeScreen({  }) {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const { data: products, status } = useSelector(state => state.products)
   const { userInfo } = useContext(AuthContext)

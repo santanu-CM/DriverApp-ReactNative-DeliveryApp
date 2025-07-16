@@ -460,7 +460,8 @@ const renderScene = (props, batchId, currentLat, currentLong) => {
     }
 };
 
-const BatchDetails = ({ navigation, route }) => {
+const BatchDetails = ({ route }) => {
+    const navigation = useNavigation();
     const { logout } = useContext(AuthContext);
     const [userInfo, setuserInfo] = useState([])
     const [index, setIndex] = React.useState(0);
