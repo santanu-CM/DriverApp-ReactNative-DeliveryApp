@@ -59,7 +59,9 @@ const CustomDrawer = props => {
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={{ backgroundColor: '#EEFFFF' }}>
-        <View style={{ backgroundColor: '#EEFFFF', padding: 20, height: responsiveHeight(20), alignSelf: 'center', justifyContent: 'center' }}>
+        <View style={{ backgroundColor: '#EEFFFF', padding: 15,  height: responsiveHeight(21),
+    width:responsiveWidth(100), justifyContent: 'center', marginTop: -responsiveHeight(2),
+    marginLeft: -responsiveWidth(3) }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {userInfo?.profilePic ?
               <Image

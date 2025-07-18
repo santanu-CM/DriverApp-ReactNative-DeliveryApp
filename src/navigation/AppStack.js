@@ -36,7 +36,7 @@ const AuthStack = () => {
         drawerActiveTintColor: '#333',
         drawerInactiveTintColor: '#949494',
         drawerLabelStyle: {
-          marginLeft: -25,
+          marginLeft: 0,
           fontFamily: 'Outfit-Medium',
           fontSize: 15,
         },
