@@ -224,6 +224,11 @@ const ProfileStack = ({  }) => {
         component={BankInformation}
         options={{ headerShown: false }}
       />
+       <Stack.Screen
+        name="EditBankInformation"
+        component={EditBankInformation}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="EditDocuments"
         component={EditDocuments}

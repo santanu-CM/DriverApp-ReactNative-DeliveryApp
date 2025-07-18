@@ -1,7 +1,7 @@
 import React from 'react';
-import {Image} from 'react-native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import { homeImg, contactImg, helpImg, bankDetailsImg, documentImg , capacityImg, reviewImg, earningImg, acceptedOrderImg, completedOrderImg, availabilityImg} from '../utils/Images';
+import { Image } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { homeImg, contactImg, helpImg, bankDetailsImg, documentImg, capacityImg, reviewImg, earningImg, acceptedOrderImg, completedOrderImg, availabilityImg } from '../utils/Images';
 import CustomDrawer from '../components/CustomDrawer';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -23,6 +23,7 @@ import OrderSummary from '../screens/OrderSummary';
 import NoNotification from '../screens/NoNotification';
 import Report from '../screens/Report';
 import ReviewScreenShipment from '../screens/ReviewScreenShipment';
+import EditBankInformation from '../screens/EditBankInformation';
 
 const Drawer = createDrawerNavigator();
 
@@ -50,9 +51,9 @@ const AuthStack = () => {
         name="Home"
         component={TabNavigator}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="home-outline" size={22} color={color} />
-            <Image source={homeImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={homeImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
@@ -60,9 +61,9 @@ const AuthStack = () => {
         name="Contact Information"
         component={ContactInformation}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={contactImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={contactImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
@@ -70,19 +71,19 @@ const AuthStack = () => {
         name="Bank Details"
         component={BankInformation}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={bankDetailsImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={bankDetailsImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
         name="My Availability"
         component={AvailabilityScreen}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={availabilityImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={availabilityImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
@@ -90,9 +91,9 @@ const AuthStack = () => {
         name="Documents"
         component={EditDocuments}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={documentImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={documentImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
@@ -100,40 +101,40 @@ const AuthStack = () => {
         name="My Capacity"
         component={CapacityInformation}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={capacityImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={capacityImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
         name="Reviews"
         component={ReviewScreen}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={reviewImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={reviewImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
         name="Shipment Reviews"
         component={ReviewScreenShipment}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={reviewImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={reviewImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
-      
-       <Drawer.Screen
+
+      <Drawer.Screen
         name="Earning"
         component={EarningScreen}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={earningImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={earningImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
@@ -141,10 +142,17 @@ const AuthStack = () => {
         name="Report"
         component={Report}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={earningImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={earningImg} style={{ width: 25, height: 25 }} color={color} />
           ),
+        }}
+      />
+      <Drawer.Screen
+        name="EditBankInformation"
+        component={EditBankInformation}
+        options={{
+          drawerItemStyle: { display: 'none' },
         }}
       />
       {/* <Drawer.Screen
@@ -167,13 +175,13 @@ const AuthStack = () => {
           ),
         }}
       /> */}
-       <Drawer.Screen
+      <Drawer.Screen
         name="Help & Support"
         component={FaqScreen}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={helpImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={helpImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
@@ -181,9 +189,9 @@ const AuthStack = () => {
         name="Term of service"
         component={TermsScreen}
         options={{
-          drawerIcon: ({color}) => (
+          drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={helpImg} style={{ width: 25,height: 25}} color={color}/>
+            <Image source={helpImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />

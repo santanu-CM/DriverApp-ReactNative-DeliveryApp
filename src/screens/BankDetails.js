@@ -28,8 +28,28 @@ import { useNavigation } from '@react-navigation/native';
 
 const data = [
   { label: 'Absa Bank Ghana Limited', value: 'Absa Bank Ghana Limited' },
-  { label: 'Access Bank (Ghana) Plc', value: 'Access Bank (Ghana) Plc' },
-  { label: 'Agricultural Development Bank Plc', value: 'Agricultural Development Bank Plc' },
+  { label: 'Access Bank (Ghana) PLC', value: 'Access Bank (Ghana) PLC' },
+  { label: 'Agricultural Development Bank PLC', value: 'Agricultural Development Bank PLC' },
+  { label: 'Bank of Africa Ghana Limited', value: 'Bank of Africa Ghana Limited' },
+  { label: 'CalBank PLC', value: 'CalBank PLC' },
+  { label: 'Consolidated Bank Ghana Limited', value: 'Consolidated Bank Ghana Limited' },
+  { label: 'Ecobank Ghana PLC', value: 'Ecobank Ghana PLC' },
+  { label: 'FBNBank (Ghana) Limited', value: 'FBNBank (Ghana) Limited' },
+  { label: 'Fidelity Bank Ghana Limited', value: 'Fidelity Bank Ghana Limited' },
+  { label: 'First Atlantic Bank Limited', value: 'First Atlantic Bank Limited' },
+  { label: 'First National Bank (Ghana) Limited', value: 'First National Bank (Ghana) Limited' },
+  { label: 'GCB Bank PLC', value: 'GCB Bank PLC' },
+  { label: 'Guaranty Trust Bank (Ghana) Limited', value: 'Guaranty Trust Bank (Ghana) Limited' },
+  { label: 'National Investment Bank Limited', value: 'National Investment Bank Limited' },
+  { label: 'OmniBSIC Bank Ghana Limited', value: 'OmniBSIC Bank Ghana Limited' },
+  { label: 'Prudential Bank Limited', value: 'Prudential Bank Limited' },
+  { label: 'Republic Bank (Ghana) PLC', value: 'Republic Bank (Ghana) PLC' },
+  { label: 'Societe Generale Ghana PLC', value: 'Societe Generale Ghana PLC' },
+  { label: 'Stanbic Bank Ghana Limited', value: 'Stanbic Bank Ghana Limited' },
+  { label: 'Standard Chartered Bank Ghana PLC', value: 'Standard Chartered Bank Ghana PLC' },
+  { label: 'United Bank for Africa (Ghana) Limited', value: 'United Bank for Africa (Ghana) Limited' },
+  { label: 'Universal Merchant Bank Limited', value: 'Universal Merchant Bank Limited' },
+  { label: 'Zenith Bank (Ghana) Limited', value: 'Zenith Bank (Ghana) Limited' },
 ];
 
 const BankDetails = ({ route }) => {
@@ -195,7 +215,7 @@ const BankDetails = ({ route }) => {
                 inputSearchStyle={styles.inputSearchStyle}
                 itemTextStyle={styles.selectedTextStyle}
                 data={data}
-                //search
+                search
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
