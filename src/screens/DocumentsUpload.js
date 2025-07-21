@@ -163,11 +163,11 @@ const DocumentsUpload = ({ route }) => {
 
     const changeLastname = (text) => {
         setghanaCardImage(text)
-        if (text) {
-            setghanaCardImageError('')
-        } else {
-            setghanaCardImageError('Please enter ghana card no')
-        }
+        // if (text) {
+        //     setghanaCardImageError('')
+        // } else {
+        //     setghanaCardImageError('Please enter ghana card no')
+        // }
     }
 
     // const fileUpload = (forwhat) => {
@@ -252,9 +252,11 @@ const DocumentsUpload = ({ route }) => {
             setTransitInsuranceError('Please upload Transit Insurance')
         } else if (!pickedVehicleImage) {
             setVehicleImageError('Please upload Vehicle Image')
-        } else if (!ghanaCardImage) {
-            setghanaCardImageError('Please enter Ghana Card')
-        } else if (date == 'DD - MM  - YYYY') {
+        }
+        //  else if (!ghanaCardImage) {
+        //     setghanaCardImageError('Please enter Ghana Card')
+        // }
+         else if (date == 'DD - MM  - YYYY') {
             setDrivingLicenseExpiryDateError('Please choose Driving License Expiry Date')
         } else if (date2 == 'DD - MM  - YYYY') {
             setCarInsuranceExpiryDateError('Please choose Car Insurance Expiry Date')
@@ -739,11 +741,11 @@ const DocumentsUpload = ({ route }) => {
                                     style={styles.header}>
                                     Ghana Card number
                                 </Text>
-                                <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}></Text>
+                                <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
                             </View>
                         </View>
-                        {ghanaCardImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{ghanaCardImageError}</Text> : <></>}
-                        <View style={styles.inputView}>
+                        {/* {ghanaCardImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{ghanaCardImageError}</Text> : <></>} */}
+                        <View style={styles.inputView}> 
                             <InputField
                                 label={'Ghana card no'}
                                 keyboardType=" "

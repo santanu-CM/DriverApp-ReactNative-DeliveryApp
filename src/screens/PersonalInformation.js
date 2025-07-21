@@ -104,12 +104,14 @@ const PersonalInformation = ({ route }) => {
       setAddressError('Please enter Address')
     }else if(!city){
       setCityError('Please enter City')
-    } else if (!postaddress) {
-      setPostaddressError('Please enter Ghana Post Address')
-    } else if (postaddressError) {
-      // Prevent submission if error exists
-      return;
-    } else {
+    }
+    //  else if (!postaddress) {
+    //   setPostaddressError('Please enter Ghana Post Address')
+    // } else if (postaddressError) {
+    //   // Prevent submission if error exists
+    //   return;
+    // }
+     else {
       setIsLoading(true)
       var option = {}
       if(email){
@@ -313,7 +315,7 @@ const PersonalInformation = ({ route }) => {
               style={styles.header}>
               Ghana Post Address
             </Text>
-            {postaddressError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{postaddressError}</Text> : <></>}
+            {/* {postaddressError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{postaddressError}</Text> : <></>} */}
             <View style={styles.inputView}>
               <InputField
                 label={'Post Address'}

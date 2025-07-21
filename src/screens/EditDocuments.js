@@ -724,7 +724,7 @@ export default function EditDocuments({  }) {
                         </Text>
                     </View>
                 </View>
-                {ghanaCardImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{ghanaCardImageError}</Text> : <></>}
+                {/* {ghanaCardImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{ghanaCardImageError}</Text> : <></>} */}
                     <View style={styles.inputView}>
                         <InputField
                             label={'Ghana card no'}
