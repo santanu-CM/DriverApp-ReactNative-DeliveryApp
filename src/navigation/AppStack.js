@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { homeImg, contactImg, helpImg, bankDetailsImg, documentImg, capacityImg, reviewImg, earningImg, acceptedOrderImg, completedOrderImg, availabilityImg, termsImg, supportImg } from '../utils/Images';
+import { homeImg, contactImg, helpImg, bankDetailsImg, documentImg, capacityImg, reviewImg, earningImg, acceptedOrderImg, completedOrderImg, availabilityImg, termsImg, supportImg, shipment_reviewsImg } from '../utils/Images';
 import CustomDrawer from '../components/CustomDrawer';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -123,7 +123,7 @@ const AuthStack = () => {
         options={{
           drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
-            <Image source={reviewImg} style={{ width: 25, height: 25 }} color={color} />
+            <Image source={shipment_reviewsImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />

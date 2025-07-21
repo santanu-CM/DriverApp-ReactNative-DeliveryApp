@@ -62,3 +62,4 @@ export const verifiedImg = require("../assets/images/verifiedImg.png");
 export const helpImg = require("../assets/images/help.png")
 export const supportImg = require("../assets/images/support.png")
 export const termsImg = require("../assets/images/terms.png")
+export const shipment_reviewsImg = require("../assets/images/shipment_reviews.png")
