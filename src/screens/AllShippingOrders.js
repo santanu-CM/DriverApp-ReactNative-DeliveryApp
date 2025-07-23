@@ -47,7 +47,7 @@ const AllShippingOrders = () => {
 
     const fetchNewOrders = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            axios.post(`${process.env.API_URL}/api/driver/shipping-pending`, {}, {
+            axios.post(`${process.env.API_URL}/api/driver/all-shipment-load`, {}, {
                 headers: {
                     "Authorization": 'Bearer ' + usertoken,
                     "Content-Type": 'application/json'
@@ -146,20 +146,20 @@ const AllShippingOrders = () => {
                     <Text style={styles.productHeaderText}>Weight: <Text style={styles.productHeaderValue}>{item?.product_details?.weight} KG</Text></Text>
                     <Text style={styles.productHeaderText}>Dimensions: <Text style={styles.productHeaderValue}>{item?.product_details?.dimension_l} Cm X {item?.product_details?.dimension_b} Cm </Text></Text>
                     <Text style={styles.productHeaderText}>Load Cash Value: <Text style={styles.productHeaderValue}>${item?.other?.load_cache_value}</Text></Text>
-                    <View
+                    {/* <View
                         style={{
                             marginVertical: 10,
                             borderBottomColor: '#F3F3F3',
                             borderBottomWidth: StyleSheet.hairlineWidth + 3,
                         }}
-                    />
+                    /> */}
                 </>
-                <View style={styles.expEarningView}>
+                {/* <View style={styles.expEarningView}>
                     <Text style={styles.locationheader}>Expected Earning :</Text>
                     <View style={styles.expPriceView}>
                         <Text style={styles.expPriceText}>${item?.other?.driver_payment}</Text>
                     </View>
-                </View>
+                </View> */}
             </View>
         </View>
     );
