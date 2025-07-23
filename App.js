@@ -19,7 +19,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { startLocationTracking } from './src/helper/BackgroundLocation';
 import { requestPermissions, setupNotificationHandlers } from './src/utils/NotificationService';
 import { navigate } from './src/navigation/NavigationService'; // Import the navigation function
-
+import { PermissionsAndroid } from 'react-native';
 
 function App() {
   const [notifications, setNotifications] = useState([]);
@@ -112,12 +112,13 @@ function App() {
 
   useEffect(() => {
    
-    if(Platform.OS === 'ios'){
+    //if(Platform.OS === 'ios'){
       requestUserPermission()
-    }
+    //}
 
     // Request permissions and set up notifications
     requestPermissions().then(() => {
+      console.log('requestPermissions');
       const unsubscribeForeground = setupNotificationHandlers(setNotifications, setnotifyStatus);
 
       // Handle notification when the app is opened from a background state
@@ -149,10 +150,31 @@ function App() {
   }, []);
 
   async function requestUserPermission() {
-    const authorizationStatus = await messaging().requestPermission();
+    if (Platform.OS === 'ios') {
+      const authorizationStatus = await messaging().requestPermission();
+      if (authorizationStatus) {
+        console.log('iOS notification permission status:', authorizationStatus);
+      }
+    } else if (Platform.OS === 'android' && Platform.Version >= 33) {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+          {
+            title: 'Notification Permission',
+            message: 'This app needs permission to send you notifications.',
+            buttonPositive: 'Allow',
+            buttonNegative: 'Deny',
+          }
+        );
   
-    if (authorizationStatus) {
-      console.log('Permission status:', authorizationStatus);
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Android notification permission granted');
+        } else {
+          console.log('Android notification permission denied');
+        }
+      } catch (err) {
+        console.warn('Notification permission error:', err);
+      }
     }
   }
 

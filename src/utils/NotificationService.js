@@ -50,7 +50,7 @@ export const requestPermissions = async () => {
   if (notificationPermission !== RESULTS.GRANTED) {
     const result = await requestNotificationPermission();
     if (result !== RESULTS.GRANTED) {
-      if (Platform.OS == 'android') {
+      //if (Platform.OS == 'android') {
         Alert.alert(
           'Notification Permission Required',
           'Please enable notifications to stay updated.',
@@ -59,7 +59,7 @@ export const requestPermissions = async () => {
             { text: 'OK', onPress: openSettings }
           ]
         );
-      }
+     // }
     }
   }
 
