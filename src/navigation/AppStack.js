@@ -24,6 +24,7 @@ import NoNotification from '../screens/NoNotification';
 import Report from '../screens/Report';
 import ReviewScreenShipment from '../screens/ReviewScreenShipment';
 import EditBankInformation from '../screens/EditBankInformation';
+import AllShippingOrders from '../screens/AllShippingOrders';
 
 const Drawer = createDrawerNavigator();
 
@@ -104,6 +105,16 @@ const AuthStack = () => {
           drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
             <Image source={capacityImg} style={{ width: 25, height: 25 }} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="All Shipping Load"
+        component={AllShippingOrders}
+        options={{
+          drawerIcon: ({ color }) => (
+            // <Ionicons name="settings-outline" size={22} color={color} />
+            <Image source={acceptedOrderImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
       />
