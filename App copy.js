@@ -18,31 +18,37 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import SplashScreen from 'react-native-splash-screen';
 import { startLocationTracking } from './src/helper/BackgroundLocation';
 import { requestPermissions, setupNotificationHandlers } from './src/utils/NotificationService';
-import { navigate } from './src/navigation/NavigationService'; // Import the navigation function
+import { navigate } from './src/navigation/NavigationService';
 import { PermissionsAndroid } from 'react-native';
 
 function App() {
   const [notifications, setNotifications] = useState([]);
-  const [notifyStatus, setnotifyStatus] = useState(false)
+  const [notifyStatus, setnotifyStatus] = useState(false);
+  const [permissionsRequested, setPermissionsRequested] = useState(false);
 
   useEffect(() => {
     startLocationTracking();
-}, []);
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
+      // Request notification permission after splash screen hides
+      if (!permissionsRequested) {
+        requestNotificationPermissionOnLaunch();
+        setPermissionsRequested(true);
+      }
     }, 3000);
-  }, [])
+  }, [permissionsRequested]);
 
   const checkBackgroundPermission = async () => {
     if (Platform.OS === 'android') {
-        const result = await check(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
-        if (result === RESULTS.DENIED) {
-            await request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
-        }
+      const result = await check(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
+      if (result === RESULTS.DENIED) {
+        await request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
+      }
     }
-};
+  };
 
   const requestLocationPermission = async () => {
     try {
@@ -61,122 +67,135 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    // Your existing useEffect code
-    if (Platform.OS == 'android') {
-      requestLocationPermission();
-      checkBackgroundPermission();
-      // Your existing code continues...
+  const requestNotificationPermissionOnLaunch = async () => {
+    try {
+      // Check if permission was already requested before
+      const hasAskedBefore = await AsyncStorage.getItem('notification_permission_asked');
+      
+      if (!hasAskedBefore) {
+        // Show custom alert first (optional)
+        Alert.alert(
+          'Enable Notifications',
+          'Allow notifications to stay updated with your orders and important updates.',
+          [
+            {
+              text: 'Not Now',
+              onPress: async () => {
+                await AsyncStorage.setItem('notification_permission_asked', 'true');
+                console.log('User declined notification permission');
+              },
+              style: 'cancel',
+            },
+            {
+              text: 'Allow',
+              onPress: async () => {
+                await AsyncStorage.setItem('notification_permission_asked', 'true');
+                await requestUserPermission();
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        // If user has been asked before, just request permission silently
+        await requestUserPermission();
+      }
+    } catch (error) {
+      console.error('Error requesting notification permission:', error);
     }
-  }, []);
+  };
 
+  async function requestUserPermission() {
+    try {
+      if (Platform.OS === 'ios') {
+        const authorizationStatus = await messaging().requestPermission({
+          alert: true,
+          announcement: false,
+          badge: true,
+          carPlay: false,
+          provisional: false,
+          sound: true,
+        });
+        
+        if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+          console.log('iOS notification permission granted');
+          setupNotificationListeners();
+        } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+          console.log('iOS notification permission provisional');
+          setupNotificationListeners();
+        } else {
+          console.log('iOS notification permission denied');
+        }
+      } else if (Platform.OS === 'android') {
+        if (Platform.Version >= 33) {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+              {
+                title: 'Notification Permission',
+                message: 'This app needs permission to send you notifications about your orders and updates.',
+                buttonPositive: 'Allow',
+                buttonNegative: 'Deny',
+              }
+            );
 
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+              console.log('Android notification permission granted');
+              setupNotificationListeners();
+            } else {
+              console.log('Android notification permission denied');
+            }
+          } catch (err) {
+            console.warn('Notification permission error:', err);
+          }
+        } else {
+          // For Android versions below 33, no explicit permission needed
+          console.log('Android version below 33, no explicit permission needed');
+          setupNotificationListeners();
+        }
+      }
+    } catch (error) {
+      console.error('Error in requestUserPermission:', error);
+    }
+  }
 
-  // useEffect(() => {
-  //   if (Platform.OS == 'android') {
-  //     const unsubscribeForeground = messaging().onMessage(async remoteMessage => {
-  //       Alert.alert('A new notification arrived!', JSON.stringify("New assignment order arrived."));
-  //       console.log('Received foreground message:', JSON.stringify(remoteMessage));
-  //       setNotifications(prevNotifications => {
-  //         const newNotifications = [...prevNotifications, remoteMessage];
-  //         AsyncStorage.setItem('notifications', JSON.stringify(newNotifications));
-  //         setnotifyStatus(true)
-  //         return newNotifications;
-  //       });
-  //     });
-
-  //     const unsubscribeBackground = messaging().setBackgroundMessageHandler(async remoteMessage => {
-  //       console.log('Received background message:', remoteMessage);
-  //       setNotifications(prevNotifications => {
-  //         const newNotifications = [...prevNotifications, remoteMessage];
-  //         AsyncStorage.setItem('notifications', JSON.stringify(newNotifications));
-  //         setnotifyStatus(true)
-  //         return newNotifications;
-  //       });
-  //     });
-
-  //     // Load notifications from AsyncStorage when component mounts
-  //     AsyncStorage.getItem('notifications').then((value) => {
-  //       if (value !== null) {
-  //         setNotifications(JSON.parse(value));
-  //         setnotifyStatus(true)
-  //       }
-  //     });
-
-  //     return () => {
-  //       unsubscribeForeground();
-  //       //unsubscribeBackground();
-  //     };
-  //   }
-  // }, [])
-
-  useEffect(() => {
-   
-    //if(Platform.OS === 'ios'){
-      requestUserPermission()
-    //}
-
+  const setupNotificationListeners = () => {
     // Request permissions and set up notifications
     requestPermissions().then(() => {
-      console.log('requestPermissions');
       const unsubscribeForeground = setupNotificationHandlers(setNotifications, setnotifyStatus);
 
       // Handle notification when the app is opened from a background state
       messaging().onNotificationOpenedApp(remoteMessage => {
-        console.log(remoteMessage?.data?.screen,'rrrrrrrrrrrrr');
+        console.log(remoteMessage?.data?.screen, 'notification opened app');
         
         if (remoteMessage?.data?.screen === 'ShippingScreen') {
           navigate('Shipping', { screen: 'OrderShippingScreen' });
-        } else if(remoteMessage?.data?.screen === 'NewShippingOrderScreen'){
+        } else if (remoteMessage?.data?.screen === 'NewShippingOrderScreen') {
           navigate('NewShippingOrderScreen');
         }
       });
 
       // Handle notification when the app is opened from a quit state
       messaging().getInitialNotification().then(remoteMessage => {
-        console.log(remoteMessage?.data?.screen,'rrrrrrrrrrrrr');
+        console.log(remoteMessage?.data?.screen, 'initial notification');
         if (remoteMessage?.data?.screen === 'ShippingScreen') {
           navigate('Shipping', { screen: 'OrderShippingScreen' });
-        } else if(remoteMessage?.data?.screen === 'NewShippingOrderScreen'){
+        } else if (remoteMessage?.data?.screen === 'NewShippingOrderScreen') {
           navigate('NewShippingOrderScreen');
         }
       });
 
-      // Clean up foreground listener on unmount
-      return () => {
-        if (unsubscribeForeground) unsubscribeForeground();
-      };
+      // Store the unsubscribe function to clean up later if needed
+      return unsubscribeForeground;
     });
-  }, []);
+  };
 
-  async function requestUserPermission() {
-    if (Platform.OS === 'ios') {
-      const authorizationStatus = await messaging().requestPermission();
-      if (authorizationStatus) {
-        console.log('iOS notification permission status:', authorizationStatus);
-      }
-    } else if (Platform.OS === 'android' && Platform.Version >= 33) {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-          {
-            title: 'Notification Permission',
-            message: 'This app needs permission to send you notifications.',
-            buttonPositive: 'Allow',
-            buttonNegative: 'Deny',
-          }
-        );
-  
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('Android notification permission granted');
-        } else {
-          console.log('Android notification permission denied');
-        }
-      } catch (err) {
-        console.warn('Notification permission error:', err);
-      }
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      requestLocationPermission();
+      checkBackgroundPermission();
     }
-  }
+  }, []);
 
   return (
     <Provider store={store}>
@@ -184,7 +203,6 @@ function App() {
       <OfflineNotice />
       <AuthProvider>
         <AppNav />
-        {/* <View><Text>hhh</Text></View> */}
       </AuthProvider>
       <Toast />
     </Provider>

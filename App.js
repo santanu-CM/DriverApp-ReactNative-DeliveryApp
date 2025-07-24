@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
-import { StatusBar, View, Text, LogBox, Alert, Platform } from 'react-native';
+import { StatusBar, View, Text, LogBox, Alert, Platform, AppState } from 'react-native';
 import { AuthProvider } from './src/context/AuthContext';
 import AppNav from './src/navigation/AppNav';
 import store from './src/store/store';
@@ -16,18 +16,68 @@ import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
 import LinearGradient from 'react-native-linear-gradient';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import SplashScreen from 'react-native-splash-screen';
-import { startLocationTracking } from './src/helper/BackgroundLocation';
 import { requestPermissions, setupNotificationHandlers } from './src/utils/NotificationService';
 import { navigate } from './src/navigation/NavigationService';
 import { PermissionsAndroid } from 'react-native';
+import { 
+  startLocationService, 
+  stopLocationService, 
+  restartLocationService,
+  isLocationServiceRunning 
+} from './src/helper/LocationService';
+import Geolocation from '@react-native-community/geolocation';
 
 function App() {
   const [notifications, setNotifications] = useState([]);
   const [notifyStatus, setnotifyStatus] = useState(false);
   const [permissionsRequested, setPermissionsRequested] = useState(false);
 
+  // Handle app state changes
+  const handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'active') {
+      console.log('App has come to the foreground!');
+      // Restart location service when app comes to foreground
+      restartLocationService();
+    } else if (nextAppState.match(/inactive|background/)) {
+      console.log('App has gone to the background!');
+      // Keep location service running in background
+      // You might want to implement background task here for iOS
+    }
+  };
+
+  // Initialize location tracking
   useEffect(() => {
-    startLocationTracking();
+    // Configure geolocation for better performance
+    if (Platform.OS === 'android') {
+      // For Android, set high accuracy mode
+      Geolocation.setRNConfiguration({
+        skipPermissionRequests: false,
+        authorizationLevel: 'whenInUse',
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 30000,
+        distanceFilter: 0,
+      });
+    }
+
+    // Request location permissions first
+    requestLocationPermission().then((granted) => {
+      if (granted) {
+        // Small delay to ensure permissions are properly set
+        setTimeout(() => {
+          startLocationService();
+        }, 1000);
+      }
+    });
+
+    // Listen for app state changes
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    // Cleanup on unmount
+    return () => {
+      stopLocationService();
+      subscription?.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -57,13 +107,16 @@ function App() {
         android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       });
       const granted = await request(permission);
-      if (granted === 'granted') {
+      if (granted === 'granted' || granted === RESULTS.GRANTED) {
         console.log('Location permission granted');
+        return true;
       } else {
         console.log('Location permission denied');
+        return false;
       }
     } catch (error) {
       console.error('Failed to request location permission:', error);
+      return false;
     }
   };
 
@@ -192,7 +245,6 @@ function App() {
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      requestLocationPermission();
       checkBackgroundPermission();
     }
   }, []);
