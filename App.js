@@ -26,6 +26,7 @@ import {
   isLocationServiceRunning 
 } from './src/helper/LocationService';
 import Geolocation from '@react-native-community/geolocation';
+import { startLocationTracking } from './src/helper/BackgroundLocation';
 
 function App() {
   const [notifications, setNotifications] = useState([]);
@@ -40,6 +41,7 @@ function App() {
       restartLocationService();
     } else if (nextAppState.match(/inactive|background/)) {
       console.log('App has gone to the background!');
+      startLocationTracking();
       // Keep location service running in background
       // You might want to implement background task here for iOS
     }
