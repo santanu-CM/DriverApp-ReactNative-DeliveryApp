@@ -33,130 +33,172 @@ function App() {
   const [notifyStatus, setnotifyStatus] = useState(false);
   const [permissionsRequested, setPermissionsRequested] = useState(false);
 
-  // Handle app state changes
-  const handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'active') {
-      console.log('App has come to the foreground!');
-      // Restart location service when app comes to foreground
-      restartLocationService();
-    } else if (nextAppState.match(/inactive|background/)) {
-      console.log('App has gone to the background!');
-      startLocationTracking();
-      // Keep location service running in background
-      // You might want to implement background task here for iOS
-    }
-  };
-
-  // Initialize location tracking
-  useEffect(() => {
-    // Configure geolocation for better performance
-    if (Platform.OS === 'android') {
-      // For Android, set high accuracy mode
-      Geolocation.setRNConfiguration({
-        skipPermissionRequests: false,
-        authorizationLevel: 'whenInUse',
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 30000,
-        distanceFilter: 0,
-      });
-    }
-
-    // Request location permissions first
-    requestLocationPermission().then((granted) => {
-      if (granted) {
-        // Small delay to ensure permissions are properly set
-        setTimeout(() => {
-          startLocationService();
-        }, 1000);
-      }
-    });
-
-    // Listen for app state changes
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
-
-    // Cleanup on unmount
-    return () => {
-      stopLocationService();
-      subscription?.remove();
-    };
-  }, []);
-
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
-      // Request notification permission after splash screen hides
+      // Start the sequential permission flow after splash screen hides
       if (!permissionsRequested) {
-        requestNotificationPermissionOnLaunch();
+        startSequentialPermissions();
         setPermissionsRequested(true);
       }
     }, 3000);
   }, [permissionsRequested]);
 
-  const checkBackgroundPermission = async () => {
-    if (Platform.OS === 'android') {
-      const result = await check(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
-      if (result === RESULTS.DENIED) {
-        await request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
-      }
-    }
-  };
-
-  const requestLocationPermission = async () => {
+  // Sequential permission flow: Notification -> Foreground Location -> Background Location
+  const startSequentialPermissions = async () => {
     try {
-      const permission = Platform.select({
-        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-        android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      });
-      const granted = await request(permission);
-      if (granted === 'granted' || granted === RESULTS.GRANTED) {
-        console.log('Location permission granted');
-        return true;
-      } else {
-        console.log('Location permission denied');
-        return false;
-      }
-    } catch (error) {
-      console.error('Failed to request location permission:', error);
-      return false;
-    }
-  };
-
-  const requestNotificationPermissionOnLaunch = async () => {
-    try {
-      // Check if permission was already requested before
-      const hasAskedBefore = await AsyncStorage.getItem('notification_permission_asked');
+      console.log('Starting sequential permissions flow...');
       
-      if (!hasAskedBefore) {
-        // Show custom alert first (optional)
-        Alert.alert(
-          'Enable Notifications',
-          'Allow notifications to stay updated with your orders and important updates.',
-          [
-            {
-              text: 'Not Now',
-              onPress: async () => {
-                await AsyncStorage.setItem('notification_permission_asked', 'true');
-                console.log('User declined notification permission');
+      // Step 1: Request notification permission first
+      await requestNotificationPermissionFirst();
+      
+      // Step 2: Then request foreground location permission
+      await requestForegroundLocationPermission();
+      
+      // Step 3: Finally request background location permission and start tracking
+      await requestBackgroundLocationPermission();
+      
+    } catch (error) {
+      console.error('Error in sequential permissions flow:', error);
+    }
+  };
+
+  // Step 1: Request notification permission first
+  const requestNotificationPermissionFirst = async () => {
+    return new Promise(async (resolve) => {
+      try {
+        // Check if permission was already requested before
+        const hasAskedBefore = await AsyncStorage.getItem('notification_permission_asked');
+        
+        if (!hasAskedBefore) {
+          // Show custom alert first
+          Alert.alert(
+            'Enable Notifications',
+            'Allow notifications to stay updated with your orders and important updates.',
+            [
+              {
+                text: 'Not Now',
+                onPress: async () => {
+                  await AsyncStorage.setItem('notification_permission_asked', 'true');
+                  console.log('User declined notification permission');
+                  resolve();
+                },
+                style: 'cancel',
               },
-              style: 'cancel',
-            },
-            {
-              text: 'Allow',
-              onPress: async () => {
-                await AsyncStorage.setItem('notification_permission_asked', 'true');
-                await requestUserPermission();
+              {
+                text: 'Allow',
+                onPress: async () => {
+                  await AsyncStorage.setItem('notification_permission_asked', 'true');
+                  await requestUserPermission();
+                  resolve();
+                },
               },
-            },
-          ],
-          { cancelable: false }
-        );
-      } else {
-        // If user has been asked before, just request permission silently
-        await requestUserPermission();
+            ],
+            { cancelable: false }
+          );
+        } else {
+          // If user has been asked before, just request permission silently
+          await requestUserPermission();
+          resolve();
+        }
+      } catch (error) {
+        console.error('Error requesting notification permission:', error);
+        resolve();
+      }
+    });
+  };
+
+  // Step 2: Request foreground location permission
+  const requestForegroundLocationPermission = async () => {
+    return new Promise(async (resolve) => {
+      try {
+        if (Platform.OS === 'android') {
+          const fineLocationResult = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+              title: 'Location Permission',
+              message: 'This app needs access to your location to provide location-based services.',
+              buttonPositive: 'Allow',
+              buttonNegative: 'Deny',
+            }
+          );
+
+          if (fineLocationResult === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Foreground location permission granted');
+          } else {
+            console.log('Foreground location permission denied');
+          }
+          resolve();
+        } else if (Platform.OS === 'ios') {
+          const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+          
+          if (result === RESULTS.GRANTED) {
+            console.log('iOS foreground location permission granted');
+          } else {
+            console.log('iOS foreground location permission denied');
+          }
+          resolve();
+        } else {
+          resolve();
+        }
+      } catch (error) {
+        console.error('Error requesting foreground location permission:', error);
+        resolve();
+      }
+    });
+  };
+
+  // Step 3: Request background location permission and start tracking
+  const requestBackgroundLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        // Check if foreground location is granted first
+        const fineLocationCheck = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        
+        if (fineLocationCheck === RESULTS.GRANTED) {
+          // Only request background permission for Android 10+
+          if (Platform.Version >= 29) {
+            const backgroundLocationResult = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
+              {
+                title: 'Background Location Permission',
+                message: 'This app needs to access your location in the background to continue tracking when the app is not active.',
+                buttonPositive: 'Allow',
+                buttonNegative: 'Deny',
+              }
+            );
+
+            if (backgroundLocationResult === PermissionsAndroid.RESULTS.GRANTED) {
+              console.log('Background location permission granted');
+            } else {
+              console.log('Background location permission denied, but starting location tracking anyway');
+            }
+          } else {
+            console.log('Android version below 10, no background permission needed');
+          }
+          
+          // Start location tracking regardless of background permission result
+          startLocationTracking();
+        } else {
+          console.log('Foreground location not granted, cannot start location tracking');
+        }
+      } else if (Platform.OS === 'ios') {
+        // For iOS, request "always" permission for background
+        const alwaysResult = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        
+        if (alwaysResult === RESULTS.GRANTED) {
+          console.log('iOS background location permission granted');
+        } else {
+          console.log('iOS background location permission denied');
+        }
+        
+        // Start location tracking
+        startLocationTracking();
       }
     } catch (error) {
-      console.error('Error requesting notification permission:', error);
+      console.error('Error requesting background location permission:', error);
+      // Start location tracking anyway in case of error
+      startLocationTracking();
     }
   };
 
@@ -245,11 +287,143 @@ function App() {
     });
   };
 
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      checkBackgroundPermission();
+  // Legacy functions kept for compatibility (not used in new flow)
+  const requestAllLocationPermissions = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const fineLocationResult = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location Permission',
+            message: 'This app needs access to your location to provide location-based services.',
+            buttonPositive: 'Allow',
+            buttonNegative: 'Deny',
+          }
+        );
+
+        if (fineLocationResult === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Fine location permission granted');
+          
+          if (Platform.Version >= 29) {
+            setTimeout(async () => {
+              const backgroundLocationResult = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
+                {
+                  title: 'Background Location Permission',
+                  message: 'This app needs to access your location in the background to continue tracking when the app is not active.',
+                  buttonPositive: 'Allow',
+                  buttonNegative: 'Deny',
+                }
+              );
+
+              if (backgroundLocationResult === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('Background location permission granted');
+                startLocationTracking();
+              } else {
+                console.log('Background location permission denied, but starting location tracking anyway');
+                startLocationTracking();
+              }
+            }, 1000);
+          } else {
+            console.log('Android version below 10, no background permission needed');
+            startLocationTracking();
+          }
+        } else {
+          console.log('Fine location permission denied');
+        }
+      } else if (Platform.OS === 'ios') {
+        const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        
+        if (result === RESULTS.GRANTED) {
+          console.log('iOS location permission granted');
+          
+          const alwaysResult = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+          
+          if (alwaysResult === RESULTS.GRANTED) {
+            console.log('iOS always location permission granted');
+          }
+          
+          startLocationTracking();
+        } else {
+          console.log('iOS location permission denied');
+        }
+      }
+    } catch (error) {
+      console.error('Error requesting location permissions:', error);
     }
-  }, []);
+  };
+
+  const checkBackgroundPermissionAndStartTracking = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const fineLocationResult = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        
+        if (fineLocationResult !== RESULTS.GRANTED) {
+          console.log('Fine location permission not granted, requesting...');
+          await requestAllLocationPermissions();
+          return;
+        }
+
+        const backgroundResult = await check(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
+        
+        if (backgroundResult === RESULTS.GRANTED) {
+          console.log('Background location permission already granted');
+          startLocationTracking();
+        } else if (backgroundResult === RESULTS.DENIED) {
+          const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
+          
+          if (requestResult === RESULTS.GRANTED) {
+            console.log('Background location permission granted');
+            startLocationTracking();
+          } else {
+            console.log('Background location permission denied');
+            startLocationTracking();
+          }
+        }
+      } catch (error) {
+        console.error('Error checking/requesting background location permission:', error);
+      }
+    } else {
+      startLocationTracking();
+    }
+  };
+
+  const checkBackgroundPermission = async () => {
+    if (Platform.OS === 'android') {
+      const result = await check(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
+      if (result === RESULTS.DENIED) {
+        const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION);
+        
+        if (requestResult === RESULTS.GRANTED) {
+          console.log('Background location permission granted, starting location tracking');
+          startLocationTracking();
+        }
+      } else if (result === RESULTS.GRANTED) {
+        console.log('Background location permission already granted, starting location tracking');
+        startLocationTracking();
+      }
+    }
+  };
+
+  const requestLocationPermission = async () => {
+    try {
+      const permission = Platform.select({
+        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      });
+      const granted = await request(permission);
+      if (granted === 'granted' || granted === RESULTS.GRANTED) {
+        console.log('Location permission granted');
+        return true;
+      } else {
+        console.log('Location permission denied');
+        return false;
+      }
+    } catch (error) {
+      console.error('Failed to request location permission:', error);
+      return false;
+    }
+  };
 
   return (
     <Provider store={store}>

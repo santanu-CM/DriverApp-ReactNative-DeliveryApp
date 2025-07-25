@@ -1,205 +1,180 @@
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { API_URL } from '@env';
-import { Platform, PermissionsAndroid } from 'react-native';
+import { Platform, PermissionsAndroid, Alert } from 'react-native';
 import BackgroundActions from 'react-native-background-actions';
+import { API_URL } from '@env';
 
-// Function to send location to the server
-const sendLocationToServer = async (latitude, longitude, heading) => {
-  try {
-    const [userToken, storedStatus] = await Promise.all([
-      AsyncStorage.getItem('userToken'),
-      AsyncStorage.getItem('switchStatus'),
-    ]);
+// Background task function
+const backgroundTask = async () => {
+  console.log('[Background Task] Started');
 
-    if (!userToken || storedStatus !== 'on') {
-      console.log('No token or switch is off, skipping API call.');
-      return;
-    }
+  const getCurrentLocation = (retryCount = 0) => {
+    return new Promise((resolve, reject) => {
+      const options = retryCount === 0 
+        ? { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+        : { enableHighAccuracy: false, timeout: 8000, maximumAge: 120000 };
 
-    // Get last stored location
-    const lastLocation = await AsyncStorage.getItem('lastLocation');
-    const lastCoords = lastLocation ? JSON.parse(lastLocation) : null;
-
-    // Check if location is unchanged
-    if (lastCoords && lastCoords.latitude === latitude && lastCoords.longitude === longitude) {
-      console.log('Location unchanged, skipping API call.');
-      return;
-    }
-
-    console.log('Sending location:', { latitude, longitude, heading });
-
-    const response = await axios.post(
-      `${process.env.API_URL}/api/driver/driver-live-location-get`,
-      {
-        driver_lat: latitude,
-        driver_long: longitude,
-        heading: heading || 0, // Fallback for heading if undefined
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          'Content-Type': 'application/json',
+      Geolocation.getCurrentPosition(
+        (position) => resolve(position),
+        (error) => {
+          if (retryCount < 2 && error.code === error.TIMEOUT) {
+            console.log(`[Location] Retry ${retryCount + 1} due to timeout`);
+            // Retry with different settings
+            setTimeout(() => {
+              getCurrentLocation(retryCount + 1).then(resolve).catch(reject);
+            }, 1000);
+          } else {
+            reject(error);
+          }
         },
+        options
+      );
+    });
+  };
+
+  try {
+    while (BackgroundActions.isRunning()) {
+      console.log('[Background Task] Loop iteration');
+
+      try {
+        const position = await getCurrentLocation();
+        const { latitude, longitude, heading } = position.coords;
+        console.log(`[Location] Lat: ${latitude}, Lng: ${longitude}, Heading: ${heading}`);
+        await sendLocationToServer(latitude, longitude, heading);
+      } catch (error) {
+        console.warn('[Location Error]', error?.message || error);
+        // Continue the loop even if location fails
       }
-    );
 
-    console.log('Location sent successfully:', response.data);
-
-    // Save new location after successful API call
-    await AsyncStorage.setItem('lastLocation', JSON.stringify({ latitude, longitude }));
+      // Delay between location fetches
+      await new Promise(resolve => setTimeout(resolve, 10000));
+    }
   } catch (error) {
-    console.error('Error sending location:', error.message);
+    console.error('[Background Task Error]', error);
   }
+
+  console.log('[Background Task] Stopped');
 };
 
-// Background task options
+// Options for the background task
 const backgroundTaskOptions = {
-  taskName: 'LocationUpdates',
-  taskTitle: 'Location Tracking',
-  taskDesc: 'Sending location updates in the background',
+  taskName: 'LocationTracking',
+  taskTitle: 'Driver Location Tracking',
+  taskDesc: 'Sending location to server...',
   taskIcon: {
     name: 'ic_launcher',
     type: 'mipmap',
   },
   color: '#ff00ff',
-  linkingURI: 'yourapp://location',
   parameters: {
-    delay: 120000, // 2 minutes
+    delay: 10000,
   },
-  isForeground: false, // Run in background
+  isForeground: true, // Required for Android 10+
 };
 
-// Sleep utility
-const sleep = (timeout) => new Promise((resolve) => setTimeout(resolve, timeout));
-
-// Background task for location updates
-const backgroundTask = async (taskData) => {
-  const { delay } = taskData || { delay: 120000 }; // Default to 2 minutes
-
+// Send location to server
+const sendLocationToServer = async (latitude, longitude, heading) => {
   try {
-    await new Promise(async (resolve, reject) => {
-      // Handle task termination
-      const stopTask = () => {
-        console.log('Stopping background task');
-        resolve();
-      };
+      const userToken = await AsyncStorage.getItem('userToken');
+      const storedStatus = await AsyncStorage.getItem('switchStatus');
+      if (!userToken) return;
 
-      // Register stop event listener
-      BackgroundActions.on('stop', stopTask);
+      console.log(storedStatus, 'storedStatus');
 
-      while (BackgroundActions.isRunning()) {
-        try {
-          // Get current location
-          const position = await new Promise((res, rej) => {
-            Geolocation.getCurrentPosition(
-              res,
-              (err) => rej(err),
-              {
-                enableHighAccuracy: true,
-                timeout: 30000, // 30 seconds timeout
-                maximumAge: 10000, // Accept cached location up to 10 seconds old
-                distanceFilter: 10, // Update only if moved 10 meters
-              }
-            );
-          });
+      // Get last stored location
+      const lastLocation = await AsyncStorage.getItem('lastLocation');
+      const lastCoords = lastLocation ? JSON.parse(lastLocation) : null;
 
-          const { latitude, longitude, heading } = position.coords;
-          console.log('Background Location:', { latitude, longitude, heading });
-
-          // Send location to server
-          await sendLocationToServer(latitude, longitude, heading);
-        } catch (error) {
-          console.error('Error in background task:', error.message);
-          if (error.code === 3) {
-            console.log('Location timeout, retrying after 10 seconds...');
-            await sleep(10000); // Wait before retrying
-            continue;
-          }
-        }
-
-        // Wait for the specified delay
-        await sleep(delay);
+      // Check if location is the same
+      if (lastCoords && lastCoords.latitude === latitude && lastCoords.longitude === longitude) {
+          console.log('Location unchanged, skipping API call.');
+          return;
       }
 
-      // Cleanup event listener
-      BackgroundActions.removeListener('stop', stopTask);
-      resolve();
-    });
+      console.log(latitude, 'latitude');
+      console.log(longitude, 'longitude');
+
+      if (storedStatus === 'on') {
+          const option = {
+              "driver_lat": latitude,
+              "driver_long": longitude,
+              "heading": heading
+          };
+
+          const response = await axios.post(`${process.env.API_URL}/api/driver/driver-live-location-get`, option, {
+              headers: {
+                  "Authorization": `Bearer ${userToken}`,
+                  "Content-Type": 'application/json'
+              }
+          });
+
+          console.log("Location sent successfully", response.data);
+
+          // Save new location after successful API call
+          await AsyncStorage.setItem('lastLocation', JSON.stringify({ latitude, longitude }));
+      }
   } catch (error) {
-    console.error('Background task error:', error.message);
+      console.log("Error sending location:", error);
   }
 };
 
-// Request location permissions
-const requestLocationPermissions = async () => {
-  try {
-    if (Platform.OS === 'ios') {
-      const auth = await Geolocation.requestAuthorization('always');
-      return auth === 'granted' || auth === 'authorizedAlways';
-    } else if (Platform.OS === 'android') {
-      const fineLocation = await PermissionsAndroid.request(
+// Sleep function for delay
+const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+
+// Request necessary permissions
+export const requestLocationPermission = async () => {
+  if (Platform.OS === 'android') {
+    try {
+      const granted = await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location Permission',
-          message: 'This app needs access to your location to track it in the background.',
-          buttonPositive: 'OK',
-        }
-      );
-      const backgroundLocation = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
         PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
-        {
-          title: 'Background Location Permission',
-          message: 'This app needs to access your location in the background.',
-          buttonPositive: 'OK',
-        }
-      );
-      return (
-        fineLocation === PermissionsAndroid.RESULTS.GRANTED &&
-        backgroundLocation === PermissionsAndroid.RESULTS.GRANTED
-      );
+      ]);
+
+      const allGranted = Object.values(granted).every((status) => status === PermissionsAndroid.RESULTS.GRANTED);
+
+      if (!allGranted) {
+        Alert.alert('Permissions required', 'Please grant all location permissions');
+        return false;
+      }
+    } catch (err) {
+      console.warn('[Permission] Error requesting permissions', err);
+      return false;
     }
-    return false;
-  } catch (error) {
-    console.error('Error requesting permissions:', error.message);
-    return false;
   }
+
+  return true;
 };
 
 // Start location tracking
 export const startLocationTracking = async () => {
+  console.log('[Location Tracking] Starting...');
+
+  const hasPermission = await requestLocationPermission();
+  if (!hasPermission) return;
+
+  const isRunning = await BackgroundActions.isRunning();
+  if (isRunning) {
+    console.warn('[Background] Already running, stopping first...');
+    await BackgroundActions.stop();
+  }
+
   try {
-    // Check and request permissions
-    const hasPermission = await requestLocationPermissions();
-    if (!hasPermission) {
-      console.log('Location permissions not granted');
-      return;
-    }
-
-    // Check if task is already running
-    const isRunning = await BackgroundActions.isRunning();
-    if (isRunning) {
-      console.log('Background task already running');
-      return;
-    }
-
-    // Start background task
     await BackgroundActions.start(backgroundTask, backgroundTaskOptions);
-    console.log('Background location tracking started');
-  } catch (error) {
-    console.error('Error starting background task:', error.message);
+    console.log('[Background] Task started');
+  } catch (err) {
+    console.error('[Background] Error starting task', err);
   }
 };
 
 // Stop location tracking
 export const stopLocationTracking = async () => {
+  console.log('[Location Tracking] Stopping...');
   try {
-    if (await BackgroundActions.isRunning()) {
-      await BackgroundActions.stop();
-      console.log('Background location tracking stopped');
-    }
-  } catch (error) {
-    console.error('Error stopping background task:', error.message);
+    await BackgroundActions.stop();
+    console.log('[Background] Task stopped');
+  } catch (err) {
+    console.error('[Background] Error stopping task', err);
   }
 };
