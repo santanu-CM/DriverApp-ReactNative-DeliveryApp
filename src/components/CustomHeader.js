@@ -21,7 +21,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import { API_URL } from '@env'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Geolocation from 'react-native-geolocation-service';
 import ShimmerPlaceholder from "react-native-shimmer-placeholder";
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -98,23 +97,6 @@ export default function CustomHeader({
         }
         return true;
     };
-
-    const getLocation = async () => {
-        const hasPermission = await requestLocationPermission();
-        if (!hasPermission) return;
-
-        Geolocation.getCurrentPosition(
-            position => {
-                console.log(position.coords.latitude, position.coords.longitude);
-            },
-            error => console.error(error),
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-    };
-
-    useEffect(() => {
-        //getLocation();
-    }, []);
 
     useEffect(() => {
         fetchProfileDetails()
