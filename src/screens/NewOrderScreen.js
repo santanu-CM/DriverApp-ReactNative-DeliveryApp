@@ -21,7 +21,7 @@ import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { setNewOrder } from '../store/notificationSlice';
-
+import Share from 'react-native-share';
 
 const NewOrderScreen = () => {
     const { logout } = useContext(AuthContext);
@@ -254,33 +254,79 @@ const NewOrderScreen = () => {
                 });
         });
     }
+    // const invoiceDownload = (url) => {
+    //     const { dirs } = RNFetchBlob.fs;
+    //     RNFetchBlob.config({
+    //         fileCache: true,
+    //         addAndroidDownloads: {
+    //             useDownloadManager: true,
+    //             notification: true,
+    //             mediaScannable: true,
+    //             title: `invoice.pdf`,
+    //             path: `${dirs.DownloadDir}/invoice..pdf`,
+    //         },
+    //     })
+    //         .fetch('GET', url, {})
+    //         .then((res) => {
+    //             console.log('The file saved to ', res.path());
+    //             // ToastAndroid.show('The file saved to ', res.path(), ToastAndroid.SHORT);
+    //             Toast.show({
+    //                 type: 'success',
+    //                 text2: "PDF Downloaded successfully",
+    //                 position: 'top',
+    //                 topOffset: Platform.OS == 'ios' ? 55 : 20
+    //             });
+    //         })
+    //         .catch((e) => {
+    //             console.log(e)
+    //         });
+    // }
+
     const invoiceDownload = (url) => {
         const { dirs } = RNFetchBlob.fs;
-        RNFetchBlob.config({
-            fileCache: true,
-            addAndroidDownloads: {
-                useDownloadManager: true,
-                notification: true,
-                mediaScannable: true,
-                title: `invoice.pdf`,
-                path: `${dirs.DownloadDir}/invoice..pdf`,
+    
+        // Separate configs for Android and iOS
+        const configOptions = Platform.select({
+            android: {
+                fileCache: true,
+                addAndroidDownloads: {
+                    useDownloadManager: true,
+                    notification: true,
+                    mediaScannable: true,
+                    title: `invoice.pdf`,
+                    path: `${dirs.DownloadDir}/invoice.pdf`,
+                },
             },
-        })
-            .fetch('GET', url, {})
+            ios: {
+                fileCache: true,
+                path: `${dirs.DocumentDir}/invoice.pdf`, // iOS sandbox
+            },
+        });
+    
+        RNFetchBlob.config(configOptions)
+            .fetch('GET', url)
             .then((res) => {
-                console.log('The file saved to ', res.path());
-                // ToastAndroid.show('The file saved to ', res.path(), ToastAndroid.SHORT);
+                console.log('The file saved to', res.path());
+    
                 Toast.show({
                     type: 'success',
-                    text2: "PDF Downloaded successfully",
+                    text2: 'PDF Downloaded successfully',
                     position: 'top',
-                    topOffset: Platform.OS == 'ios' ? 55 : 20
+                    topOffset: Platform.OS === 'ios' ? 55 : 20,
                 });
+    
+                // Optional: Share or preview file on iOS after download
+                if (Platform.OS === 'ios') {
+                    Share.open({
+                        url: 'file://' + res.path(),
+                        type: 'application/pdf',
+                    }).catch(err => console.log('Share error:', err));
+                }
             })
             .catch((e) => {
-                console.log(e)
+                console.log('Download error:', e);
             });
-    }
+    };
 
     const toggleExpanded = () => {
         setCollapsed(!collapsed)

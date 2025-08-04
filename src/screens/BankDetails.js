@@ -204,7 +204,7 @@ const BankDetails = ({ route }) => {
             </View>
             <Text
               style={styles.header}>
-              Bank Name
+              Bank Names
             </Text>
             {banknameError?<Text style={{color:'red',fontFamily:'Outfit-Regular'}}>{banknameError}</Text>:<></>}
             <View style={styles.inputView}>

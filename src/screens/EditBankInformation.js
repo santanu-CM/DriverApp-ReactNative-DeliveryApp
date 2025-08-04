@@ -177,7 +177,7 @@ const EditBankInformation = ({ route }) => {
                         
                         <Text
                             style={styles.header}>
-                            Bank Name
+                            Bank Names
                         </Text>
                         <View style={styles.inputView}>
                             <Dropdown

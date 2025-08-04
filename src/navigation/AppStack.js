@@ -109,7 +109,7 @@ const AuthStack = () => {
         }}
       />
       <Drawer.Screen
-        name="All Shipping Load"
+        name="Available Loads"
         component={AllShippingOrders}
         options={{
           drawerIcon: ({ color }) => (

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Image, TouchableOpacity, PermissionsAndroid, Dimensions } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, ScrollView, Image, TouchableOpacity, PermissionsAndroid, Dimensions, Platform } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import GetLocation from 'react-native-get-location'
 import Toast from 'react-native-toast-message';
 import RNFetchBlob from 'rn-fetch-blob';
+import Share from 'react-native-share';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
@@ -651,33 +652,78 @@ const Declined = () => {
         });
     });
   }
+  // const invoiceDownload = (url) => {
+  //   const { dirs } = RNFetchBlob.fs;
+  //   RNFetchBlob.config({
+  //     fileCache: true,
+  //     addAndroidDownloads: {
+  //       useDownloadManager: true,
+  //       notification: true,
+  //       mediaScannable: true,
+  //       title: `invoice.pdf`,
+  //       path: `${dirs.DownloadDir}/invoice..pdf`,
+  //     },
+  //   })
+  //     .fetch('GET', url, {})
+  //     .then((res) => {
+  //       console.log('The file saved to ', res.path());
+  //       // ToastAndroid.show('The file saved to ', res.path(), ToastAndroid.SHORT);
+  //       Toast.show({
+  //         type: 'success',
+  //         text2: "PDF Downloaded successfully",
+  //         position: 'top',
+  //         topOffset: Platform.OS == 'ios' ? 55 : 20
+  //       });
+  //     })
+  //     .catch((e) => {
+  //       console.log(e)
+  //     });
+  // }
   const invoiceDownload = (url) => {
     const { dirs } = RNFetchBlob.fs;
-    RNFetchBlob.config({
-      fileCache: true,
-      addAndroidDownloads: {
-        useDownloadManager: true,
-        notification: true,
-        mediaScannable: true,
-        title: `invoice.pdf`,
-        path: `${dirs.DownloadDir}/invoice..pdf`,
-      },
-    })
-      .fetch('GET', url, {})
-      .then((res) => {
-        console.log('The file saved to ', res.path());
-        // ToastAndroid.show('The file saved to ', res.path(), ToastAndroid.SHORT);
-        Toast.show({
-          type: 'success',
-          text2: "PDF Downloaded successfully",
-          position: 'top',
-          topOffset: Platform.OS == 'ios' ? 55 : 20
+
+    // Separate configs for Android and iOS
+    const configOptions = Platform.select({
+        android: {
+            fileCache: true,
+            addAndroidDownloads: {
+                useDownloadManager: true,
+                notification: true,
+                mediaScannable: true,
+                title: `invoice.pdf`,
+                path: `${dirs.DownloadDir}/invoice.pdf`,
+            },
+        },
+        ios: {
+            fileCache: true,
+            path: `${dirs.DocumentDir}/invoice.pdf`, // iOS sandbox
+        },
+    });
+
+    RNFetchBlob.config(configOptions)
+        .fetch('GET', url)
+        .then((res) => {
+            console.log('The file saved to', res.path());
+
+            Toast.show({
+                type: 'success',
+                text2: 'PDF Downloaded successfully',
+                position: 'top',
+                topOffset: Platform.OS === 'ios' ? 55 : 20,
+            });
+
+            // Optional: Share or preview file on iOS after download
+            if (Platform.OS === 'ios') {
+                Share.open({
+                    url: 'file://' + res.path(),
+                    type: 'application/pdf',
+                }).catch(err => console.log('Share error:', err));
+            }
+        })
+        .catch((e) => {
+            console.log('Download error:', e);
         });
-      })
-      .catch((e) => {
-        console.log(e)
-      });
-  }
+};
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
       axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
