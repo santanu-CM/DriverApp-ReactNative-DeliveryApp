@@ -179,7 +179,7 @@ export default function ReviewScreen({  }) {
                             <View style={styles.tableRow1}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text style={{ color: '#339999', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2) }}>Order ID : </Text>
-                                    <Text style={{ color: '#949494', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2) }}>{item?.batch_item.reference}</Text>
+                                    <Text style={{ color: '#949494', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2) }}>{item?.batch_item?.reference}</Text>
                                 </View>
                                 <Text style={{ color: '#949494', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2) }}>Date: {moment(item?.created_at).format('YYYY-MM-DD')}</Text>
 
