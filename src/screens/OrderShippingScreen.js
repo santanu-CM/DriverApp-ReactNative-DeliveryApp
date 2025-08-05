@@ -467,7 +467,7 @@ const Completed = () => {
 
                   <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: responsiveWidth(40) }}>
                     <Text style={{ color: '#339999', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.8), marginRight: 5 }}>Total Payment :</Text>
-                    <Text style={{ color: '#3A3232', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.8), marginRight: 5 }}>${item?.other?.total_amount}</Text>
+                    <Text style={{ color: '#3A3232', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.8), marginRight: 5 }}>₵{item?.other?.total_amount}</Text>
                   </View>
 
                   {/* <View style={styles.verticleLine}></View>

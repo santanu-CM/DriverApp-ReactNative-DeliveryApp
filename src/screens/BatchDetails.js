@@ -111,13 +111,13 @@ const Pickup = ({ batchId, currentLat, currentLong }) => {
                                         <Text style={styles.locationheader}>Order Items :</Text>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                             <Text style={styles.iconText}>{Math.floor(item?.order_details.quantity)} x {item?.order_details.product_name.substring(0, 20)}..</Text>
-                                            <Text style={styles.iconText}>${parseFloat(item?.order_details.price).toFixed(2)}</Text>
+                                            <Text style={styles.iconText}>₵{parseFloat(item?.order_details.price).toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ borderBottomColor: '#949494', borderBottomWidth: StyleSheet.hairlineWidth, marginBottom: 5 }} />
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                             <Text style={styles.iconText}>Subtotal</Text>
-                                            <Text style={styles.iconText}>${parseFloat(item?.total_order_amount).toFixed(2)}</Text>
+                                            <Text style={styles.iconText}>₵{parseFloat(item?.total_order_amount).toFixed(2)}</Text>
                                         </View>
                                     </View>
                                     {item?.pickup_status == 'Completed' ?
@@ -257,13 +257,13 @@ const Warehouse = ({ batchId, currentLat, currentLong }) => {
                                         <Text style={styles.locationheader}>Order Items :</Text>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                             <Text style={styles.iconText}>{Math.floor(item?.order_details.quantity)} x {item?.order_details.product_name.substring(0, 20)}..</Text>
-                                            <Text style={styles.iconText}>${parseFloat(item?.order_details.price).toFixed(2)}</Text>
+                                            <Text style={styles.iconText}>₵{parseFloat(item?.order_details.price).toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ borderBottomColor: '#949494', borderBottomWidth: StyleSheet.hairlineWidth, marginBottom: 5 }} />
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                             <Text style={styles.iconText}>Subtotal</Text>
-                                            <Text style={styles.iconText}>${parseFloat(item?.total_order_amount).toFixed(2)}</Text>
+                                            <Text style={styles.iconText}>₵{parseFloat(item?.total_order_amount).toFixed(2)}</Text>
                                         </View>
                                     </View>
                                     {item?.warehouse_status == 'Completed' ?
@@ -396,13 +396,13 @@ const Delivery = ({ batchId, currentLat, currentLong }) => {
                                         <Text style={styles.locationheader}>Order Items :</Text>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                             <Text style={styles.iconText}>{Math.floor(item?.order_details.quantity)} x {item?.order_details.product_name.substring(0, 20)}..</Text>
-                                            <Text style={styles.iconText}>${parseFloat(item?.order_details.price).toFixed(2)}</Text>
+                                            <Text style={styles.iconText}>₵{parseFloat(item?.order_details.price).toFixed(2)}</Text>
                                         </View>
 
                                         <View style={{ borderBottomColor: '#949494', borderBottomWidth: StyleSheet.hairlineWidth, marginBottom: 5 }} />
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                             <Text style={styles.iconText}>Subtotal</Text>
-                                            <Text style={styles.iconText}>${parseFloat(item?.total_order_amount).toFixed(2)}</Text>
+                                            <Text style={styles.iconText}>₵{parseFloat(item?.total_order_amount).toFixed(2)}</Text>
                                         </View>
                                     </View>
                                     {item?.delivery_status == 'Completed' ?

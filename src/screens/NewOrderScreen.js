@@ -446,13 +446,13 @@ const NewOrderScreen = () => {
                                 {/* {item.order_item.map((orderitem, index) => ( */}
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                     <Text style={styles.iconText}>{Math.floor(item?.order_details.quantity)} x {item?.order_details.product_name.substring(0, 20)}..</Text>
-                                    <Text style={styles.iconText}>${parseFloat(item?.order_details.price).toFixed(2)}</Text>
+                                    <Text style={styles.iconText}>₵{parseFloat(item?.order_details.price).toFixed(2)}</Text>
                                 </View>
                                 {/* ))} */}
                                 <View style={{ borderBottomColor: '#949494', borderBottomWidth: StyleSheet.hairlineWidth, marginBottom: 5 }} />
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                                     <Text style={styles.iconText}>Subtotal</Text>
-                                    <Text style={styles.iconText}>${parseFloat(item?.total_order_amount).toFixed(2)}</Text>
+                                    <Text style={styles.iconText}>₵{parseFloat(item?.total_order_amount).toFixed(2)}</Text>
                                 </View>
                             </View>
                             <View style={styles.tableFooterRow1}>
@@ -581,7 +581,7 @@ const NewOrderScreen = () => {
                         </View>
                         <View style={{ padding: 15, backgroundColor: '#E0E0E0', flexDirection: 'row', justifyContent: 'center', borderBottomLeftRadius: 10, borderBottomRightRadius: 10, height: responsiveHeight(7) }}>
                             <Text style={styles.toptableHeader2}>Expected Earning </Text>
-                            <Text style={styles.toptableHeader3}>${parseFloat(totalExpectedEarning).toFixed(2)} </Text>
+                            <Text style={styles.toptableHeader3}>₵{parseFloat(totalExpectedEarning).toFixed(2)} </Text>
                         </View>
                     </View> :
                     <View>

@@ -417,13 +417,13 @@ const LocationConfirmation = ({ route }) => {
                         {/* {item.order_item.map((orderitem, index) => ( */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                             <Text style={styles.iconText}>{Math.floor(getorders?.order_details.quantity)} x {getorders?.order_details.product_name.substring(0, 20)}..</Text>
-                            <Text style={styles.iconText}>${parseFloat(getorders?.order_details.price).toFixed(2)}</Text>
+                            <Text style={styles.iconText}>₵{parseFloat(getorders?.order_details.price).toFixed(2)}</Text>
                         </View>
                         {/* ))} */}
                         <View style={{ borderBottomColor: '#949494', borderBottomWidth: StyleSheet.hairlineWidth, marginBottom: 5 }} />
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
                             <Text style={styles.iconText}>Subtotal</Text>
-                            <Text style={styles.iconText}>${parseFloat(getorders?.total_order_amount).toFixed(2)}</Text>
+                            <Text style={styles.iconText}>₵{parseFloat(getorders?.total_order_amount).toFixed(2)}</Text>
                         </View>
                     </View>
                     <View style={styles.tableFooterRow1}>

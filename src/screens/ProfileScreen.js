@@ -104,7 +104,7 @@ const ProfileScreen = ({  }) => {
               />
               <Text style={{ color: '#9C9C9C', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), marginLeft: 10 }}>Total Earning</Text>
             </View>
-            <Text style={{ color: '#2F2F2F', fontFamily: 'Outfit-Bold', fontSize: responsiveFontSize(3), marginTop: 10 }}>${totalEarning}</Text>
+            <Text style={{ color: '#2F2F2F', fontFamily: 'Outfit-Bold', fontSize: responsiveFontSize(3), marginTop: 10 }}>₵{totalEarning}</Text>
           </View>
         </View>
         <View style={{ marginTop: 20 }}>

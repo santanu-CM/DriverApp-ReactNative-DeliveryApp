@@ -78,7 +78,7 @@ const Pickup = ({ shippingId, getorders, currentLat, currentLong }) => {
                                     <Text style={styles.locationheader}>Product Details</Text>
                                     <Text style={styles.productHeaderText}>Weight: <Text style={styles.productHeaderValue}>{getorders[0]?.product_details?.weight} KG</Text></Text>
                                     <Text style={styles.productHeaderText}>Dimensions: <Text style={styles.productHeaderValue}>{getorders[0]?.product_details?.dimension_l} Cm X {getorders[0]?.product_details?.dimension_b} Cm X {getorders[0]?.product_details?.dimension_h} Cm</Text></Text>
-                                    <Text style={styles.productHeaderText}>Load Cash Value: <Text style={styles.productHeaderValue}>${getorders[0]?.other?.load_cache_value}</Text></Text>
+                                    <Text style={styles.productHeaderText}>Load Cash Value: <Text style={styles.productHeaderValue}>₵{getorders[0]?.other?.load_cache_value}</Text></Text>
 
                                 </>
                             </View>
@@ -182,7 +182,7 @@ const Delivery = ({ shippingId, getorders, currentLat, currentLong }) => {
                                     <Text style={styles.locationheader}>Product Details</Text>
                                     <Text style={styles.productHeaderText}>Weight: <Text style={styles.productHeaderValue}>{getorders[0]?.product_details?.weight} KG</Text></Text>
                                     <Text style={styles.productHeaderText}>Dimensions: <Text style={styles.productHeaderValue}>{getorders[0]?.product_details?.dimension_l} Cm X {getorders[0]?.product_details?.dimension_b} Cm X {getorders[0]?.product_details?.dimension_h} Cm</Text></Text>
-                                    <Text style={styles.productHeaderText}>Load Cash Value: <Text style={styles.productHeaderValue}>${getorders[0]?.other?.load_cache_value}</Text></Text>
+                                    <Text style={styles.productHeaderText}>Load Cash Value: <Text style={styles.productHeaderValue}>₵{getorders[0]?.other?.load_cache_value}</Text></Text>
 
                                 </>
                             </View>

@@ -516,7 +516,7 @@ export default function HomeScreen({  }) {
           />
           <Text style={styles.earningCardheader}>Marketplace Orders</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-            <Text style={styles.earningCardTextAmount}>${todayEarning}</Text>
+            <Text style={styles.earningCardTextAmount}>₵{todayEarning}</Text>
             <View style={styles.verticleLine}></View>
             <Text style={styles.earningCardTextNo}>{noofDeliverd} Order Delivered</Text>
           </View>
@@ -529,7 +529,7 @@ export default function HomeScreen({  }) {
           />
           <Text style={styles.earningCardheader}>Shipping Orders</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-            <Text style={styles.earningCardTextAmount}>${todayShippingCompleted}</Text>
+            <Text style={styles.earningCardTextAmount}>₵{todayShippingCompleted}</Text>
             <View style={styles.verticleLine}></View>
             <Text style={styles.earningCardTextNo}>{todayShippingCompletedNo} Order Delivered</Text>
           </View>

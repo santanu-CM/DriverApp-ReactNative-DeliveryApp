@@ -270,7 +270,7 @@ export default function EarningScreen({  }) {
                     <Text style={styles.tableHeader2}>{item.item.total_distance}Km</Text>
                 </View>
                 <View style={styles.cell}>
-                    <Text style={styles.tableHeader2}>${Number(item.item.totalAmount).toFixed(2)}</Text>
+                    <Text style={styles.tableHeader2}>₵{Number(item.item.totalAmount).toFixed(2)}</Text>
                 </View>
             </View>
         )
@@ -314,7 +314,7 @@ export default function EarningScreen({  }) {
                         />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-                        <Text style={{ color: '#3A3232', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(3), marginTop: 10 }}>${Number(totalEarning).toFixed(2)}</Text>
+                        <Text style={{ color: '#3A3232', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(3), marginTop: 10 }}>₵{Number(totalEarning).toFixed(2)}</Text>
                         <View style={styles.verticleLine}></View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, justifyContent: 'space-between' }}>
                             <Image

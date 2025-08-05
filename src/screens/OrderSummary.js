@@ -64,7 +64,7 @@ const OrderSummary = ({ route }) => {
                         </View>
                         <View style={{ padding: 15, backgroundColor: '#E0E0E0', flexDirection: 'row', justifyContent: 'center' }}>
                             <Text style={styles.toptableHeader2}>Expected Earning </Text>
-                            <Text style={styles.toptableHeader3}>${Number(amount).toFixed(2)} </Text>
+                            <Text style={styles.toptableHeader3}>₵{Number(amount).toFixed(2)} </Text>
                         </View>
                     </View>
                     : orderType == 'delivery' ?
@@ -76,7 +76,7 @@ const OrderSummary = ({ route }) => {
                             </View>
                             <View style={{ padding: 15, backgroundColor: '#E0E0E0', flexDirection: 'row', justifyContent: 'center' }}>
                                 <Text style={styles.toptableHeader2}>Expected Earning </Text>
-                                <Text style={styles.toptableHeader3}>${Number(amount).toFixed(2)} </Text>
+                                <Text style={styles.toptableHeader3}>₵{Number(amount).toFixed(2)} </Text>
                             </View>
                         </View>
                         : <></>}
