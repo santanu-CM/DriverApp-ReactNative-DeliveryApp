@@ -37,7 +37,7 @@ import LocationServicesDialogBox from "react-native-android-location-services-di
 import { setNewOrder, setNewShipping } from '../store/notificationSlice';
 import LottieLoader from '../utils/LottieLoader';
 // import { WebView } from 'react-native-webview';
-
+import ExpiryNotificationBanner from '../helper/ExpiryNotificationBanner';
 
 const data = [
   { label: 'Today', value: '1' },
@@ -48,7 +48,6 @@ export default function HomeScreen({  }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { data: products, status } = useSelector(state => state.products)
-  const { userInfo } = useContext(AuthContext)
   const [isLoading, setIsLoading] = useState(true)
   const [value, setValue] = useState('1');
   const [isFocus, setIsFocus] = useState(false);
@@ -65,12 +64,14 @@ export default function HomeScreen({  }) {
   const [todaysDate, setTodaysDate] = useState('')
   const [notificationStatus, setNotificationStatus] = useState(false)
   const [shippingNotification, setShippingNotification] = useState(false)
+  const [userInfo, setuserInfo] = useState([])
 
   const [shippingCompleted, setShippingCompleted] = useState(0)
   const [todayShippingCompleted, setTodayShippingCompleted] = useState(0)
   const [todayShippingCompletedNo, setTodayShippingCompletedNo] = useState(0)
   const [refreshing, setRefreshing] = useState(false);
   const { hasNewOrder, hasNewShipping } = useSelector(state => state.notification);
+  const [expiryRefreshTrigger, setExpiryRefreshTrigger] = useState(0);
 
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
@@ -330,10 +331,43 @@ export default function HomeScreen({  }) {
     toggleModal()
   }
 
+
+  const fetchProfileDetails = () => {
+    AsyncStorage.getItem('userToken', (err, usertoken) => {
+      axios.get(`${API_URL}/api/driver/driver-profile`, {
+        headers: {
+          "Authorization": 'Bearer ' + usertoken,
+          "Content-Type": 'application/json'
+        },
+      })
+        .then(res => {
+          let userInfo = res.data.response.records.data;
+          console.log(userInfo, 'user data from contact information from home screen');
+
+          // Store userInfo in AsyncStorage
+          AsyncStorage.setItem('userInfo', JSON.stringify(userInfo), (error) => {
+            if (error) {
+              console.log('Error storing userInfo:', error);
+            } else {
+              console.log('userInfo stored successfully');
+              // Trigger expiry banner refresh after storing new data
+              setExpiryRefreshTrigger(prev => prev + 1);
+            }
+          });
+
+          setuserInfo(userInfo);
+        })
+        .catch(e => {
+          console.log(`Profile error ${e}`);
+        });
+    });
+  }
+
   useEffect(() => {
     fetchNewOrders()
     fetchNewShippingOrders()
     fetchData();
+    fetchProfileDetails()
   }, [])
 
   useFocusEffect(
@@ -341,8 +375,21 @@ export default function HomeScreen({  }) {
       fetchNewOrders()
       fetchNewShippingOrders()
       fetchData()
+      fetchProfileDetails()
+      setExpiryRefreshTrigger(prev => prev + 1);
     }, [])
   )
+
+
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setValue('1');
+    fetchNewOrders()
+    fetchData()
+    fetchProfileDetails()
+    setRefreshing(false);
+  }, []);
 
   if (status == 'loading') {
     return (
@@ -350,17 +397,10 @@ export default function HomeScreen({  }) {
     )
   }
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setValue('1');
-    fetchNewOrders()
-    fetchData()
-    setRefreshing(false);
-  }, []);
-
   return (
     <SafeAreaView style={styles.Container}>
       <CustomHeader commingFrom={'Home'} onPress={() => navigation.navigate('Notification')} onPressProfile={() => navigation.navigate('Profile')} />
+      <ExpiryNotificationBanner navigation={navigation} refreshTrigger={expiryRefreshTrigger}/>
       <ScrollView style={styles.wrapper} refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#339999" colors={['#339999']} />
       }>
