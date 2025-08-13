@@ -145,6 +145,7 @@ export default function ReviewScreenShipment({  }) {
                                     onChange={(rating) => setStarCount(rating)}
                                     fullStarColor={'#FFCB45'}
                                     starSize={20}
+                                    starStyle={{ marginHorizontal: -0.5 }}
                                 />
                                 <Text style={{ color: '#339999', fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), }}>Rating</Text>
                             </ProgressCircle>

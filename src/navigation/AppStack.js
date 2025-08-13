@@ -25,6 +25,8 @@ import Report from '../screens/Report';
 import ReviewScreenShipment from '../screens/ReviewScreenShipment';
 import EditBankInformation from '../screens/EditBankInformation';
 import AllShippingOrders from '../screens/AllShippingOrders';
+import EditContactInformation from '../screens/EditContactInformation';
+import EditCapacityInformation from '../screens/EditCapacityInformation';
 
 const Drawer = createDrawerNavigator();
 
@@ -166,6 +168,21 @@ const AuthStack = () => {
           drawerItemStyle: { display: 'none' },
         }}
       />
+       <Drawer.Screen
+        name="EditContactInformation"
+        component={EditContactInformation}
+        options={{
+          drawerItemStyle: { display: 'none' },
+        }}
+      />
+       <Drawer.Screen
+        name="EditCapacityInformation"
+        component={EditCapacityInformation}
+        options={{
+          drawerItemStyle: { display: 'none' },
+        }}
+      />
+      
       {/* <Drawer.Screen
         name="Complete Orders"
         component={OrderSummary}
