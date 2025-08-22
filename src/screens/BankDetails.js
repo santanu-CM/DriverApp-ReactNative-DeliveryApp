@@ -25,7 +25,7 @@ import { API_URL } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
-
+ 
 const data = [
   { label: 'Absa Bank Ghana Limited', value: 'Absa Bank Ghana Limited' },
   { label: 'Access Bank (Ghana) PLC', value: 'Access Bank (Ghana) PLC' },

@@ -177,7 +177,7 @@ const Delivery = ({ shippingId, getorders, currentLat, currentLong }) => {
                                 </View>
                             </View>
                             <View style={{ borderBottomColor: '#E0E0E0', borderBottomWidth: StyleSheet.hairlineWidth, }} />
-                            <View style={{ padding: 10 }}>
+                            <View style={{ padding: 10 }}> 
                                 <>
                                     <Text style={styles.locationheader}>Product Details</Text>
                                     <Text style={styles.productHeaderText}>Weight: <Text style={styles.productHeaderValue}>{getorders[0]?.product_details?.weight} KG</Text></Text>

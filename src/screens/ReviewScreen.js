@@ -10,7 +10,7 @@ import {
     FlatList,
     StyleSheet,
     Dimensions,
-} from 'react-native';
+} from 'react-native'; 
 import * as Animatable from 'react-native-animatable';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomSwitch from '../components/CustomSwitch';

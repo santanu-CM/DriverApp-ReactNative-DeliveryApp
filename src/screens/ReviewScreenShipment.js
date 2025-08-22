@@ -23,7 +23,7 @@ import CustomHeader from '../components/CustomHeader';
 import ProgressCircle from 'react-native-progress-circle'
 import StarRating from 'react-native-star-rating-widget';
 import moment from 'moment';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native'; 
 
 const BannerWidth = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(BannerWidth * 0.7)

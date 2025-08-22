@@ -17,7 +17,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GetLocation from 'react-native-get-location'
 import haversine from 'haversine-distance';
-const RADIUS_OF_EARTH = 6378;
+const RADIUS_OF_EARTH = 6378; 
 
 const Pickup = ({ batchId, currentLat, currentLong }) => {
     const [activeSections, setActiveSections] = useState([]);

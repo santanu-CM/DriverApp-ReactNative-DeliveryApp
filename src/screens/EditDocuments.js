@@ -35,7 +35,7 @@ import moment from "moment"
 import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; 
 
 
 const BannerWidth = Dimensions.get('window').width;

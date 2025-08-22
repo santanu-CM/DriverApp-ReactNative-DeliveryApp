@@ -27,7 +27,7 @@ import axios from 'axios';
 import { API_URL } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Entypo from 'react-native-vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; 
 
 const DocumentsUpload = ({ route }) => {
     const navigation = useNavigation();

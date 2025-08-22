@@ -66,7 +66,7 @@ const OrderSummary = ({ route }) => {
                             <Text style={styles.toptableHeader2}>Expected Earning </Text>
                             <Text style={styles.toptableHeader3}>₵{Number(amount).toFixed(2)} </Text>
                         </View>
-                    </View>
+                    </View> 
                     : orderType == 'delivery' ?
                         <View style={styles.table}>
                             <View style={styles.toptableRow1}>

@@ -8,7 +8,7 @@ import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoNotification from './NoNotification';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; 
 
 const NotificationScreen = ({  }) => {
   const navigation = useNavigation();

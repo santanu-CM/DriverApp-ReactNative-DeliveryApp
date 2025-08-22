@@ -15,7 +15,7 @@ import { API_URL } from '@env'
 import Loader from '../utils/Loader'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message'
-
+ 
 const AvailabilityScreen = ({  }) => {
     const navigation = useNavigation();
     const { logout } = useContext(AuthContext);

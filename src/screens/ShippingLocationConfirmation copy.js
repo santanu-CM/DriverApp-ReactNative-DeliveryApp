@@ -19,7 +19,7 @@ import SignatureScreen from "react-native-signature-canvas";
 import GetLocation from 'react-native-get-location'
 import haversine from 'haversine-distance';
 import Toast from 'react-native-toast-message';
-import getDirections from 'react-native-google-maps-directions'
+import getDirections from 'react-native-google-maps-directions' 
 const RADIUS_OF_EARTH = 6378;
 
 const ShippingLocationConfirmation = ({  route }) => {

@@ -26,7 +26,7 @@ const OtpScreen = ({ route }) => {
     const [otp, setOtp] = useState('');
     const [errors, setError] = useState(true)
     const [errorText, setErrorText] = useState('Please enter OTP')
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false) 
 
     const { login, userToken } = useContext(AuthContext);
 

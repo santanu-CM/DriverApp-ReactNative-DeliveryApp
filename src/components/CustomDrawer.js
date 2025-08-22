@@ -60,7 +60,7 @@ const CustomDrawer = props => {
         {...props}
         contentContainerStyle={{ backgroundColor: '#EEFFFF' }}>
         <View style={{ backgroundColor: '#EEFFFF', padding: 15,  height: responsiveHeight(21),
-    width:responsiveWidth(100), justifyContent: 'center', marginTop: -responsiveHeight(2),
+    width:responsiveWidth(100), justifyContent: 'center', marginTop: -responsiveHeight(2), 
     marginLeft: -responsiveWidth(3) }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {userInfo?.profilePic ?

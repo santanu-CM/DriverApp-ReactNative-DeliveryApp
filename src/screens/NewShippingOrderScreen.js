@@ -22,7 +22,7 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { setNewShipping } from '../store/notificationSlice';
 
-
+ 
 const NewShippingOrderScreen = () => {
     const { logout } = useContext(AuthContext);
     const [userInfo, setuserInfo] = useState([])

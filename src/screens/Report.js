@@ -29,7 +29,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField'; 
 import GetLocation from 'react-native-get-location'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; 
 
 
 // const batchdata = [

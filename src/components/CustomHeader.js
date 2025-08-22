@@ -40,7 +40,7 @@ export default function CustomHeader({
     const fetchProfileDetails = async () => {
         try {
             // Get user token from AsyncStorage
-            const usertoken = await AsyncStorage.getItem('userToken');
+            const usertoken = await AsyncStorage.getItem('userToken'); 
 
             // Check if user token exists
             if (!usertoken) {

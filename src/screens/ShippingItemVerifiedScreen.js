@@ -20,7 +20,7 @@ import SignatureScreen from "react-native-signature-canvas";
 import StarRating from 'react-native-star-rating-widget';
 import InputField from '../components/InputField';
 import RNFetchBlob from 'rn-fetch-blob';
-import Toast from 'react-native-toast-message';
+import Toast from 'react-native-toast-message'; 
 
 const ShippingItemVerifiedScreen = ({ route }) => {
     const navigation = useNavigation();

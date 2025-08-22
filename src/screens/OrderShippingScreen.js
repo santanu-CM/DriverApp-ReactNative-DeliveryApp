@@ -22,7 +22,7 @@ import Toast from 'react-native-toast-message';
 import RNFetchBlob from 'rn-fetch-blob';
 import Modal from "react-native-modal";
 import StarRating from 'react-native-star-rating-widget';
-import InputField from '../components/InputField';
+import InputField from '../components/InputField'; 
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;

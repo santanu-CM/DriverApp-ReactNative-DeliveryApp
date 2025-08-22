@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { API_URL } from '@env'
 import Loader from '../utils/Loader'
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native'; 
 
 const ProfileScreen = ({  }) => {
   const navigation = useNavigation();

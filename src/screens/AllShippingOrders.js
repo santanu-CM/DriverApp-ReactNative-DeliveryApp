@@ -159,7 +159,7 @@ const AllShippingOrders = () => {
                     <View style={styles.expPriceView}>
                         <Text style={styles.expPriceText}>₵{item?.other?.driver_payment}</Text>
                     </View>
-                </View> */}
+                </View> */} 
             </View>
         </View>
     );

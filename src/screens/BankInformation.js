@@ -14,7 +14,7 @@ import axios from 'axios';
 import { API_URL } from '@env'
 import Loader from '../utils/Loader'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-
+ 
 const BankInformation = ({  }) => {
     const navigation = useNavigation();
     const { logout } = useContext(AuthContext);

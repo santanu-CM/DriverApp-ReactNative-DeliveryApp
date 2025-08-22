@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import GetLocation from 'react-native-get-location'
 import Toast from 'react-native-toast-message';
 import RNFetchBlob from 'rn-fetch-blob';
-import Share from 'react-native-share';
+import Share from 'react-native-share'; 
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;

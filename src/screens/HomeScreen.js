@@ -42,7 +42,7 @@ import ExpiryNotificationBanner from '../helper/ExpiryNotificationBanner';
 const data = [
   { label: 'Today', value: '1' },
   { label: 'Date Wise', value: '2' },
-];
+]; 
 
 export default function HomeScreen({  }) {
   const navigation = useNavigation();

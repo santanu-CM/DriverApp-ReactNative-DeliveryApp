@@ -21,7 +21,7 @@ import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { setNewOrder } from '../store/notificationSlice';
-import Share from 'react-native-share';
+import Share from 'react-native-share'; 
 
 const NewOrderScreen = () => {
     const { logout } = useContext(AuthContext);

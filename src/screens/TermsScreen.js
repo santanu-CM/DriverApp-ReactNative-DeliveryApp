@@ -39,7 +39,7 @@ const { height, width } = Dimensions.get('screen')
 export default function TermsScreen({  }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { data: products, status } = useSelector(state => state.products)
+    const { data: products, status } = useSelector(state => state.products) 
     const { userInfo } = useContext(AuthContext)
 
     const [selectedTab, setSelectedTab] = useState(1);
