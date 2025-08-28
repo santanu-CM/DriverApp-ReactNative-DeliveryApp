@@ -296,19 +296,22 @@ const LocationConfirmation = ({ route }) => {
         }, [])
     )
 
-    const warehouseCompleted = (orderId) => {
+    const warehouseCompleted = (orderId, orderItemId) => {
         setIsLoading(true)
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             const myArr = []
+            const myArr2 = []
             myArr.push(orderId)
+            myArr2.push(orderItemId)
             const option = {};
 
             option.warehouse_status = 1;
 
             option.order_item_id = myArr;
+            option.id = myArr2;
 
-
-            console.log(option, '-----')
+            console.log(JSON.stringify(option), '-----')
+            console.log(usertoken, 'usertoken')
 
             axios.post(`${process.env.API_URL}/api/driver/update-order-item-status`, option, {
                 headers: {
@@ -459,7 +462,7 @@ const LocationConfirmation = ({ route }) => {
                     <View style={{ marginBottom: responsiveHeight(12), position: 'absolute', bottom: 0, width: '90%', alignSelf: 'center' }}>
                         <CustomButton label={"I have arrived"}
                             buttonColor={'gray'}
-                            onPress={() => warehouseCompleted(getorders.order_item_id)}
+                            onPress={() => warehouseCompleted(getorders.order_item_id, getorders.id)}
                         />
                     </View>
                     :
