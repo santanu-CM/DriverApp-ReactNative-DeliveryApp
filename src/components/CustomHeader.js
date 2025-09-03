@@ -22,6 +22,7 @@ import axios from 'axios';
 import { API_URL } from '@env'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ShimmerPlaceholder from "react-native-shimmer-placeholder";
+import Toast from 'react-native-toast-message';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function CustomHeader({
@@ -58,11 +59,12 @@ export default function CustomHeader({
 
             // Process the response
             let userInfo = response.data.response.records.data;
+            console.log(userInfo,'user info from custom header');
             setuserInfo(userInfo);
             setLoading(false);
             // Get switch status from AsyncStorage
-            const switchStatus = await AsyncStorage.getItem('switchStatus');
-
+            const switchStatus = await AsyncStorage.getItem('switchStatus'); 
+ 
             // Set the switch state based on the switchStatus value
             if (switchStatus === 'off') {
                 setIsEnabled(false);
@@ -76,15 +78,61 @@ export default function CustomHeader({
     const toggleSwitch = async () => {
         const newStatus = !isEnabled;
         const statusString = newStatus ? 'on' : 'off'; // Convert to string
+        const activeStatus = newStatus ? 1 : 0; // API expects 1 for 'on', 0 for 'off'
 
         // Optimistically update the switch UI
         setIsEnabled(newStatus);
 
         try {
+            // Get user token from AsyncStorage
+            const usertoken = await AsyncStorage.getItem('userToken');
+            
+            if (!usertoken) {
+                console.log("User token not found");
+                // Revert the switch state if no token
+                setIsEnabled(!newStatus);
+                return;
+            }
+
+            // Call the driver-active-status API
+            const response = await axios.post(
+                `${process.env.API_URL}/api/driver/driver-active-status`,
+                { active_status: activeStatus },
+                {
+                    headers: {
+                        "Authorization": `Bearer ${usertoken}`,
+                        "Content-Type": 'application/json'
+                    },
+                }
+            );
+
+            // If API call is successful, save to AsyncStorage
             await AsyncStorage.setItem('switchStatus', statusString);
             console.log('Switch status saved:', statusString);
+            console.log('Driver active status updated:', response.data);
+            
+            // Show success message to user
+            Toast.show({
+                type: 'success',
+                text1: 'Success',
+                text2: `Driver status updated to ${statusString}`,
+                position: 'bottom',
+                visibilityTime: 2000,
+            });
+            
         } catch (error) {
-            console.error('Error saving switch status:', error);
+            console.error('Error updating driver status:', error);
+            // Revert the switch state on error
+            setIsEnabled(!newStatus);
+            
+            // Show error message to user
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Failed to update driver status. Please try again.',
+                position: 'bottom',
+                visibilityTime: 3000,
+            });
         }
     };
 
