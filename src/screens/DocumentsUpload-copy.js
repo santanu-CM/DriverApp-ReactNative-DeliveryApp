@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {
-    SafeAreaView,
     ScrollView,
     View,
     Text,
@@ -27,6 +26,7 @@ import { API_URL } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DocumentsUpload = ({ route }) => {
     const navigation = useNavigation();

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   View,
   Text,
@@ -25,6 +24,7 @@ import { API_URL } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
  
 const data = [
   { label: 'Absa Bank Ghana Limited', value: 'Absa Bank Ghana Limited' },

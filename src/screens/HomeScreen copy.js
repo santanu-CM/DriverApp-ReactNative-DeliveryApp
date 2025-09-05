@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
   ScrollView,
   Image,
   RefreshControl,
@@ -37,7 +36,7 @@ import LocationServicesDialogBox from "react-native-android-location-services-di
 import { setNewOrder, setNewShipping } from '../store/notificationSlice';
 import LottieLoader from '../utils/LottieLoader';
 // import { WebView } from 'react-native-webview';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const data = [
   { label: 'Today', value: '1' },

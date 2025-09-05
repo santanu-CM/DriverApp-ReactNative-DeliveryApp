@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, ImageBackground, Image, FlatList, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, FlatList, Alert } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -10,6 +10,7 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'; 
 import Loader from '../utils/Loader'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const RequestScreen = ({ route }) => {
   const navigation = useNavigation();

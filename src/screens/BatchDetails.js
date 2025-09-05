@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -17,6 +17,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import GetLocation from 'react-native-get-location'
 import haversine from 'haversine-distance';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const RADIUS_OF_EARTH = 6378; 
 
 const Pickup = ({ batchId, currentLat, currentLong }) => {

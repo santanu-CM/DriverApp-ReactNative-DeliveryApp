@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Image, TouchableOpacity, PermissionsAndroid, Dimensions, Platform } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, PermissionsAndroid, Dimensions, Platform } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -20,6 +20,7 @@ import GetLocation from 'react-native-get-location'
 import Toast from 'react-native-toast-message';
 import RNFetchBlob from 'rn-fetch-blob';
 import Share from 'react-native-share'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;

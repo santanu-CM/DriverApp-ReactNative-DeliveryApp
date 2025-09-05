@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect,useCallback } from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     ScrollView,
     Image,
     TouchableOpacity,
@@ -24,6 +23,7 @@ import ProgressCircle from 'react-native-progress-circle'
 import StarRating from 'react-native-star-rating-widget';
 import moment from 'moment';
 import { useFocusEffect, useNavigation } from '@react-navigation/native'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BannerWidth = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(BannerWidth * 0.7)

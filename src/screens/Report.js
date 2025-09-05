@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     ScrollView,
     Image,
     TouchableOpacity,
@@ -30,7 +29,7 @@ import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField'; 
 import GetLocation from 'react-native-get-location'
 import { useNavigation } from '@react-navigation/native'; 
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // const batchdata = [
 //     { label: 'Absa Bank Ghana Limited', value: 'Absa Bank Ghana Limited' },

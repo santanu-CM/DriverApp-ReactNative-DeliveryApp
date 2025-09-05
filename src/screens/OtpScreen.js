@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
-    SafeAreaView,
     View,
     Text,
     TextInput,
@@ -20,6 +19,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 import Loader from '../utils/Loader';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const OtpScreen = ({ route }) => {
     const navigation = useNavigation();

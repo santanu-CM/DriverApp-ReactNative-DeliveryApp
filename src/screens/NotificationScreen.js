@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, ImageBackground, Image, Platform, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Platform, Alert } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoNotification from './NoNotification';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { useNavigation } from '@react-navigation/native'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const NotificationScreen = ({  }) => {
   const navigation = useNavigation();

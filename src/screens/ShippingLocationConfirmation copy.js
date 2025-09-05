@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, Alert } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -20,6 +20,7 @@ import GetLocation from 'react-native-get-location'
 import haversine from 'haversine-distance';
 import Toast from 'react-native-toast-message';
 import getDirections from 'react-native-google-maps-directions' 
+import { SafeAreaView } from 'react-native-safe-area-context';
 const RADIUS_OF_EARTH = 6378;
 
 const ShippingLocationConfirmation = ({  route }) => {

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, Switch } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, Switch } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -15,6 +15,7 @@ import { API_URL } from '@env'
 import Loader from '../utils/Loader'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message'
+import { SafeAreaView } from 'react-native-safe-area-context';
  
 const AvailabilityScreen = ({  }) => {
     const navigation = useNavigation();

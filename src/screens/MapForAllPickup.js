@@ -24,6 +24,7 @@ import { API_URL } from '@env'
 import Loader from '../utils/Loader'
 import GetLocation from 'react-native-get-location'
 import haversine from 'haversine-distance';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const RADIUS_OF_EARTH = 6378;
  
 const MapForAllPickup = ({ route }) => {
@@ -418,7 +419,7 @@ const MapForAllPickup = ({ route }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CustomHeader
         commingFrom={'Find Pickup Location'}
         title={orderType === 'pickup' ? 'Find Pickup Location' : orderType === 'warehouse' ? 'Find Warehouse Location' : 'Find Delivery Location'}
@@ -490,7 +491,7 @@ const MapForAllPickup = ({ route }) => {
           />
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

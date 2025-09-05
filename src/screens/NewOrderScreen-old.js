@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, Alert, Modal, TextInput, Platform } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, Alert, Modal, TextInput, Platform } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -21,7 +21,7 @@ import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { setNewOrder } from '../store/notificationSlice';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const NewOrderScreen = () => {
     const { logout } = useContext(AuthContext);

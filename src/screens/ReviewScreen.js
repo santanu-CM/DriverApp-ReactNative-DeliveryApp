@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import {
     View,
     Text,
-    SafeAreaView,
     ScrollView,
     Image,
     TouchableOpacity,
@@ -38,6 +37,7 @@ import StarRating from 'react-native-star-rating-widget';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import moment from 'moment';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BannerWidth = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(BannerWidth * 0.7)

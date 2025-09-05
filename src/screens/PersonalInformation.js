@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   View,
   Text,
@@ -25,6 +24,7 @@ import { API_URL,GOOGLE_MAP_KEY_ANDROID, GOOGLE_MAP_KEY_IOS } from '@env'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useNavigation } from '@react-navigation/native'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PersonalInformation = ({ route }) => {
   const navigation = useNavigation();

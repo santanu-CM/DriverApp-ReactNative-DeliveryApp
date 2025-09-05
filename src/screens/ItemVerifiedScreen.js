@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Alert, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert, Image, TouchableOpacity } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -21,6 +21,7 @@ import StarRating from 'react-native-star-rating-widget';
 import InputField from '../components/InputField';
 import RNFetchBlob from 'rn-fetch-blob';
 import Toast from 'react-native-toast-message'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ItemVerifiedScreen = ({ route }) => {
     const navigation = useNavigation();
