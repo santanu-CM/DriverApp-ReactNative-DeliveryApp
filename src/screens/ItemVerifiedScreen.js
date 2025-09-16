@@ -414,7 +414,7 @@ const ItemVerifiedScreen = ({ route }) => {
 
     return (
         <SafeAreaView style={styles.Container}>
-            <CustomHeader commingFrom={'Reach Pickup Location'} onPress={() => navigation.goBack()} title={'Reach Pickup Location'} />
+            <CustomHeader commingFrom={'Reach Location'} onPress={() => navigation.goBack()} title={'Reach Location'} />
             <ScrollView style={styles.wrapper}>
 
                 <View style={{ backgroundColor: '#F6F6F6', borderRadius: 10, borderWidth: 1, borderColor: '#E0E0E0', padding: 20, flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
