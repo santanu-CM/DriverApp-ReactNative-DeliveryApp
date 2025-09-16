@@ -348,7 +348,7 @@ const MapForAllPickup = ({ route }) => {
       <View style={styles.tableRow1}>
         <View style={styles.cellmain}>
           <Text style={styles.tableHeader1}>Batch Number : </Text>
-          <Text style={styles.tableHeader2}>B -{item.batchNo}</Text>
+          <Text style={styles.tableHeader2}>B - {item.batchNo}</Text>
         </View>
       </View>
       <View style={styles.cellmain}>
