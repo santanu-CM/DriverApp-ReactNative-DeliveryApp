@@ -385,7 +385,7 @@ const ShippingItemVerifiedScreen = ({ route }) => {
                             position: 'top',
                             topOffset: Platform.OS == 'ios' ? 55 : 20
                         });
-                        navigation.navigate('ShippingOrderDetails', { pageFrom: 'completedShipping' })
+                        navigation.navigate('OrderShippingScreen')
                     } else {
                         Alert.alert('Oops..', "Something went wrong", [
                             {
