@@ -409,11 +409,11 @@ const LocationConfirmation = ({ route }) => {
                     </View>
                     <View style={{ padding: 10, borderBottomWidth: 1, borderColor: '#ddd', }}>
                         {orderType === 'pickup' ? (
-                            <Text style={{ color: '#949494', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(2) }}>{getorders.pickup_location}</Text>
+                            <Text style={{ color: '#949494', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(2) }} numberOfLines={10}>{getorders.pickup_location}</Text>
                         ) : orderType === 'warehouse' ? (
-                            <Text style={{ color: '#949494', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(2) }}>{getorders.warehouse_location}</Text>
+                            <Text style={{ color: '#949494', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(2) }} numberOfLines={10}>{getorders.warehouse_location}</Text>
                         ) : (
-                            <Text style={{ color: '#949494', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(2) }}>{getorders.delivery_location}</Text>
+                            <Text style={{ color: '#949494', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(2) }} numberOfLines={10}>{getorders.delivery_location}</Text>
                         )}
                     </View>
                     <View style={{ padding: 10 }}>

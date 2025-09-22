@@ -156,9 +156,11 @@ const Pickup = ({ batchId, currentLat, currentLong }) => {
                     )}
                 </View>
             </ScrollView>
-            <View style={styles.buttonwrapper}>
-                <CustomButton label={"View All Pickup on Map"} buttonIcon={true} onPress={() => navigation.navigate('MapForAllPickup', { fromPage: 'pickup' })} />
-            </View>
+            {getorders[0]?.batch_order_items?.some(item => item.pickup_location) && (
+                <View style={styles.buttonwrapper}>
+                    <CustomButton label={"View All Pickup on Map"} buttonIcon={true} onPress={() => navigation.navigate('MapForAllPickup', { fromPage: 'pickup' })} />
+                </View>
+            )}
         </>
     );
 };
@@ -296,9 +298,11 @@ const Warehouse = ({ batchId, currentLat, currentLong }) => {
                     )}
                 </View>
             </ScrollView>
-            <View style={styles.buttonwrapper}>
-                <CustomButton label={"View All Warehouse on Map"} buttonIcon={true} onPress={() => navigation.navigate('MapForAllPickup', { fromPage: 'warehouse' })} />
-            </View>
+            {getorders[0]?.batch_order_items?.some(item => item.warehouse_location) && (
+                <View style={styles.buttonwrapper}>
+                    <CustomButton label={"View All Warehouse on Map"} buttonIcon={true} onPress={() => navigation.navigate('MapForAllPickup', { fromPage: 'warehouse' })} />
+                </View>
+            )}
         </>
     );
 };
@@ -435,9 +439,11 @@ const Delivery = ({ batchId, currentLat, currentLong }) => {
                     )}
                 </View>
             </ScrollView>
-            <View style={styles.buttonwrapper}>
-                <CustomButton label={"View All Delivery on Map"} buttonIcon={true} onPress={() => navigation.navigate('MapForAllPickup', { fromPage: 'delivery' })} />
-            </View>
+            {getorders[0]?.batch_order_items?.some(item => item.delivery_location) && (
+                <View style={styles.buttonwrapper}>
+                    <CustomButton label={"View All Delivery on Map"} buttonIcon={true} onPress={() => navigation.navigate('MapForAllPickup', { fromPage: 'delivery' })} />
+                </View>
+            )}
         </>
     );
 };
