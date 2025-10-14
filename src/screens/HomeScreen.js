@@ -48,6 +48,7 @@ export default function HomeScreen({  }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { data: products, status } = useSelector(state => state.products)
+  const { logout } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true)
   const [value, setValue] = useState('1');
   const [isFocus, setIsFocus] = useState(false);
@@ -343,6 +344,12 @@ export default function HomeScreen({  }) {
         .then(res => {
           let userInfo = res.data.response.records.data;
           console.log(userInfo, 'user data from contact information from home screen');
+
+          if(userInfo.userStatus == 'Inactive'){
+            Alert.alert('Inactive', 'Your account is inactive. Please contact support.', [
+              { text: 'OK', onPress: () => logout() },
+            ]);
+          }
 
           // Store userInfo in AsyncStorage
           AsyncStorage.setItem('userInfo', JSON.stringify(userInfo), (error) => {
