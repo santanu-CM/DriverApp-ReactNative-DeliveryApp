@@ -9,6 +9,9 @@ import {
     FlatList,
     StyleSheet,
     Dimensions,
+    Alert,
+    Platform,
+    PermissionsAndroid
 } from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,7 +34,7 @@ import Modal from "react-native-modal";
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Entypo';
 import moment from "moment"
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField';
 import { useNavigation } from '@react-navigation/native'; 
@@ -102,19 +105,30 @@ export default function EditDocuments({  }) {
                     let userInfo = res.data.response.records.data;
                     console.log(userInfo, 'user info from edit documents page')
                     setuserInfo(userInfo)
-                    setPickedDrivingLicenseFrontIMG(userInfo?.licenseFront)
-                    setPickedDrivingLicensebackIMG(userInfo?.licenseBack)
-                    setPickedCarInsuranceIMG(userInfo?.carInsurance)
-                    setPickedTransitInsuranceIMG(userInfo?.gtInsurance)
-                    setpickedVehicleImageIMG(userInfo?.vehicleImage)
-                    setCarRegistrationIMG(userInfo?.carRegistrationPaper)
-                    setghanaCardImage(userInfo?.ghanaCardNo)
+                    
+                    // Add timestamp to prevent caching issues
+                    const timestamp = new Date().getTime();
+                    setPickedDrivingLicenseFrontIMG(userInfo?.licenseFront ? `${userInfo.licenseFront}?t=${timestamp}` : null)
+                    setPickedDrivingLicensebackIMG(userInfo?.licenseBack ? `${userInfo.licenseBack}?t=${timestamp}` : null)
+                    setPickedCarInsuranceIMG(userInfo?.carInsurance ? `${userInfo.carInsurance}?t=${timestamp}` : null)
+                    setPickedTransitInsuranceIMG(userInfo?.gtInsurance ? `${userInfo.gtInsurance}?t=${timestamp}` : null)
+                    setpickedVehicleImageIMG(userInfo?.vehicleImage ? `${userInfo.vehicleImage}?t=${timestamp}` : null)
+                    setCarRegistrationIMG(userInfo?.carRegistrationPaper ? `${userInfo.carRegistrationPaper}?t=${timestamp}` : null)
+                    setghanaCardImage(userInfo?.ghanaCardNo || '')
+                    
+                    // Clear the picked image objects to show server images
+                    setPickedDrivingLicenseFront(null)
+                    setPickedDrivingLicenseback(null)
+                    setPickedCarInsurance(null)
+                    setPickedTransitInsurance(null)
+                    setpickedVehicleImage(null)
+                    setCarRegistration(null)
 
-                    setDate(moment(userInfo?.licenseExpDate).format('DD-MM-YYYY'))
+                    setDate(userInfo?.licenseExpDate ? moment(userInfo.licenseExpDate).format('DD-MM-YYYY') : 'DD - MM  - YYYY')
                     //setSelectedDate(moment(userInfo?.licenseExpDate).format('DD-MM-YYYY'))
-                    setDate2(moment(userInfo?.carInsuranceExpDate).format('DD-MM-YYYY'))
+                    setDate2(userInfo?.carInsuranceExpDate ? moment(userInfo.carInsuranceExpDate).format('DD-MM-YYYY') : 'DD - MM  - YYYY')
                     //setSelectedDate2(moment(userInfo?.licenseExpDate).format('DD-MM-YYYY'))
-                    setDate3(moment(userInfo?.gtInsuranceExpDate).format('DD-MM-YYYY'))
+                    setDate3(userInfo?.gtInsuranceExpDate ? moment(userInfo.gtInsuranceExpDate).format('DD-MM-YYYY') : 'DD - MM  - YYYY')
                     //setSelectedDate3(moment(userInfo?.licenseExpDate).format('DD-MM-YYYY'))
                     setIsLoading(false);
                 })
@@ -182,57 +196,150 @@ export default function EditDocuments({  }) {
     //     }
     // };
 
-    const pickDocument = async (forwhat) => {
-        try {
-            const result = await launchImageLibrary({
-                mediaType: 'photo',
-                includeBase64: false, // Set to true if you need base64 data
-            });
-    
-            if (result.didCancel) {
-                console.log('Image picker was cancelled');
-                return;
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: 'Camera Permission',
+                        message: 'This app needs access to your camera to take photos of documents.',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
+                    }
+                );
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            } catch (err) {
+                console.warn(err);
+                return false;
             }
-    
-            if (result.errorCode) {
-                console.error('Error picking image', result.errorMessage);
-                return;
-            }
-    
-            const image = result.assets[0]; // react-native-image-picker returns assets array
-            console.log('URI: ', image.uri);
-            console.log('Type: ', image.type);
-            console.log('Name: ', image.fileName || 'image.jpg'); // fileName may be undefined
-            console.log('Size: ', image.fileSize);
-    
-            if (forwhat === 'DrivingLicenseFront') {
-                setPickedDrivingLicenseFront(image);
-                setPickedDrivingLicenseFrontIMG(image.uri);
-                setDrivingLicenseFrontError('');
-                //fileUpload('DrivingLicenseFront')
-            } else if (forwhat === 'DrivingLicenseBack') {
-                setPickedDrivingLicenseBack(image);
-                setPickedDrivingLicenseBackIMG(image.uri);
-                setDrivingLicenseBackError('');
-            } else if (forwhat === 'CarInsurance') {
-                setPickedCarInsurance(image);
-                setPickedCarInsuranceIMG(image.uri);
-                setCarInsuranceError('');
-            } else if (forwhat === 'TransitInsurance') {
-                setPickedTransitInsurance(image);
-                setPickedTransitInsuranceIMG(image.uri);
-                setTransitInsuranceError('');
-            } else if (forwhat === 'VehicleImage') {
-                setPickedVehicleImage(image);
-                setPickedVehicleImageIMG(image.uri);
-                setVehicleImageError('');
-            } else if (forwhat === 'CarRegistration') {
-                setCarRegistration(image);
-                setCarRegistrationIMG(image.uri);
-            }
-        } catch (err) {
-            console.error('Error picking image', err);
         }
+        return true; // iOS permissions are handled automatically
+    };
+
+    const showImagePickerOptions = (forwhat) => {
+        Alert.alert(
+            'Select Image',
+            'Choose an option to select image',
+            [
+                {
+                    text: 'Camera',
+                    onPress: () => openCamera(forwhat),
+                },
+                {
+                    text: 'Gallery',
+                    onPress: () => openGallery(forwhat),
+                },
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: true }
+        );
+    };
+
+    const openCamera = async (forwhat) => {
+        const hasPermission = await requestCameraPermission();
+        
+        if (!hasPermission) {
+            Alert.alert(
+                'Permission Required',
+                'Camera permission is required to take photos. Please enable it in your device settings.',
+                [{ text: 'OK' }]
+            );
+            return;
+        }
+
+        const options = {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
+
+        launchCamera(options, (response) => {
+            if (response.didCancel) {
+                console.log('Camera was cancelled');
+                return;
+            }
+            
+            if (response.errorMessage) {
+                console.error('Camera Error: ', response.errorMessage);
+                Alert.alert(
+                    'Camera Error',
+                    'Unable to open camera. Please try again.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
+            if (response.assets && response.assets.length > 0) {
+                handleImageSelection(response.assets[0], forwhat);
+            }
+        });
+    };
+
+    const openGallery = (forwhat) => {
+        const options = {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
+
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('Gallery was cancelled');
+                return;
+            }
+            
+            if (response.errorMessage) {
+                console.error('Gallery Error: ', response.errorMessage);
+                return;
+            }
+
+            if (response.assets && response.assets.length > 0) {
+                handleImageSelection(response.assets[0], forwhat);
+            }
+        });
+    };
+
+    const handleImageSelection = (image, forwhat) => {
+        console.log('URI: ', image.uri);
+        console.log('Type: ', image.type);
+        console.log('Name: ', image.fileName || 'image.jpg');
+        console.log('Size: ', image.fileSize);
+
+        if (forwhat === 'DrivingLicenseFront') {
+            setPickedDrivingLicenseFront(image);
+            setPickedDrivingLicenseFrontIMG(image.uri);
+            setDrivingLicenseFrontError('');
+        } else if (forwhat === 'DrivingLicenseBack') {
+            setPickedDrivingLicenseback(image);
+            setPickedDrivingLicensebackIMG(image.uri);
+            setDrivingLicenseBackError('');
+        } else if (forwhat === 'CarInsurance') {
+            setPickedCarInsurance(image);
+            setPickedCarInsuranceIMG(image.uri);
+            setCarInsuranceError('');
+        } else if (forwhat === 'TransitInsurance') {
+            setPickedTransitInsurance(image);
+            setPickedTransitInsuranceIMG(image.uri);
+            setTransitInsuranceError('');
+        } else if (forwhat === 'VehicleImage') {
+            setpickedVehicleImage(image);
+            setpickedVehicleImageIMG(image.uri);
+            setVehicleImageError('');
+        } else if (forwhat === 'CarRegistration') {
+            setCarRegistration(image);
+            setCarRegistrationIMG(image.uri);
+        }
+    };
+
+    const pickDocument = (forwhat) => {
+        showImagePickerOptions(forwhat);
     };
 
     const submitForm = () => {
@@ -242,20 +349,11 @@ export default function EditDocuments({  }) {
             setDrivingLicenseFrontError('Please upload Driving License Front side')
         } else if (!pickedDrivingLicenseBack && !pickedDrivingLicenseBackIMG) {
             setDrivingLicenseBackError('Please upload Driving License Back side')
-        } else if (!pickedCarInsurance && !pickedCarInsuranceIMG) {
-            setCarInsuranceError('Please upload Car Insurance')
-        } else if (!pickedTransitInsurance && !pickedTransitInsuranceIMG) {
-            setTransitInsuranceError('Please upload Transit Insurance')
-        } else if (!pickedVehicleImage && !pickedVehicleImageIMG) {
-            setVehicleImageError('Please upload Vehicle Image')
         } else if (date == 'DD - MM  - YYYY') {
             setDrivingLicenseExpiryDateError('Please choose Driving License Expiry Date')
-        } else if (date2 == 'DD - MM  - YYYY') {
-            setCarInsuranceExpiryDateError('Please choose Car Insurance Expiry Date')
-        } else if (date3 == 'DD - MM  - YYYY') {
-            setTransitInsuranceExpiryDateError('Please choose Transit Insurance Expiry Date')
         } else {
             const formData = new FormData();
+           
             console.log(pickedDrivingLicenseFront, 'mmmmm')
             if (pickedDrivingLicenseFront != null) {
                 formData.append("licenseFront", {
@@ -317,13 +415,14 @@ export default function EditDocuments({  }) {
             //  else {
             //     formData.append("carRegistrationPaper", "");
             // }
-            console.log(date)
-            formData.append("licenseExpDate", moment(date, 'DD-MM-YYYY').format('YYYY-MM-DD'));
-            formData.append("carInsuranceExpDate", moment(date2, 'DD-MM-YYYY').format('YYYY-MM-DD'));
-            formData.append("gtInsuranceExpDate", moment(date3, 'DD-MM-YYYY').format('YYYY-MM-DD'));
+            console.log('Date values:', { date, date2, date3 })
+            formData.append("licenseExpDate", date !== 'DD - MM  - YYYY' ? moment(date, 'DD-MM-YYYY').format('YYYY-MM-DD') : "");
+            formData.append("carInsuranceExpDate", date2 !== 'DD - MM  - YYYY' ? moment(date2, 'DD-MM-YYYY').format('YYYY-MM-DD') : "");
+            formData.append("gtInsuranceExpDate", date3 !== 'DD - MM  - YYYY' ? moment(date3, 'DD-MM-YYYY').format('YYYY-MM-DD') : "");
             formData.append("ghanaCardNo", ghanaCardImage);
 
             console.log(JSON.stringify(formData), 'form datatatattatatatatatatat')
+            //return;
             setIsLoading(true)
             AsyncStorage.getItem('userToken', (err, usertoken) => {
                 axios.post(`${process.env.API_URL}/api/driver/submitDocuments`, formData, {
@@ -336,7 +435,8 @@ export default function EditDocuments({  }) {
                     .then(res => {
                         console.log(res.data)
                         if (res.data.response.status.code === 200) {
-                            setIsLoading(false)
+                            // Refresh profile data after successful upload
+                            fetchProfileDetails();
                             Toast.show({
                                 type: 'success',
                                 text1: 'Hello',
@@ -517,10 +617,13 @@ export default function EditDocuments({  }) {
                         }}
                     /> : null}
                 <View style={styles.textinputview}>
-                    <Text
-                        style={styles.header}>
-                        Car Insurance
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text
+                            style={styles.header}>
+                            Car Insurance
+                        </Text>
+                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                    </View>
                     {CarInsuranceError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{CarInsuranceError}</Text> : <></>}
                 </View>
                 <View style={{}}>
@@ -559,10 +662,13 @@ export default function EditDocuments({  }) {
                     }
                 </View>
                 <View style={styles.textinputview}>
-                    <Text
-                        style={styles.header}>
-                        Car Insurance Expiry Date
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text
+                            style={styles.header}>
+                            Car Insurance Expiry Date
+                        </Text>
+                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                    </View>
                     {CarInsuranceExpiryDateError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{CarInsuranceExpiryDateError}</Text> : <></>}
                 </View>
                 <TouchableOpacity onPress={() => setOpen2(true)}>
@@ -595,10 +701,13 @@ export default function EditDocuments({  }) {
                         }}
                     /> : null}
                 <View style={styles.textinputview}>
-                    <Text
-                        style={styles.header}>
-                        Goods in Transit  Insurance
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text
+                            style={styles.header}>
+                            Goods in Transit  Insurance
+                        </Text>
+                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                    </View>
                     {TransitInsuranceError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{TransitInsuranceError}</Text> : <></>}
                 </View>
                 <View style={{}}>
@@ -637,10 +746,13 @@ export default function EditDocuments({  }) {
                     }
                 </View>
                 <View style={styles.textinputview}>
-                    <Text
-                        style={styles.header}>
-                        Goods in Transit Insurance Expiry Date
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text
+                            style={styles.header}>
+                            Goods in Transit Insurance Expiry Date
+                        </Text>
+                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                    </View>
                     {TransitInsuranceExpiryDateError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{TransitInsuranceExpiryDateError}</Text> : <></>}
                 </View>
                 <TouchableOpacity onPress={() => setOpen3(true)}>
@@ -673,10 +785,13 @@ export default function EditDocuments({  }) {
                         }}
                     /> : null}
                 <View style={styles.textinputview}>
-                    <Text
-                        style={styles.header}>
-                        Vehicle Image
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text
+                            style={styles.header}>
+                            Vehicle Image
+                        </Text>
+                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                    </View>
                     {VehicleImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{VehicleImageError}</Text> : <></>}
                     <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5) }}>All vehicles are subject to physical inspection</Text>
                 </View>
@@ -721,6 +836,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Ghana Card number
                         </Text>
+                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
                     </View>
                 </View>
                 {/* {ghanaCardImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{ghanaCardImageError}</Text> : <></>} */}

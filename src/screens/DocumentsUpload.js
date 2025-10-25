@@ -9,13 +9,14 @@ import {
     Image,
     Alert,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    PermissionsAndroid
 } from 'react-native';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import InputField from '../components/InputField';
 import CustomButton from '../components/CustomButton';
 import { plus, uploadImg, userPhoto } from '../utils/Images';
@@ -106,59 +107,144 @@ const DocumentsUpload = ({ route }) => {
     //     }
     // };
 
-    const pickDocument = async (forwhat) => {
-        try {
-            const options = {
-                mediaType: 'photo',
-                includeBase64: false,
-                maxHeight: 2000,
-                maxWidth: 2000,
-            };
-    
-            launchImageLibrary(options, (response) => {
-                if (response.didCancel) {
-                    console.log('Document picker was cancelled');
-                    return;
-                }
-                
-                if (response.errorMessage) {
-                    console.error('Error picking document', response.errorMessage);
-                    return;
-                }
-    
-                if (response.assets && response.assets.length > 0) {
-                    const pickedDocument = response.assets[0];
-                    
-                    console.log('URI: ', pickedDocument.uri);
-                    console.log('Type: ', pickedDocument.type);
-                    console.log('Name: ', pickedDocument.fileName);
-                    console.log('Size: ', pickedDocument.fileSize);
-                    
-                    if (forwhat == 'DrivingLicenseFront') {
-                        setPickedDrivingLicenseFront(pickedDocument);
-                        setDrivingLicenseFrontError('');
-                        //fileUpload('DrivingLicenseFront')
-                    } else if (forwhat == 'DrivingLicenseBack') {
-                        setPickedDrivingLicenseback(pickedDocument);
-                        setDrivingLicenseBackError('');
-                    } else if (forwhat == 'CarInsurance') {
-                        setPickedCarInsurance(pickedDocument);
-                        setCarInsuranceError('');
-                    } else if (forwhat == 'TransitInsurance') {
-                        setPickedTransitInsurance(pickedDocument);
-                        setTransitInsuranceError('');
-                    } else if (forwhat == 'VehicleImage') {
-                        setpickedVehicleImage(pickedDocument);
-                        setVehicleImageError('');
-                    } else if (forwhat == 'CarRegistration') {
-                        setCarRegistration(pickedDocument);
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: 'Camera Permission',
+                        message: 'This app needs access to your camera to take photos of documents.',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
                     }
-                }
-            });
-    
-        } catch (err) {
-            console.error('Error picking document', err);
+                );
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            } catch (err) {
+                console.warn(err);
+                return false;
+            }
         }
+        return true; // iOS permissions are handled automatically
+    };
+
+    const showImagePickerOptions = (forwhat) => {
+        Alert.alert(
+            'Select Image',
+            'Choose an option to select image',
+            [
+                {
+                    text: 'Camera',
+                    onPress: () => openCamera(forwhat),
+                },
+                {
+                    text: 'Gallery',
+                    onPress: () => openGallery(forwhat),
+                },
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: true }
+        );
+    };
+
+    const openCamera = async (forwhat) => {
+        const hasPermission = await requestCameraPermission();
+        
+        if (!hasPermission) {
+            Alert.alert(
+                'Permission Required',
+                'Camera permission is required to take photos. Please enable it in your device settings.',
+                [{ text: 'OK' }]
+            );
+            return;
+        }
+
+        const options = {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
+
+        launchCamera(options, (response) => {
+            if (response.didCancel) {
+                console.log('Camera was cancelled');
+                return;
+            }
+            
+            if (response.errorMessage) {
+                console.error('Camera Error: ', response.errorMessage);
+                Alert.alert(
+                    'Camera Error',
+                    'Unable to open camera. Please try again.',
+                    [{ text: 'OK' }]
+                );
+                return;
+            }
+
+            if (response.assets && response.assets.length > 0) {
+                handleImageSelection(response.assets[0], forwhat);
+            }
+        });
+    };
+
+    const openGallery = (forwhat) => {
+        const options = {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
+
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('Gallery was cancelled');
+                return;
+            }
+            
+            if (response.errorMessage) {
+                console.error('Gallery Error: ', response.errorMessage);
+                return;
+            }
+
+            if (response.assets && response.assets.length > 0) {
+                handleImageSelection(response.assets[0], forwhat);
+            }
+        });
+    };
+
+    const handleImageSelection = (pickedDocument, forwhat) => {
+        console.log('URI: ', pickedDocument.uri);
+        console.log('Type: ', pickedDocument.type);
+        console.log('Name: ', pickedDocument.fileName);
+        console.log('Size: ', pickedDocument.fileSize);
+        
+        if (forwhat == 'DrivingLicenseFront') {
+            setPickedDrivingLicenseFront(pickedDocument);
+            setDrivingLicenseFrontError('');
+        } else if (forwhat == 'DrivingLicenseBack') {
+            setPickedDrivingLicenseback(pickedDocument);
+            setDrivingLicenseBackError('');
+        } else if (forwhat == 'CarInsurance') {
+            setPickedCarInsurance(pickedDocument);
+            setCarInsuranceError('');
+        } else if (forwhat == 'TransitInsurance') {
+            setPickedTransitInsurance(pickedDocument);
+            setTransitInsuranceError('');
+        } else if (forwhat == 'VehicleImage') {
+            setpickedVehicleImage(pickedDocument);
+            setVehicleImageError('');
+        } else if (forwhat == 'CarRegistration') {
+            setCarRegistration(pickedDocument);
+        }
+    };
+
+    const pickDocument = (forwhat) => {
+        showImagePickerOptions(forwhat);
     };
 
     const changeLastname = (text) => {
@@ -246,22 +332,8 @@ const DocumentsUpload = ({ route }) => {
             setDrivingLicenseFrontError('Please upload Driving License Front side')
         } else if (!pickedDrivingLicenseBack) {
             setDrivingLicenseBackError('Please upload Driving License Back side')
-        } else if (!pickedCarInsurance) {
-            setCarInsuranceError('Please upload Car Insurance')
-        } else if (!pickedTransitInsurance) {
-            setTransitInsuranceError('Please upload Transit Insurance')
-        } else if (!pickedVehicleImage) {
-            setVehicleImageError('Please upload Vehicle Image')
-        }
-        //  else if (!ghanaCardImage) {
-        //     setghanaCardImageError('Please enter Ghana Card')
-        // }
-         else if (date == 'DD - MM  - YYYY') {
+        } else if (date == 'DD - MM  - YYYY') {
             setDrivingLicenseExpiryDateError('Please choose Driving License Expiry Date')
-        } else if (date2 == 'DD - MM  - YYYY') {
-            setCarInsuranceExpiryDateError('Please choose Car Insurance Expiry Date')
-        } else if (date3 == 'DD - MM  - YYYY') {
-            setTransitInsuranceExpiryDateError('Please choose Transit Insurance Expiry Date')
         } else {
             setIsLoading(true)
             const formData = new FormData();
@@ -275,21 +347,33 @@ const DocumentsUpload = ({ route }) => {
                 type: 'image/jpeg',
                 name: 'photo.jpg',
             });
-            formData.append("carInsurance", {
-                uri: pickedCarInsurance.uri,
-                type: 'image/jpeg',
-                name: 'photo.jpg',
-            });
-            formData.append("gtInsurance", {
-                uri: pickedTransitInsurance.uri,
-                type: 'image/jpeg',
-                name: 'photo.jpg',
-            });
-            formData.append("vehicleImage", {
-                uri: pickedVehicleImage.uri,
-                type: 'image/jpeg',
-                name: 'photo.jpg',
-            });
+            if (pickedCarInsurance != null) {
+                formData.append("carInsurance", {
+                    uri: pickedCarInsurance.uri,
+                    type: 'image/jpeg',
+                    name: 'photo.jpg',
+                });
+            } else {
+                formData.append("carInsurance", "");
+            }
+            if (pickedTransitInsurance != null) {
+                formData.append("gtInsurance", {
+                    uri: pickedTransitInsurance.uri,
+                    type: 'image/jpeg',
+                    name: 'photo.jpg',
+                });
+            } else {
+                formData.append("gtInsurance", "");
+            }
+            if (pickedVehicleImage != null) {
+                formData.append("vehicleImage", {
+                    uri: pickedVehicleImage.uri,
+                    type: 'image/jpeg',
+                    name: 'photo.jpg',
+                });
+            } else {
+                formData.append("vehicleImage", "");
+            }
             if (pickedCarRegistration != null) {
                 formData.append("carRegistrationPaper", {
                     uri: pickedCarRegistration.uri,
@@ -300,9 +384,9 @@ const DocumentsUpload = ({ route }) => {
                 formData.append("carRegistrationPaper", "");
             }
             formData.append("licenseExpDate", moment(selectedDate).format('YYYY-MM-DD'));
-            formData.append("carInsuranceExpDate", moment(selectedDate2).format('YYYY-MM-DD'));
-            formData.append("gtInsuranceExpDate", moment(selectedDate3).format('YYYY-MM-DD'));
-            formData.append("ghanaCardNo", ghanaCardImage);
+            formData.append("carInsuranceExpDate", date2 !== 'DD - MM  - YYYY' ? moment(selectedDate2).format('YYYY-MM-DD') : "");
+            formData.append("gtInsuranceExpDate", date3 !== 'DD - MM  - YYYY' ? moment(selectedDate3).format('YYYY-MM-DD') : "");
+            formData.append("ghanaCardNo", ghanaCardImage? ghanaCardImage : "");
 
             console.log(formData)
             axios.post(`${process.env.API_URL}/api/driver/submitDocuments`, formData, {
@@ -442,7 +526,7 @@ const DocumentsUpload = ({ route }) => {
                                     {!pickedDrivingLicenseFront ?
                                         <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', }}>Front Side</Text>
                                         :
-                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }}>{pickedDrivingLicenseFront.fileName}</Text>
+                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }} numberOfLines={2} ellipsizeMode="tail">{pickedDrivingLicenseFront.fileName}</Text>
                                     }
                                 </View>
                             </View>
@@ -459,7 +543,7 @@ const DocumentsUpload = ({ route }) => {
                                     {!pickedDrivingLicenseBack ?
                                         <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', }}>Back Side</Text>
                                         :
-                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }}>{pickedDrivingLicenseBack.fileName}</Text>
+                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }} numberOfLines={2} ellipsizeMode="tail">{pickedDrivingLicenseBack.fileName}</Text>
                                     }
                                 </View>
                             </View>
@@ -529,10 +613,13 @@ const DocumentsUpload = ({ route }) => {
                             )
                         )}
                         <View style={styles.textinputview}>
-                            <Text
-                                style={styles.header}>
-                                Car Insurance
-                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <Text
+                                    style={styles.header}>
+                                    Car Insurance
+                                </Text>
+                                <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                            </View>
                             {CarInsuranceError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{CarInsuranceError}</Text> : <></>}
                         </View>
                         <View style={{}}>
@@ -549,16 +636,19 @@ const DocumentsUpload = ({ route }) => {
                                     {!pickedCarInsurance ?
                                         <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', }}>Car Insurance</Text>
                                         :
-                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }}>{pickedCarInsurance.fileName}</Text>
+                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }} numberOfLines={2} ellipsizeMode="tail">{pickedCarInsurance.fileName}</Text>
                                     }
                                 </View>
                             </View>
                         </View>
                         <View style={styles.textinputview}>
-                            <Text
-                                style={styles.header}>
-                                Car Insurance Expiry Date
-                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <Text
+                                    style={styles.header}>
+                                    Car Insurance Expiry Date
+                                </Text>
+                                <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                            </View>
                             {CarInsuranceExpiryDateError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{CarInsuranceExpiryDateError}</Text> : <></>}
                         </View>
                         <TouchableOpacity onPress={() => setOpen2(true)}>
@@ -619,10 +709,13 @@ const DocumentsUpload = ({ route }) => {
                             )
                         )}
                         <View style={styles.textinputview}>
-                            <Text
-                                style={styles.header}>
-                                Goods in Transit  Insurance
-                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <Text
+                                    style={styles.header}>
+                                    Goods in Transit  Insurance
+                                </Text>
+                                <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                            </View>
                             {TransitInsuranceError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{TransitInsuranceError}</Text> : <></>}
                         </View>
                         <View style={{}}>
@@ -639,16 +732,19 @@ const DocumentsUpload = ({ route }) => {
                                     {!pickedTransitInsurance ?
                                         <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', }}>Car Insurance</Text>
                                         :
-                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }}>{pickedTransitInsurance.fileName}</Text>
+                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }} numberOfLines={2} ellipsizeMode="tail">{pickedTransitInsurance.fileName}</Text>
                                     }
                                 </View>
                             </View>
                         </View>
                         <View style={styles.textinputview}>
-                            <Text
-                                style={styles.header}>
-                                Goods in Transit Insurance Expiry Date
-                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <Text
+                                    style={styles.header}>
+                                    Goods in Transit Insurance Expiry Date
+                                </Text>
+                                <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                            </View>
                             {TransitInsuranceExpiryDateError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{TransitInsuranceExpiryDateError}</Text> : <></>}
                         </View>
                         <TouchableOpacity onPress={() => setOpen3(true)}>
@@ -709,10 +805,13 @@ const DocumentsUpload = ({ route }) => {
                             )
                         )}
                         <View style={styles.textinputview}>
-                            <Text
-                                style={styles.header}>
-                                Vehicle Image
-                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <Text
+                                    style={styles.header}>
+                                    Vehicle Image
+                                </Text>
+                                <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                            </View>
                             {VehicleImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{VehicleImageError}</Text> : <></>}
                             <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5) }}>All vehicles are subject to physical inspection</Text>
                         </View>
@@ -730,7 +829,7 @@ const DocumentsUpload = ({ route }) => {
                                     {!pickedVehicleImage ?
                                         <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', }}>Upload Photo</Text>
                                         :
-                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }}>{pickedVehicleImage.fileName}</Text>
+                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }} numberOfLines={2} ellipsizeMode="tail">{pickedVehicleImage.fileName}</Text>
                                     }
                                 </View>
                             </View>
@@ -778,7 +877,7 @@ const DocumentsUpload = ({ route }) => {
                                     {!pickedCarRegistration ?
                                         <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', }}>Upload Photo</Text>
                                         :
-                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }}>{pickedCarRegistration.fileName}</Text>
+                                        <Text style={{ fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(2), color: '#808080', paddingHorizontal: 5 }} numberOfLines={2} ellipsizeMode="tail">{pickedCarRegistration.fileName}</Text>
                                     }
                                 </View>
                             </View>
