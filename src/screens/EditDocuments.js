@@ -622,7 +622,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Car Insurance
                         </Text>
-                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                        {/* <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text> */}
                     </View>
                     {CarInsuranceError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{CarInsuranceError}</Text> : <></>}
                 </View>
@@ -667,7 +667,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Car Insurance Expiry Date
                         </Text>
-                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                        {/* <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text> */}
                     </View>
                     {CarInsuranceExpiryDateError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{CarInsuranceExpiryDateError}</Text> : <></>}
                 </View>
@@ -706,7 +706,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Goods in Transit  Insurance
                         </Text>
-                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                        {/* <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text> */}
                     </View>
                     {TransitInsuranceError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{TransitInsuranceError}</Text> : <></>}
                 </View>
@@ -751,7 +751,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Goods in Transit Insurance Expiry Date
                         </Text>
-                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                        {/* <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text> */}
                     </View>
                     {TransitInsuranceExpiryDateError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{TransitInsuranceExpiryDateError}</Text> : <></>}
                 </View>
@@ -790,7 +790,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Vehicle Image
                         </Text>
-                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                        {/* <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text> */}
                     </View>
                     {VehicleImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{VehicleImageError}</Text> : <></>}
                     <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5) }}>All vehicles are subject to physical inspection</Text>
@@ -836,7 +836,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Ghana Card number
                         </Text>
-                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                        {/* <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text> */}
                     </View>
                 </View>
                 {/* {ghanaCardImageError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{ghanaCardImageError}</Text> : <></>} */}
@@ -856,7 +856,7 @@ export default function EditDocuments({  }) {
                             style={styles.header}>
                             Car Registration Paper
                         </Text>
-                        <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text>
+                        {/* <Text style={{ color: '#808080', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), marginLeft: 5 }}>(Optional)</Text> */}
                     </View>
                 </View>
                 <View style={{ paddingBottom: responsiveHeight(13) }}>
