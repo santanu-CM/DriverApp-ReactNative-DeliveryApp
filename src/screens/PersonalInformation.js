@@ -281,6 +281,7 @@ const PersonalInformation = ({ route }) => {
                 query={{
                   key: Platform.OS == 'android' ? GOOGLE_MAP_KEY_ANDROID : GOOGLE_MAP_KEY_IOS,
                   language: 'en',
+                  components: 'country:gh',
                 }}
                 styles={{
                   textInput: { fontFamily: 'Outfit-Medium', fontSize: responsiveFontSize(1.6), color: '#716E6E', borderColor: '#E0E0E0', borderWidth: 1, borderRadius: 8, paddingHorizontal: 10, height: 48 },
