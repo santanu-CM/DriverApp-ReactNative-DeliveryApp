@@ -159,7 +159,7 @@ const PersonalInformation = ({ route }) => {
           setIsLoading(false)
           console.log(`user update error ${e}`)
           console.log(e.response.data?.response.records)
-          Alert.alert('Oops..', JSON.stringify(e.response.data?.response.records.email[0])||"Something went wrong", [
+          Alert.alert('Oops..', JSON.stringify(e.response.data?.response.records.message)||JSON.stringify(e.response.data?.response.records.email[0])||"Something went wrong", [
             {
                 text: 'Cancel',
                 onPress: () => console.log('Cancel Pressed'),
