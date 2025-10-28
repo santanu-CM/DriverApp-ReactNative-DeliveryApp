@@ -345,9 +345,24 @@ export default function HomeScreen({  }) {
           let userInfo = res.data.response.records.data;
           console.log(userInfo, 'user data from contact information from home screen');
           if(userInfo.status == 'Pending'){
-            Alert.alert('Action Required', 'Please Upload your documents to activate your account.', [
-              { text: 'OK', onPress: () => navigation.navigate('PROFILE', { screen: 'EditDocuments' }) },
-            ]);
+            // Check if popup has been shown before
+            AsyncStorage.getItem('documentUploadPopupShown', (err, shown) => {
+              if (!shown) {
+                Alert.alert('Action Required', 'Please Upload your documents to activate your account.', [
+                  { 
+                    text: 'OK', 
+                    onPress: () => {
+                      // Mark popup as shown
+                      AsyncStorage.setItem('documentUploadPopupShown', 'true');
+                      navigation.navigate('PROFILE', { screen: 'EditDocuments' });
+                    }
+                  },
+                ]);
+              }
+            });
+          } else {
+            // Reset the flag if status is not Pending (e.g., Active, Approved, etc.)
+            AsyncStorage.removeItem('documentUploadPopupShown');
           }
 
           if(userInfo.userStatus == 'Inactive'){
