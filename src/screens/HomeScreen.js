@@ -344,6 +344,11 @@ export default function HomeScreen({  }) {
         .then(res => {
           let userInfo = res.data.response.records.data;
           console.log(userInfo, 'user data from contact information from home screen');
+          if(userInfo.status == 'Pending'){
+            Alert.alert('Action Required', 'Please Upload your documents to activate your account.', [
+              { text: 'OK', onPress: () => navigation.navigate('PROFILE', { screen: 'EditDocuments' }) },
+            ]);
+          }
 
           if(userInfo.userStatus == 'Inactive'){
             Alert.alert('Inactive', 'Your account is inactive. Please contact support.', [
