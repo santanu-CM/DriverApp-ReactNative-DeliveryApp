@@ -394,7 +394,7 @@ export default function HomeScreen({  }) {
     fetchNewOrders()
     fetchNewShippingOrders()
     fetchData();
-    fetchProfileDetails()
+    //fetchProfileDetails()
   }, [])
 
   useFocusEffect(
