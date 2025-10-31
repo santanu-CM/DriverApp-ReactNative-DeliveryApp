@@ -390,7 +390,7 @@ export default function HomeScreen({  }) {
     });
   }
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchNewOrders()
     fetchNewShippingOrders()
     fetchData();
