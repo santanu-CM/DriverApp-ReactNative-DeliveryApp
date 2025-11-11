@@ -63,17 +63,19 @@ const CustomDrawer = props => {
     width:responsiveWidth(100), justifyContent: 'center', marginTop: -responsiveHeight(2), 
     marginLeft: -responsiveWidth(3) }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {userInfo?.profilePic ?
-              <Image
-                source={{ uri: userInfo?.profilePic + '?' + new Date() }}
-                style={{ height: 60, width: 60, borderRadius: 40, marginBottom: 10, marginTop: 10, marginRight: 20 }}
-              />
-              :
-              <Image
-                source={userPhoto}
-                style={{ height: 60, width: 60, borderRadius: 40, marginBottom: 10, marginTop: 10, marginRight: 20 }}
-              />
-            }
+            <TouchableOpacity onPress={() => props.navigation.navigate('Home', { screen: 'PROFILE', params: { screen: 'ProfileScreen' } })}>
+              {userInfo?.profilePic ?
+                <Image
+                  source={{ uri: userInfo?.profilePic + '?' + new Date() }}
+                  style={{ height: 60, width: 60, borderRadius: 40, marginBottom: 10, marginTop: 10, marginRight: 20 }}
+                />
+                :
+                <Image
+                  source={userPhoto}
+                  style={{ height: 60, width: 60, borderRadius: 40, marginBottom: 10, marginTop: 10, marginRight: 20 }}
+                />
+              }
+            </TouchableOpacity>
             <View style={{ flexDirection: 'column', marginLeft: 10 }}>
             <ShimmerPlaceholder
                 visible={!loading}
