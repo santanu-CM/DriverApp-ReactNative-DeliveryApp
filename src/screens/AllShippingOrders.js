@@ -203,6 +203,17 @@ const AllShippingOrders = () => {
                     index,
                 })}
             />
+            
+            {/* Floating Action Button for Map View */}
+            <TouchableOpacity 
+                style={styles.floatingButton}
+                onPress={() => navigation.navigate('MapForAllShipments')}
+            >
+                <View style={styles.floatingButtonInner}>
+                    <Text style={styles.floatingButtonText}>📍</Text>
+                    <Text style={styles.floatingButtonLabel}>Map View</Text>
+                </View>
+            </TouchableOpacity>
         </SafeAreaView>
     )
 }
@@ -521,5 +532,36 @@ const styles = StyleSheet.create({
     },
     confirmButtonText: {
         color: 'white',
+    },
+    floatingButton: {
+        position: 'absolute',
+        bottom: responsiveHeight(12),
+        right: responsiveWidth(5),
+        backgroundColor: '#339999',
+        borderRadius: 30,
+        elevation: 8,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 4.65,
+    },
+    floatingButtonInner: {
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    floatingButtonText: {
+        fontSize: responsiveFontSize(2.5),
+        marginRight: 8,
+    },
+    floatingButtonLabel: {
+        color: '#FFFFFF',
+        fontFamily: 'Outfit-Medium',
+        fontSize: responsiveFontSize(1.8),
     },
 });

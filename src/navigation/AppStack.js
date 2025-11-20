@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { homeImg, contactImg, helpImg, bankDetailsImg, documentImg, capacityImg, reviewImg, earningImg, acceptedOrderImg, completedOrderImg, availabilityImg, termsImg, supportImg, shipment_reviewsImg, ordersImg } from '../utils/Images';
 import CustomDrawer from '../components/CustomDrawer';
 
@@ -27,8 +28,26 @@ import EditBankInformation from '../screens/EditBankInformation';
 import AllShippingOrders from '../screens/AllShippingOrders';
 import EditContactInformation from '../screens/EditContactInformation';
 import EditCapacityInformation from '../screens/EditCapacityInformation';
+import MapForAllShipments from '../screens/MapForAllShipments';
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
+
+// Create a stack navigator for AllShippingOrders and related screens
+const ShippingOrdersStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="AllShippingOrdersList"
+        component={AllShippingOrders}
+      />
+      <Stack.Screen
+        name="MapForAllShipments"
+        component={MapForAllShipments}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const AuthStack = () => {
   return (
@@ -112,7 +131,7 @@ const AuthStack = () => {
       />
       <Drawer.Screen
         name="Available Loads"
-        component={AllShippingOrders}
+        component={ShippingOrdersStack}
         options={{
           drawerIcon: ({ color }) => (
             // <Ionicons name="settings-outline" size={22} color={color} />
