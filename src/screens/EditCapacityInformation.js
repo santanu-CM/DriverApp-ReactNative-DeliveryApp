@@ -26,6 +26,7 @@ const EditCapacityInformation = ({ route }) => {
     const [isFocus, setIsFocus] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
     const [vehicleType, setvehicleType] = useState('');
+    const [vehicleTypeId, setVehicleTypeId] = useState('');
     const [vehicleTypeError, setvehicleTypeError] = useState('')
     const [VehicleRegistration, setVehicleRegistration] = useState(''); 
     const [VehicleRegistrationError, setVehicleRegistrationError] = useState('')
@@ -35,8 +36,37 @@ const EditCapacityInformation = ({ route }) => {
     const [VehiclecontainerError, setVehiclecontainerError] = useState('')
     const [Vehiclecontainerheight, setVehiclecontainerheight] = useState('');
     const [userInfo, setuserInfo] = useState([])
+    const [vehicleList, setVehicleList] = useState([]);
+    const [isFocusVehicleType, setIsFocusVehicleType] = useState(false);
+    const [selectedVehicleData, setSelectedVehicleData] = useState(null);
 
     const headerHeight = useHeaderHeight();
+
+    const fetchVehicleList = async () => {
+        try {
+            const usertoken = await AsyncStorage.getItem('userToken');
+            const response = await axios.get(`${process.env.API_URL}/api/driver/get-vehicle-list`, {
+                headers: {
+                    "Authorization": `Bearer ${usertoken}`,
+                    "Content-Type": 'application/json'
+                },
+            });
+            
+            if (response.data.response.status.code === 200) {
+                const vehicles = response.data.response.records.data.map(vehicle => ({
+                    id: vehicle.id,
+                    name: vehicle.name,
+                    min_weight: vehicle.min_weight,
+                    max_weight: vehicle.max_weight,
+                    label: vehicle.name,
+                    value: vehicle.id
+                }));
+                setVehicleList(vehicles);
+            }
+        } catch (error) {
+            console.log('Error fetching vehicle list:', error);
+        }
+    };
 
     const fetchProfileDetails = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
@@ -48,11 +78,23 @@ const EditCapacityInformation = ({ route }) => {
             })
                 .then(res => {
                     let userInfo = res.data.response.records.data;
-                    console.log(userInfo)
+                    console.log(JSON.stringify(userInfo),'ttttttttfhh')
                     setuserInfo(userInfo)
-                    setvehicleType(userInfo?.vehicleType)
+                    
+                    // Find the vehicle in the list by ID (vehicleType contains the ID)
+                    const currentVehicle = vehicleList.find(v => v.id === userInfo?.vehicleType);
+                    if (currentVehicle) {
+                        setvehicleType(currentVehicle.name)
+                        setVehicleTypeId(currentVehicle.id)
+                        setSelectedVehicleData(currentVehicle)
+                        setMaximumpayload(`${currentVehicle.min_weight} - ${currentVehicle.max_weight} KG`)
+                    } else {
+                        // Fallback: vehicleType is the ID, try to find by ID
+                        setVehicleTypeId(userInfo?.vehicleType)
+                        setMaximumpayload(userInfo?.maxPayload)
+                    }
+                    
                     setVehicleRegistration(userInfo?.vehicleRegNo)
-                    setMaximumpayload(userInfo?.maxPayload)
                     setVehiclecontainerwidth(userInfo?.vehicleContCapacity)
                     setVehiclecontainerheight(userInfo?.vehicleContCapacityHeight)
                     setIsLoading(false);
@@ -64,15 +106,34 @@ const EditCapacityInformation = ({ route }) => {
     }
 
     useEffect(() => {
-        fetchProfileDetails()
+        fetchVehicleList().then(() => {
+            fetchProfileDetails()
+        })
     }, [])
 
-    const changevehicleType = (text) => {
-        setvehicleType(text)
-        if (text) {
+    useEffect(() => {
+        if (vehicleList.length > 0 && userInfo?.vehicleType) {
+            // vehicleType in userInfo is actually the vehicle ID
+            const currentVehicle = vehicleList.find(v => v.id === userInfo?.vehicleType);
+            if (currentVehicle) {
+                setvehicleType(currentVehicle.name)
+                setVehicleTypeId(currentVehicle.id)
+                setSelectedVehicleData(currentVehicle)
+                setMaximumpayload(`${currentVehicle.min_weight} - ${currentVehicle.max_weight} KG`)
+            }
+        }
+    }, [vehicleList, userInfo])
+
+    const changevehicleType = (item) => {
+        setvehicleType(item.name)
+        setVehicleTypeId(item.id)
+        setSelectedVehicleData(item)
+        // Auto-populate payload range for display
+        setMaximumpayload(`${item.min_weight} - ${item.max_weight} KG`)
+        if (item.name) {
             setvehicleTypeError('')
         } else {
-            setvehicleTypeError('Please enter Vehicle type')
+            setvehicleTypeError('Please select Vehicle type')
         }
     }
 
@@ -86,12 +147,8 @@ const EditCapacityInformation = ({ route }) => {
     }
 
     const changeMaximumpayload = (text) => {
-        setMaximumpayload(text)
-        if (text) {
-            setMaximumpayloadError('')
-        } else {
-            setMaximumpayloadError('Please enter Maximum payload')
-        }
+        // This field is now disabled and auto-populated
+        // setMaximumpayload(text)
     }
 
     const changeVehiclecontainer = (text) => {
@@ -115,18 +172,16 @@ const EditCapacityInformation = ({ route }) => {
 
     const updateProfile = () => {
         AsyncStorage.getItem('userToken', (err, usertoken) => {
-            if (!vehicleType) {
-                setvehicleTypeError('Please enter Vehicle type')
+            if (!vehicleTypeId) {
+                setvehicleTypeError('Please select Vehicle type')
             } else if (!VehicleRegistration) {
                 setVehicleRegistrationError('Please enter Vehicle Registration Number')
-            } else if (!Maximumpayload) {
-                setMaximumpayloadError('Please enter Maximum payload')
             } else {
                 setIsLoading(true)
                 var option = {
-                    "vehicleType": vehicleType,
+                    "vehicleType": vehicleTypeId, // Send vehicle ID instead of name
                     "vehicleRegNo": VehicleRegistration,
-                    "maxPayload": Maximumpayload,
+                     "maxPayload": selectedVehicleData ? `${selectedVehicleData.min_weight}-${selectedVehicleData.max_weight}` : '',
                     "vehicleContCapacity": Vehiclecontainerwidth,
                     "vehicleContCapacityHeight": Vehiclecontainerheight
                 }
@@ -194,13 +249,25 @@ const EditCapacityInformation = ({ route }) => {
                         </Text>
                         {vehicleTypeError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{vehicleTypeError}</Text> : <></>}
                         <View style={styles.inputView}>
-                            <InputField
-                                label={'vehicle type'}
-                                keyboardType=" "
-                                value={vehicleType}
-                                helperText={vehicleTypeError}
-                                inputType={'others'}
-                                onChangeText={(text) => changevehicleType(text)}
+                            <Dropdown
+                                style={[styles.dropdown, isFocusVehicleType && { borderColor: 'blue' }]}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                data={vehicleList}
+                                search
+                                maxHeight={300}
+                                labelField="label"
+                                valueField="value"
+                                placeholder={!isFocusVehicleType ? 'Select vehicle type' : '...'}
+                                searchPlaceholder="Search..."
+                                value={vehicleTypeId}
+                                onFocus={() => setIsFocusVehicleType(true)}
+                                onBlur={() => setIsFocusVehicleType(false)}
+                                onChange={item => {
+                                    changevehicleType(item);
+                                    setIsFocusVehicleType(false);
+                                }}
                             />
                         </View>
                         <Text
@@ -225,11 +292,12 @@ const EditCapacityInformation = ({ route }) => {
                         {MaximumpayloadError ? <Text style={{ color: 'red', fontFamily: 'Outfit-Regular' }}>{MaximumpayloadError}</Text> : <></>}
                         <View style={styles.inputView}>
                             <InputField
-                                label={'e.g. 534'}
+                                label={'Auto-populated from vehicle type'}
                                 keyboardType=" "
                                 value={Maximumpayload}
                                 helperText={MaximumpayloadError}
                                 inputType={'others'}
+                                editable={false}
                                 onChangeText={(text) => changeMaximumpayload(text)}
                             />
                         </View>
@@ -317,10 +385,10 @@ const styles = StyleSheet.create({
         //paddingVertical: 2
     },
     dropdown: {
-        height: responsiveHeight(8),
+        height: responsiveHeight(7),
         borderColor: 'gray',
         borderWidth: 0.7,
-        borderRadius: 4,
+        borderRadius: 5,
         paddingHorizontal: 8,
         marginTop: 5,
         marginBottom: responsiveHeight(4)

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   ScrollView,
   View,
@@ -14,6 +14,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DocumentPicker from '@react-native-documents/picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import InputField from '../components/InputField';
 import CustomButton from '../components/CustomButton';
 import { plus, userPhoto } from '../utils/Images';
@@ -28,6 +29,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const CapacityDetails = ({ route }) => {
   const navigation = useNavigation();
   const [vehicleType, setvehicleType] = useState('');
+  const [vehicleTypeId, setVehicleTypeId] = useState('');
   const [vehicleTypeError, setvehicleTypeError] = useState('')
   const [VehicleRegistration, setVehicleRegistration] = useState('');
   const [VehicleRegistrationError, setVehicleRegistrationError] = useState('')
@@ -36,16 +38,23 @@ const CapacityDetails = ({ route }) => {
   const [Vehiclecontainerwidth, setVehiclecontainerwidth] = useState('');
   const [VehiclecontainerError, setVehiclecontainerError] = useState('')
   const [Vehiclecontainerheight, setVehiclecontainerheight] = useState('');
+  const [vehicleList, setVehicleList] = useState([]);
+  const [isFocusVehicleType, setIsFocusVehicleType] = useState(false);
+  const [selectedVehicleData, setSelectedVehicleData] = useState(null);
 
   const [isLoading, setIsLoading] = useState(false)
   const { login, userToken } = useContext(AuthContext);
 
-  const changevehicleType = (text) => {
-    setvehicleType(text)
-    if (text) {
+  const changevehicleType = (item) => {
+    setvehicleType(item.name)
+    setVehicleTypeId(item.id)
+    setSelectedVehicleData(item)
+    // Auto-populate payload range for display
+    setMaximumpayload(`${item.min_weight} - ${item.max_weight} KG`)
+    if (item.name) {
       setvehicleTypeError('')
     } else {
-      setvehicleTypeError('Please enter Vehicle type')
+      setvehicleTypeError('Please select Vehicle type')
     }
   }
 
@@ -59,12 +68,8 @@ const CapacityDetails = ({ route }) => {
   }
 
   const changeMaximumpayload = (text) =>{
-    setMaximumpayload(text)
-    // if (text) {
-    //   setMaximumpayloadError('')
-    // } else {
-    //   setMaximumpayloadError('Please enter Maximum payload')
-    // }
+    // This field is now disabled and auto-populated
+    // setMaximumpayload(text)
   }
 
   const changeVehiclecontainerwidth = (text) =>{
@@ -84,18 +89,48 @@ const CapacityDetails = ({ route }) => {
     // }
   }
 
+  const fetchVehicleList = async () => {
+    try {
+      const response = await axios.get(`${process.env.API_URL}/api/driver/get-vehicle-list`, {
+        headers: {
+          "Authorization": `Bearer ${route?.params?.usertoken}`,
+          "Content-Type": 'application/json'
+        },
+      });
+      
+      if (response.data.response.status.code === 200) {
+        const vehicles = response.data.response.records.data.map(vehicle => ({
+          id: vehicle.id,
+          name: vehicle.name,
+          min_weight: vehicle.min_weight,
+          max_weight: vehicle.max_weight,
+          label: vehicle.name,
+          value: vehicle.id
+        }));
+        setVehicleList(vehicles);
+      }
+    } catch (error) {
+      console.log('Error fetching vehicle list:', error);
+      Alert.alert('Error', 'Failed to load vehicle types');
+    }
+  };
+
+  useEffect(() => {
+    fetchVehicleList();
+  }, []);
+
   const submitForm = () => {
     //navigation.navigate('BankDetails')
-    if (!vehicleType) {
-      setvehicleTypeError('Please enter Vehicle type')
+    if (!vehicleTypeId) {
+      setvehicleTypeError('Please select Vehicle type')
     }else if(!VehicleRegistration){
       setVehicleRegistrationError('Please enter Vehicle Registration Number')
     } else {
       setIsLoading(true)
         var option = {
-          "vehicleType": vehicleType,
+          "vehicleType": vehicleTypeId, // Send vehicle ID instead of name
           "vehicleRegNo": VehicleRegistration,
-          "maxPayload": Maximumpayload,
+           "maxPayload": selectedVehicleData ? `${selectedVehicleData.min_weight}-${selectedVehicleData.max_weight}` : '',
           "vehicleContCapacity": Vehiclecontainerwidth,
           "vehicleContCapacityHeight": Vehiclecontainerheight
         }
@@ -164,13 +199,25 @@ const CapacityDetails = ({ route }) => {
             </Text>
             {vehicleTypeError?<Text style={{color:'red',fontFamily:'Outfit-Regular'}}>{vehicleTypeError}</Text>:<></>}
             <View style={styles.inputView}>
-              <InputField
-                label={'e.g. Truck'}
-                keyboardType=" "
-                value={vehicleType}
-                helperText={vehicleTypeError}
-                inputType={'others'}
-                onChangeText={(text) => changevehicleType(text)}
+              <Dropdown
+                style={[styles.dropdown, isFocusVehicleType && { borderColor: 'blue' }]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                data={vehicleList}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocusVehicleType ? 'Select vehicle type' : '...'}
+                searchPlaceholder="Search..."
+                value={vehicleTypeId}
+                onFocus={() => setIsFocusVehicleType(true)}
+                onBlur={() => setIsFocusVehicleType(false)}
+                onChange={item => {
+                  changevehicleType(item);
+                  setIsFocusVehicleType(false);
+                }}
               />
             </View>
             <Text
@@ -195,11 +242,12 @@ const CapacityDetails = ({ route }) => {
             {/* {MaximumpayloadError?<Text style={{color:'red',fontFamily:'Outfit-Regular'}}>{MaximumpayloadError}</Text>:<></>} */}
             <View style={styles.inputView}>
               <InputField
-                label={'e.g. 5'}
+                label={'Auto-populated from vehicle type'}
                 keyboardType=" "
                 value={Maximumpayload}
                 helperText={MaximumpayloadError}
                 inputType={'others'}
+                editable={false}
                 onChangeText={(text) => changeMaximumpayload(text)}
               />
             </View>
@@ -311,5 +359,25 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -20,
     width: responsiveWidth(100),
+  },
+  dropdown: {
+    height: responsiveHeight(7),
+    borderColor: '#E0E0E0',
+    borderWidth: 0.7,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    marginTop: 5,
+    marginBottom: responsiveHeight(4)
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: '#999'
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   }
 });

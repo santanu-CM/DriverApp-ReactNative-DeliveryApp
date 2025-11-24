@@ -81,7 +81,7 @@ const CapacityInformation = ({  }) => {
                     <View style={{ justifyContent: 'center', padding: 25 }}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.iconDetails}>Vehicle type : </Text>
-                            <Text style={styles.iconText}>{userInfo?.vehicleType}</Text>
+                            <Text style={styles.iconText}>{userInfo?.vehicle_type_name}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.iconDetails}>Vehicle Registration Number : </Text>
