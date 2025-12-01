@@ -34,5 +34,85 @@ target 'KayaDriverApp' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    
+    # Fix gRPC-Core modulemap issue
+    grpc_dir = File.join(installer.sandbox.root, "Headers", "Private", "grpc")
+    grpc_modulemap = File.join(grpc_dir, "gRPC-Core.modulemap")
+    source_modulemap = File.join(installer.sandbox.root, "Target Support Files", "gRPC-Core", "gRPC-Core.modulemap")
+    
+    if File.exist?(source_modulemap) && !File.exist?(grpc_modulemap)
+      FileUtils.mkdir_p(grpc_dir)
+      FileUtils.cp(source_modulemap, grpc_modulemap)
+      Pod::UI.puts "Fixed gRPC-Core modulemap path issue".green
+    end
+    
+    # Fix gRPC-C++ xcconfig files to use correct modulemap path
+    grpc_cpp_configs = [
+      File.join(installer.sandbox.root, "Target Support Files", "gRPC-C++", "gRPC-C++.debug.xcconfig"),
+      File.join(installer.sandbox.root, "Target Support Files", "gRPC-C++", "gRPC-C++.release.xcconfig")
+    ]
+    
+    grpc_cpp_configs.each do |config_file|
+      if File.exist?(config_file)
+        content = File.read(config_file)
+        original_content = content.dup
+        
+        # Replace the problematic modulemap path with the correct one
+        content.gsub!(
+          '-fmodule-map-file="${PODS_ROOT}/Headers/Private/grpc/gRPC-Core.modulemap"',
+          '-fmodule-map-file="${PODS_ROOT}/Target Support Files/gRPC-Core/gRPC-Core.modulemap"'
+        )
+        
+        if content != original_content
+          File.write(config_file, content)
+          Pod::UI.puts "Fixed gRPC-C++ xcconfig modulemap path in #{File.basename(config_file)}".green
+        end
+      end
+    end
+    
+    # Fix DarwinFoundation/Hermes compatibility issues for React Native 0.80.1
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # Fix Hermes compilation issues
+        if target.name == 'React-RuntimeHermes' || target.name == 'React-hermes' || target.name.include?('hermes')
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'HERMES_ENABLE_DEBUGGER=0'
+          config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+          config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+        end
+        
+        # Fix DarwinFoundation module issues
+        if target.name.include?('React-Runtime') || target.name.include?('React-hermes')
+          config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+          config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+          config.build_settings['DEFINES_MODULE'] = 'YES'
+        end
+        
+        # General compatibility fixes for React Native 0.80.1
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.1'
+        config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64' if config.name == 'Debug'
+        
+        # Fix module map issues
+        if config.build_settings['OTHER_CFLAGS']
+          config.build_settings['OTHER_CFLAGS'] << '-Wno-error=non-modular-include-in-framework-module'
+        else
+          config.build_settings['OTHER_CFLAGS'] = ['-Wno-error=non-modular-include-in-framework-module']
+        end
+      end
+    end
+    
+    # Additional Hermes-specific fixes
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.user_project.native_targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings['LIBRARY_SEARCH_PATHS'] = [
+            '$(inherited)',
+            '"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)"',
+            '"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)"',
+            '"$(inherited)"'
+          ]
+        end
+      end
+    end
   end
 end

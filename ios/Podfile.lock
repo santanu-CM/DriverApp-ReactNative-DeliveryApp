@@ -3247,8 +3247,6 @@ PODS:
     - Yoga
   - react-native-geolocation-service (5.3.1):
     - React
-  - react-native-get-random-values (1.11.0):
-    - React-Core
   - react-native-image-picker (8.2.1):
     - boost
     - DoubleConversion
@@ -4637,7 +4635,6 @@ DEPENDENCIES:
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
-  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-keep-awake (from `../node_modules/react-native-keep-awake`)
   - react-native-maps (from `../node_modules/react-native-maps`)
@@ -4843,8 +4840,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
-  react-native-get-random-values:
-    :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-keep-awake:
@@ -5060,7 +5055,6 @@ SPEC CHECKSUMS:
   react-native-document-picker: 65723ccdfe85fafc77b80428b61973039cae2e80
   react-native-geolocation: 742605b1a37809c0d4363eeaf61036842f52460c
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
-  react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-image-picker: df98fd6bf821b49ae97a383fd4adb1430f659a67
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-maps: 280f3fe5f2357b50c1078eaf461ab22f292dfe89
@@ -5132,6 +5126,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: daa1e4de4b971b977b23bc842aaa3e135324f1f3
 
-PODFILE CHECKSUM: 1ecc2d8168b3567924df48a2bb4ecd63f5e7b4d0
+PODFILE CHECKSUM: bedd3371eba9338ca549627d9bee43a9759bcf91
 
 COCOAPODS: 1.15.2
