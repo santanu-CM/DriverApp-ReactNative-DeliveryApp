@@ -200,7 +200,7 @@ const NewShippingOrderScreen = () => {
                     setIsLoading(false);
                 })
                 .catch(e => {
-                    console.log(`User fetch error ${e}`)
+                    console.log(`User fetch error ${JSON.stringify(e.response.data)}`)
                 });
         });
     }
