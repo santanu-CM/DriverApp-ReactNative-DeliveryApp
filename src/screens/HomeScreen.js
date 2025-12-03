@@ -114,7 +114,7 @@ export default function HomeScreen({  }) {
         },
       })
         .then(res => {
-          let userInfo = res.data.response.records;
+          let userInfo = res.data.response.records.shipments;
           console.log(JSON.stringify(userInfo), 'fetch new orders')
           if (userInfo.length > 0) {
             dispatch(setNewShipping(true));

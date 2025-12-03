@@ -38,7 +38,8 @@ const NewShippingOrderScreen = () => {
     const [selectedReason, setSelectedReason] = useState('');
     const [customReason, setCustomReason] = useState('');
     const [currentOrderId, setCurrentOrderId] = useState(null);
-
+    const [currentOrderFlag, setCurrentOrderFlag] = useState(null);
+    const [flag, setFlag] = useState(false);
     const [declineReasons, setDeclineReasons] = useState([]);
 
     //const acceptedOrders = getFaq[0]?.batch.flatMap(batch => batch.order.filter(order => order.status === "accepted"));
@@ -63,11 +64,13 @@ const NewShippingOrderScreen = () => {
                 });
         });
     };
-    const acceptSingleOrder = (orderId) => {
+    const acceptSingleOrder = (orderId, flag) => {
+        console.log(flag, 'flag')
         setIsLoading(true)
         const option = {
             "shipper_profile_id": orderId,
-            "assign_driver_status": 'Accepted'
+            "assign_driver_status": 'Accepted',
+            "flag": flag
         };
 
         console.log(option)
@@ -117,8 +120,9 @@ const NewShippingOrderScreen = () => {
         });
     }
 
-    const declineSingleOrder = (orderId) => {
+    const declineSingleOrder = (orderId, flag) => {
         setCurrentOrderId(orderId);
+        setCurrentOrderFlag(flag);
         setShowCancelModal(true);
     }
 
@@ -134,18 +138,22 @@ const NewShippingOrderScreen = () => {
         }
 
         const reason = selectedReason === 'Other' ? customReason : selectedReason;
-        executeDeclineOrder(currentOrderId, reason);
+        executeDeclineOrder(currentOrderId, reason, currentOrderFlag);
         setShowCancelModal(false);
         setSelectedReason('');
         setCustomReason('');
+        setCurrentOrderFlag(null);
     }
 
-    const executeDeclineOrder = (orderId, reason) => {
+    const executeDeclineOrder = (orderId, reason, flag) => {
+
+        console.log(flag, 'flag')
         setIsLoading(true)
         const option = {
             "shipper_profile_id": orderId,
             "assign_driver_status": 'Not-Accept',
-            "cancellation_reason": reason
+            "cancellation_reason": reason,
+            "flag": flag
         };
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             axios.post(`${process.env.API_URL}/api/driver/notification-accept-for-driver`, option, {
@@ -194,9 +202,12 @@ const NewShippingOrderScreen = () => {
                 },
             })
                 .then(res => {
-                    let userInfo = res.data.response.records;
+                    console.log(JSON.stringify(res.data), 'fetch new ordersddd') 
+                    let userInfo = res.data.response.records.shipments; 
+                    let flag = res.data.response.records.flag;
                     console.log(JSON.stringify(userInfo), 'fetch new orders')
                     setallShipmentList(userInfo)
+                    setFlag(flag)
                     setIsLoading(false);
                 })
                 .catch(e => {
@@ -206,9 +217,19 @@ const NewShippingOrderScreen = () => {
     }
 
     useEffect(() => {
-        fetchNewOrders()
+        fetchNewOrders() 
         dispatch(setNewShipping(false));
     }, [])
+    
+    // Auto-refresh every 2 minutes
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchNewOrders();
+        }, 2 * 60 * 1000); // 2 minutes in milliseconds
+
+        return () => clearInterval(interval);
+    }, []);
+    
     useFocusEffect(
         React.useCallback(() => {
             fetchNewOrders()
@@ -229,8 +250,8 @@ const NewShippingOrderScreen = () => {
             <CustomHeader commingFrom={'New Order'} onPress={() => navigation.goBack()} title={'New Shipping Order'} />
             <ScrollView style={styles.wrapper}>
                 <View style={{ paddingBottom: responsiveHeight(11) }}>
-                    {allShipmentList.length > 0 ? (
-                        allShipmentList.map((item, index) => (
+                    {allShipmentList?.length > 0 ? (
+                        allShipmentList?.map((item, index) => (
                             <View style={styles.table} key={index}>
                                 <View style={styles.tableRow1}>
                                     <View style={{ flexDirection: 'column', padding: 10, }}>
@@ -248,10 +269,10 @@ const NewShippingOrderScreen = () => {
                                             :
                                             item?.status === 'Active' ? */}
                                         <>
-                                            <TouchableOpacity onPress={() => acceptSingleOrder(item?.id)}>
+                                            <TouchableOpacity onPress={() => acceptSingleOrder(item?.id, flag)}>
                                                 <Image source={acceptImg} style={styles.iconImage2} />
                                             </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => declineSingleOrder(item?.id)}>
+                                            <TouchableOpacity onPress={() => declineSingleOrder(item?.id, flag)}>
                                                 <Image source={declineImg} style={styles.iconImage2} />
                                             </TouchableOpacity>
                                         </>
