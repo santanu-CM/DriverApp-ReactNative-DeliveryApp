@@ -115,8 +115,8 @@ export default function HomeScreen({ }) {
       })
         .then(res => {
           let userInfo = res.data.response.records.shipments;
-          console.log(JSON.stringify(userInfo), 'fetch new orders')
-          if (userInfo.length > 0) {
+          console.log(JSON.stringify(userInfo), 'fetch new shipping orders')
+          if (userInfo) {
             dispatch(setNewShipping(true));
           } else {
             dispatch(setNewShipping(false));
@@ -124,7 +124,7 @@ export default function HomeScreen({ }) {
           setIsLoading(false);
         })
         .catch(e => {
-          console.log(`User fetch error ${e}`)
+          console.log(`User fetch error fetchNewShippingOrders ${e}`)
         });
     });
   }
@@ -132,7 +132,8 @@ export default function HomeScreen({ }) {
   // Auto-refresh every 2 minutes
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchNewShippingOrders();
+      console.log('Auto-refreshing shipping orders');
+      fetchNewShippingOrders(); 
     }, 2 * 60 * 1000); // 2 minutes in milliseconds
 
     return () => clearInterval(interval);
