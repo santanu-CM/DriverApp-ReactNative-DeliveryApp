@@ -42,9 +42,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const data = [
   { label: 'Today', value: '1' },
   { label: 'Date Wise', value: '2' },
-]; 
+];
 
-export default function HomeScreen({  }) {
+export default function HomeScreen({ }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { data: products, status } = useSelector(state => state.products)
@@ -128,6 +128,15 @@ export default function HomeScreen({  }) {
         });
     });
   }
+
+  // Auto-refresh every 2 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchNewShippingOrders();
+    }, 2 * 60 * 1000); // 2 minutes in milliseconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const getFCMToken = async () => {
     try {
@@ -344,13 +353,13 @@ export default function HomeScreen({  }) {
         .then(res => {
           let userInfo = res.data.response.records.data;
           console.log(userInfo, 'user data from contact information from home screen');
-          if(userInfo.status == 'Pending'){
+          if (userInfo.status == 'Pending') {
             // Check if popup has been shown before
             AsyncStorage.getItem('documentUploadPopupShown', (err, shown) => {
               if (!shown) {
                 Alert.alert('Action Required', 'Please Upload your documents to activate your account.', [
-                  { 
-                    text: 'OK', 
+                  {
+                    text: 'OK',
                     onPress: () => {
                       // Mark popup as shown
                       AsyncStorage.setItem('documentUploadPopupShown', 'true');
@@ -365,7 +374,7 @@ export default function HomeScreen({  }) {
             AsyncStorage.removeItem('documentUploadPopupShown');
           }
 
-          if(userInfo.userStatus == 'Inactive'){
+          if (userInfo.userStatus == 'Inactive') {
             Alert.alert('Inactive', 'Your account is inactive. Please contact support.', [
               { text: 'OK', onPress: () => logout() },
             ]);
@@ -390,7 +399,7 @@ export default function HomeScreen({  }) {
     });
   }
 
-  useEffect(() => { 
+  useEffect(() => {
     fetchNewOrders()
     fetchNewShippingOrders()
     fetchData();
@@ -427,7 +436,7 @@ export default function HomeScreen({  }) {
   return (
     <SafeAreaView style={styles.Container}>
       <CustomHeader commingFrom={'Home'} onPress={() => navigation.navigate('Notification')} onPressProfile={() => navigation.navigate('Profile')} />
-      <ExpiryNotificationBanner navigation={navigation} refreshTrigger={expiryRefreshTrigger}/>
+      <ExpiryNotificationBanner navigation={navigation} refreshTrigger={expiryRefreshTrigger} />
       <ScrollView style={styles.wrapper} refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#339999" colors={['#339999']} />
       }>
@@ -651,8 +660,8 @@ export default function HomeScreen({  }) {
           </View>
         </View>
       </Modal>
-      <LottieLoader 
-        visible={isLoading} 
+      <LottieLoader
+        visible={isLoading}
         size={100}
       />
     </SafeAreaView>
