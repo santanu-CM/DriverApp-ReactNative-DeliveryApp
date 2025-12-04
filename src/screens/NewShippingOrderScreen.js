@@ -94,7 +94,7 @@ const NewShippingOrderScreen = () => {
                         });
                         fetchNewOrders()
                     } else {
-                        Alert.alert('Oops..', "Something went wrong", [
+                        Alert.alert('Oops..', res.data.response.status.message || "Something went wrong", [
                             {
                                 text: 'Cancel',
                                 onPress: () => console.log('Cancel Pressed'),
