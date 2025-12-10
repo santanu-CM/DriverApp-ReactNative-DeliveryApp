@@ -71,6 +71,11 @@ const Pickup = ({ shippingId, getorders, currentLat, currentLong }) => {
                                 </View>
                                 <View style={{ justifyContent: 'center', }}>
                                     <Text style={styles.iconText}>{getorders[0]?.pickup_location.pickup_location}</Text>
+                                    <View style={styles.regionInfoContainer}>
+                                        <Text style={styles.regionInfoText}>Region: <Text style={styles.regionInfoValue}>{getorders[0]?.other?.pickup_region || 'N/A'}</Text></Text>
+                                        <Text style={styles.regionInfoText}>Territory: <Text style={styles.regionInfoValue}>{getorders[0]?.other?.pickup_territory || 'N/A'}</Text></Text>
+                                        <Text style={styles.regionInfoText}>Area: <Text style={styles.regionInfoValue}>{getorders[0]?.other?.pickup_area || 'N/A'}</Text></Text>
+                                    </View>
                                 </View>
                             </View>
                             <View style={{ borderBottomColor: '#E0E0E0', borderBottomWidth: StyleSheet.hairlineWidth, }} />
@@ -175,6 +180,11 @@ const Delivery = ({ shippingId, getorders, currentLat, currentLong }) => {
                                 </View>
                                 <View style={{ justifyContent: 'center', }}>
                                     <Text style={styles.iconText}>{getorders[0]?.delivery_location.delivery_location}</Text>
+                                    <View style={styles.regionInfoContainer}>
+                                        <Text style={styles.regionInfoText}>Region: <Text style={styles.regionInfoValue}>{getorders[0]?.other?.delivery_region || 'N/A'}</Text></Text>
+                                        <Text style={styles.regionInfoText}>Territory: <Text style={styles.regionInfoValue}>{getorders[0]?.other?.delivery_territory || 'N/A'}</Text></Text>
+                                        <Text style={styles.regionInfoText}>Area: <Text style={styles.regionInfoValue}>{getorders[0]?.other?.delivery_area || 'N/A'}</Text></Text>
+                                    </View>
                                 </View>
                             </View>
                             <View style={{ borderBottomColor: '#E0E0E0', borderBottomWidth: StyleSheet.hairlineWidth, }} />
@@ -521,5 +531,22 @@ const styles = StyleSheet.create({
         color: '#949494',
         fontFamily: 'Outfit-Regular',
         fontSize: responsiveFontSize(2),
+    },
+    regionInfoContainer: {
+        marginTop: 8,
+        paddingTop: 8,
+        borderTopWidth: 1,
+        borderTopColor: '#F0F0F0',
+    },
+    regionInfoText: {
+        color: '#3F709E',
+        fontFamily: 'Outfit-Regular',
+        fontSize: responsiveFontSize(1.8),
+        marginBottom: 2,
+    },
+    regionInfoValue: {
+        color: '#949494',
+        fontFamily: 'Outfit-Medium',
+        fontSize: responsiveFontSize(1.8),
     },
 });

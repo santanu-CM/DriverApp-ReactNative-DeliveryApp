@@ -291,6 +291,11 @@ const NewShippingOrderScreen = () => {
                                         <View style={{ justifyContent: 'center', }}>
                                             <Text style={styles.nameText}>{item?.other?.shipping_for == 'for_myself' ? item?.other?.shipper_name : item?.other?.sender_name}</Text>
                                             <Text style={styles.iconText}>{item?.pickup_location?.pickup_location}</Text>
+                                            <View style={styles.regionInfoContainer}>
+                                                <Text style={styles.regionInfoText}>Region: <Text style={styles.regionInfoValue}>{item?.other?.pickup_region || 'N/A'}</Text></Text>
+                                                <Text style={styles.regionInfoText}>Territory: <Text style={styles.regionInfoValue}>{item?.other?.pickup_territory || 'N/A'}</Text></Text>
+                                                <Text style={styles.regionInfoText}>Area: <Text style={styles.regionInfoValue}>{item?.other?.pickup_area || 'N/A'}</Text></Text>
+                                            </View>
                                         </View>
                                         <View
                                             style={{
@@ -314,6 +319,11 @@ const NewShippingOrderScreen = () => {
                                         <View style={{ justifyContent: 'center', }}>
                                             <Text style={styles.nameText}>{item?.delivery_location?.recipient_name}</Text>
                                             <Text style={styles.iconText}>{item?.delivery_location?.delivery_location}</Text>
+                                            <View style={styles.regionInfoContainer}>
+                                                <Text style={styles.regionInfoText}>Region: <Text style={styles.regionInfoValue}>{item?.other?.delivery_region || 'N/A'}</Text></Text>
+                                                <Text style={styles.regionInfoText}>Territory: <Text style={styles.regionInfoValue}>{item?.other?.delivery_territory || 'N/A'}</Text></Text>
+                                                <Text style={styles.regionInfoText}>Area: <Text style={styles.regionInfoValue}>{item?.other?.delivery_area || 'N/A'}</Text></Text>
+                                            </View>
                                         </View>
                                         <View
                                             style={{
@@ -750,5 +760,22 @@ const styles = StyleSheet.create({
     },
     confirmButtonText: {
         color: 'white',
+    },
+    regionInfoContainer: {
+        marginTop: 8,
+        paddingTop: 8,
+        borderTopWidth: 1,
+        borderTopColor: '#F0F0F0',
+    },
+    regionInfoText: {
+        color: '#3F709E',
+        fontFamily: 'Outfit-Regular',
+        fontSize: responsiveFontSize(1.8),
+        marginBottom: 2,
+    },
+    regionInfoValue: {
+        color: '#949494',
+        fontFamily: 'Outfit-Medium',
+        fontSize: responsiveFontSize(1.8),
     },
 });
