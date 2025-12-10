@@ -11,7 +11,9 @@ import {
   StyleSheet,
   Alert,
   Platform,
+  Dimensions,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import Modal from "react-native-modal";
 import { AuthContext } from '../context/AuthContext';
 import { getProducts } from '../store/productSlice'
@@ -458,10 +460,9 @@ export default function HomeScreen({ }) {
           </TouchableWithoutFeedback>
           : <></>}
         <View style={{ marginBottom: responsiveHeight(2) }}>
-          <View style={{ marginTop: responsiveHeight(1) }}>
-            <Text style={styles.dashboardHeader}>Dashboard</Text>
-          </View>
-          <View style={{ width: responsiveWidth(40), position: 'absolute', top: -10, right: 0, padding: 10 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: responsiveHeight(1), paddingRight: 5 }}>
+            <Text style={[styles.dashboardHeader, { flex: 1, marginRight: 10 }]}>📈 Overview</Text>
+            <View style={{ width: 100 }}>
             <Dropdown
               style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
               placeholderStyle={styles.placeholderStyle}
@@ -491,8 +492,9 @@ export default function HomeScreen({ }) {
                 setIsFocus(false);
               }}
             />
+            </View>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15, marginBottom: 10 }}>
+          <View style={{ marginTop: 15, marginBottom: 10 }}>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Shipping', {
@@ -501,21 +503,20 @@ export default function HomeScreen({ }) {
                 })
               }
             >
-              <View style={styles.firstCardViewSingle}>
-                <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: '#FF8C45', justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={styles.secondCardSubText}>{shippingCompleted}</Text>
+              <LinearGradient
+                colors={['#FF8C45', '#FF6B1A']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.firstCardViewSingle}
+              >
+                <View style={styles.cardIconContainer}>
+                  <Text style={styles.cardIconText}>{shippingCompleted}</Text>
                 </View>
-                {/* <WebView
-  originWhitelist={['*']}
-  source={{ html: `<img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmhtZGpyczViZzZkOXJvcXRycHFjNjZkMDVlMTQya2I2bWZ1dXp0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/duzpaTbCUy9Vu/giphy.gif" style="width:100%;height:100%;" />` }}
-  style={{ width: 200, height: 200 }}
-/> */}
                 <Text style={styles.firstCardTextSingle}>Completed Shipping Orders</Text>
-              </View>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15, marginBottom: 10 }}>
-            {/* <TouchableOpacity onPress={() => navigation.navigate('OrderScreen', { pageFrom: 'completed' })}> */}
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Orders', {
@@ -523,13 +524,19 @@ export default function HomeScreen({ }) {
                   params: { pageFrom: 'Completed' },
                 })
               }
+              style={styles.cardTouchable}
             >
-              <View style={styles.firstCardView}>
-                <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: '#339999', justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={styles.secondCardSubText}>{completed}</Text>
+              <LinearGradient
+                colors={['#10B981', '#059669']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.firstCardView}
+              >
+                <View style={styles.cardIconContainer}>
+                  <Text style={styles.cardIconText}>{completed}</Text>
                 </View>
                 <Text style={styles.firstCardText}>Completed Orders</Text>
-              </View>
+              </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
@@ -538,13 +545,19 @@ export default function HomeScreen({ }) {
                   params: { pageFrom: 'Declined' },
                 })
               }
+              style={styles.cardTouchable}
             >
-              <View style={styles.firstCardView}>
-                <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: '#EB0000', justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={styles.secondCardSubText}>{declined}</Text>
+              <LinearGradient
+                colors={['#EF4444', '#DC2626']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.firstCardView}
+              >
+                <View style={styles.cardIconContainer}>
+                  <Text style={styles.cardIconText}>{declined}</Text>
                 </View>
                 <Text style={styles.secondCardText}>Declined Orders</Text>
-              </View>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
@@ -555,21 +568,31 @@ export default function HomeScreen({ }) {
                   params: { pageFrom: 'Accepted' },
                 })
               }
+              style={styles.cardTouchable}
             >
-              <View style={styles.firstCardView}>
-                <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: '#3F709E', justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                  <Text style={styles.secondCardSubText}>{accepted}</Text>
+              <LinearGradient
+                colors={['#3B82F6', '#2563EB']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.firstCardView}
+              >
+                <View style={styles.cardIconContainer}>
+                  <Text style={styles.cardIconText}>{accepted}</Text>
                 </View>
                 <Text style={styles.thirdCardText}>Accepted Orders</Text>
-              </View>
+              </LinearGradient>
             </TouchableOpacity>
-            <View style={styles.firstCardView}>
-              <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: '#FFCB45', justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-                <Text style={styles.secondCardSubText}>{rating}</Text>
+            <LinearGradient
+              colors={['#F59E0B', '#D97706']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.firstCardView}
+            >
+              <View style={styles.cardIconContainer}>
+                <Text style={styles.cardIconText}>{rating}</Text>
               </View>
               <Text style={styles.forthCardText}>Rating</Text>
-            </View>
-
+            </LinearGradient>
           </View>
           <View
             style={{
@@ -579,38 +602,51 @@ export default function HomeScreen({ }) {
             }}
           />
         </View>
-        <View style={{ marginTop: responsiveHeight(1) }}>
-          <Text style={styles.dashboardHeader}>Earnings for Today</Text>
+        <View style={{ marginTop: responsiveHeight(2) }}>
+          <Text style={styles.dashboardHeader}>📊 Today's Earnings</Text>
         </View>
-        <View style={styles.earningCardView}>
-          <Text style={[styles.earningCardText, { marginBottom: responsiveHeight(1) }]}>{todaysDate}</Text>
-          <View
-            style={{
-              marginVertical: 10,
-              borderBottomColor: '#dadada',
-              borderBottomWidth: StyleSheet.hairlineWidth + 1,
-            }}
-          />
-          <Text style={styles.earningCardheader}>Marketplace Orders</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-            <Text style={styles.earningCardTextAmount}>₵{todayEarning}</Text>
-            <View style={styles.verticleLine}></View>
-            <Text style={styles.earningCardTextNo}>{noofDeliverd} Order Delivered</Text>
+        <LinearGradient
+          colors={['#FFFFFF', '#F8FAFC']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.earningCardView}
+        >
+          <View style={styles.earningCardHeader}>
+            <Text style={styles.earningCardDate}>{todaysDate}</Text>
           </View>
-          <View
-            style={{
-              marginVertical: 10,
-              borderBottomColor: '#dadada',
-              borderBottomWidth: StyleSheet.hairlineWidth + 1,
-            }}
-          />
-          <Text style={styles.earningCardheader}>Shipping Orders</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-            <Text style={styles.earningCardTextAmount}>₵{todayShippingCompleted}</Text>
-            <View style={styles.verticleLine}></View>
-            <Text style={styles.earningCardTextNo}>{todayShippingCompletedNo} Order Delivered</Text>
+          
+          <View style={styles.earningSection}>
+            <Text style={styles.earningCardheader}>Marketplace Orders</Text>
+            <View style={styles.earningRow}>
+              <View style={styles.amountContainer}>
+                <Text style={styles.currencySymbol}>₵</Text>
+                <Text style={styles.earningCardTextAmount}>{todayEarning}</Text>
+              </View>
+              <View style={styles.verticleLine}></View>
+              <View style={styles.deliveryContainer}>
+                <Text style={styles.deliveryNumber}>{noofDeliverd}</Text>
+                <Text style={styles.deliveryText}>Orders Delivered</Text>
+              </View>
+            </View>
           </View>
-        </View>
+          
+          <View style={styles.divider} />
+          
+          <View style={styles.earningSection}>
+            <Text style={styles.earningCardheader}>Shipping Orders</Text>
+            <View style={styles.earningRow}>
+              <View style={styles.amountContainer}>
+                <Text style={styles.currencySymbol}>₵</Text>
+                <Text style={styles.earningCardTextAmount}>{todayShippingCompleted}</Text>
+              </View>
+              <View style={styles.verticleLine}></View>
+              <View style={styles.deliveryContainer}>
+                <Text style={styles.deliveryNumber}>{todayShippingCompletedNo}</Text>
+                <Text style={styles.deliveryText}>Orders Delivered</Text>
+              </View>
+            </View>
+          </View>
+        </LinearGradient>
 
       </ScrollView>
       <Modal
@@ -669,10 +705,12 @@ export default function HomeScreen({ }) {
   );
 }
 
+const { width } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F8FAFC',
     paddingTop: responsiveHeight(1)
   },
   wrapper: {
@@ -680,30 +718,43 @@ const styles = StyleSheet.create({
     //marginBottom: responsiveHeight(12)
   },
   dashboardHeader: {
-    color: '#2F2F2F',
-    fontFamily: 'Outfit-Medium',
-    fontSize: responsiveFontSize(2.5)
+    color: '#1E293B',
+    fontFamily: 'Outfit-SemiBold',
+    fontSize: responsiveFontSize(2.8),
+    marginBottom: responsiveHeight(1)
   },
   dropdown: {
-    height: responsiveHeight(4),
-    borderColor: 'gray',
-    borderWidth: 0.7,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    marginTop: 5
+    height: responsiveHeight(4.2),
+    borderColor: '#E2E8F0',
+    borderWidth: 1.5,
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    width: 100,
   },
   placeholderStyle: {
-    fontSize: 16,
-    color: '#2F2F2F'
+    fontSize: responsiveFontSize(1.5),
+    color: '#64748B',
+    fontFamily: 'Outfit-Medium'
   },
   selectedTextStyle: {
-    fontSize: 16,
-    color: '#2F2F2F'
+    fontSize: responsiveFontSize(1.5),
+    color: '#1E293B',
+    fontFamily: 'Outfit-SemiBold'
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
-    color: '#2F2F2F'
+    fontSize: responsiveFontSize(1.8),
+    color: '#1E293B',
+    fontFamily: 'Outfit-Medium'
   },
   imageStyle: {
     height: responsiveHeight(7),
@@ -713,111 +764,195 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   earningCardView: {
-    height: responsiveHeight(29),
     width: responsiveWidth(89),
-    backgroundColor: '#F6F6F6',
-    borderRadius: 8,
+    borderRadius: 16,
     flexDirection: 'column',
-    //alignItems: 'center',
-    //justifyContent: 'center',
-    borderColor: '#E0E0E0',
-    borderWidth: 1,
     marginTop: responsiveHeight(1),
     marginBottom: responsiveHeight(15),
-    padding: 20
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
   },
   firstCardViewSingle: {
-    height: responsiveHeight(20),
+    height: responsiveHeight(18),
     width: responsiveWidth(89),
-    backgroundColor: '#F6F6F6',
-    borderRadius: 8,
+    borderRadius: 16,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#E0E0E0',
-    borderWidth: 1
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 8,
+    paddingVertical: 20,
   },
   firstCardTextSingle: {
-    color: '#FF8C45',
+    color: '#FFFFFF',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2.2),
+    textAlign: 'center',
+    marginTop: 12,
   },
   firstCardView: {
-    height: responsiveHeight(23),
+    height: responsiveHeight(20),
     width: responsiveWidth(42),
-    backgroundColor: '#F6F6F6',
-    borderRadius: 8,
+    borderRadius: 16,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#E0E0E0',
-    borderWidth: 1
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 8,
+    paddingVertical: 20,
+  },
+  cardTouchable: {
+    borderRadius: 16,
+  },
+  cardIconContainer: {
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  cardIconText: {
+    color: '#FFFFFF',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(2.5),
   },
   firstCardText: {
-    color: '#339999',
+    color: '#FFFFFF',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
+    textAlign: 'center',
+    marginTop: 8,
   },
   firstCardSubText: {
-    color: '#9C9C9C',
-    fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(1.5)
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontFamily: 'Outfit-Medium',
+    fontSize: responsiveFontSize(1.4)
   },
   secondCardView: {
     height: responsiveHeight(25),
     width: responsiveWidth(42),
     backgroundColor: '#DEFFED',
-    borderRadius: 8,
+    borderRadius: 16,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
   },
   secondCardText: {
-    color: '#EB0000',
+    color: '#FFFFFF',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
+    textAlign: 'center',
+    marginTop: 8,
   },
   thirdCardText: {
-    color: '#3F709E',
+    color: '#FFFFFF',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
+    textAlign: 'center',
+    marginTop: 8,
   },
   forthCardText: {
-    color: '#FFCB45',
+    color: '#FFFFFF',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
+    textAlign: 'center',
+    marginTop: 8,
   },
   secondCardSubText: {
     color: '#FFFFFF',
     fontFamily: 'Outfit-Bold',
     fontSize: responsiveFontSize(2)
   },
-  earningCardText: {
-    color: '#2F2F2F',
-    fontFamily: 'Outfit-Medium',
-    fontSize: responsiveFontSize(2)
+  earningCardHeader: {
+    marginBottom: 20,
+  },
+  earningCardDate: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-SemiBold',
+    fontSize: responsiveFontSize(2.2),
+  },
+  earningSection: {
+    marginVertical: 8,
   },
   earningCardheader: {
-    color: '#909090',
-    fontFamily: 'Outfit-Medium',
-    fontSize: responsiveFontSize(2)
+    color: '#64748B',
+    fontFamily: 'Outfit-SemiBold',
+    fontSize: responsiveFontSize(1.8),
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  earningRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  amountContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    flex: 1,
+  },
+  currencySymbol: {
+    color: '#10B981',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(2.2),
+    marginRight: 4,
   },
   earningCardTextAmount: {
-    color: '#2F2F2F',
-    fontFamily: 'Outfit-Medium',
-    fontSize: responsiveFontSize(3),
-    marginRight: 10
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(3.2),
   },
   verticleLine: {
-    height: '100%',
-    width: 1,
-    backgroundColor: '#909090',
+    height: 40,
+    width: 2,
+    backgroundColor: '#E2E8F0',
+    marginHorizontal: 16,
   },
-  earningCardTextNo: {
-    color: '#2F2F2F',
+  deliveryContainer: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  deliveryNumber: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(2.5),
+  },
+  deliveryText: {
+    color: '#64748B',
     fontFamily: 'Outfit-Medium',
-    fontSize: responsiveFontSize(2),
-    marginLeft: 10
+    fontSize: responsiveFontSize(1.6),
+    textAlign: 'center',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#E2E8F0',
+    marginVertical: 20,
   },
   iconImage: {
     width: 22,

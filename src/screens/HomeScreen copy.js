@@ -36,6 +36,7 @@ import LocationServicesDialogBox from "react-native-android-location-services-di
 import { setNewOrder, setNewShipping } from '../store/notificationSlice';
 import LottieLoader from '../utils/LottieLoader';
 // import { WebView } from 'react-native-webview';
+import ExpiryNotificationBanner from '../helper/ExpiryNotificationBanner';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const data = [
@@ -43,11 +44,11 @@ const data = [
   { label: 'Date Wise', value: '2' },
 ];
 
-export default function HomeScreen({  }) {
+export default function HomeScreen({ }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { data: products, status } = useSelector(state => state.products)
-  const { userInfo } = useContext(AuthContext)
+  const { logout } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true)
   const [value, setValue] = useState('1');
   const [isFocus, setIsFocus] = useState(false);
@@ -64,12 +65,14 @@ export default function HomeScreen({  }) {
   const [todaysDate, setTodaysDate] = useState('')
   const [notificationStatus, setNotificationStatus] = useState(false)
   const [shippingNotification, setShippingNotification] = useState(false)
+  const [userInfo, setuserInfo] = useState([])
 
   const [shippingCompleted, setShippingCompleted] = useState(0)
   const [todayShippingCompleted, setTodayShippingCompleted] = useState(0)
   const [todayShippingCompletedNo, setTodayShippingCompletedNo] = useState(0)
   const [refreshing, setRefreshing] = useState(false);
   const { hasNewOrder, hasNewShipping } = useSelector(state => state.notification);
+  const [expiryRefreshTrigger, setExpiryRefreshTrigger] = useState(0);
 
   const fetchNewOrders = () => {
     AsyncStorage.getItem('userToken', (err, usertoken) => {
@@ -111,9 +114,9 @@ export default function HomeScreen({  }) {
         },
       })
         .then(res => {
-          let userInfo = res.data.response.records;
-          console.log(JSON.stringify(userInfo), 'fetch new orders')
-          if (userInfo.length > 0) {
+          let userInfo = res.data.response.records.shipments;
+          console.log(JSON.stringify(userInfo), 'fetch new shipping orders')
+          if (userInfo) {
             dispatch(setNewShipping(true));
           } else {
             dispatch(setNewShipping(false));
@@ -121,10 +124,20 @@ export default function HomeScreen({  }) {
           setIsLoading(false);
         })
         .catch(e => {
-          console.log(`User fetch error ${e}`)
+          console.log(`User fetch error fetchNewShippingOrders ${e}`)
         });
     });
   }
+
+  // Auto-refresh every 2 minutes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('Auto-refreshing shipping orders');
+      fetchNewShippingOrders(); 
+    }, 2 * 60 * 1000); // 2 minutes in milliseconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const getFCMToken = async () => {
     try {
@@ -329,10 +342,69 @@ export default function HomeScreen({  }) {
     toggleModal()
   }
 
+
+  const fetchProfileDetails = () => {
+    AsyncStorage.getItem('userToken', (err, usertoken) => {
+      axios.get(`${process.env.API_URL}/api/driver/driver-profile`, {
+        headers: {
+          "Authorization": 'Bearer ' + usertoken,
+          "Content-Type": 'application/json'
+        },
+      })
+        .then(res => {
+          let userInfo = res.data.response.records.data;
+          console.log(userInfo, 'user data from contact information from home screen');
+          if (userInfo.status == 'Pending') {
+            // Check if popup has been shown before
+            AsyncStorage.getItem('documentUploadPopupShown', (err, shown) => {
+              if (!shown) {
+                Alert.alert('Action Required', 'Please Upload your documents to activate your account.', [
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      // Mark popup as shown
+                      AsyncStorage.setItem('documentUploadPopupShown', 'true');
+                      navigation.navigate('PROFILE', { screen: 'EditDocuments' });
+                    }
+                  },
+                ]);
+              }
+            });
+          } else {
+            // Reset the flag if status is not Pending (e.g., Active, Approved, etc.)
+            AsyncStorage.removeItem('documentUploadPopupShown');
+          }
+
+          if (userInfo.userStatus == 'Inactive') {
+            Alert.alert('Inactive', 'Your account is inactive. Please contact support.', [
+              { text: 'OK', onPress: () => logout() },
+            ]);
+          }
+
+          // Store userInfo in AsyncStorage
+          AsyncStorage.setItem('userInfo', JSON.stringify(userInfo), (error) => {
+            if (error) {
+              console.log('Error storing userInfo:', error);
+            } else {
+              console.log('userInfo stored successfully');
+              // Trigger expiry banner refresh after storing new data
+              setExpiryRefreshTrigger(prev => prev + 1);
+            }
+          });
+
+          setuserInfo(userInfo);
+        })
+        .catch(e => {
+          console.log(`Profile error ${e}`);
+        });
+    });
+  }
+
   useEffect(() => {
     fetchNewOrders()
     fetchNewShippingOrders()
     fetchData();
+    //fetchProfileDetails()
   }, [])
 
   useFocusEffect(
@@ -340,8 +412,21 @@ export default function HomeScreen({  }) {
       fetchNewOrders()
       fetchNewShippingOrders()
       fetchData()
+      fetchProfileDetails()
+      setExpiryRefreshTrigger(prev => prev + 1);
     }, [])
   )
+
+
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setValue('1');
+    fetchNewOrders()
+    fetchData()
+    fetchProfileDetails()
+    setRefreshing(false);
+  }, []);
 
   if (status == 'loading') {
     return (
@@ -349,17 +434,10 @@ export default function HomeScreen({  }) {
     )
   }
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setValue('1');
-    fetchNewOrders()
-    fetchData()
-    setRefreshing(false);
-  }, []);
-
   return (
     <SafeAreaView style={styles.Container}>
       <CustomHeader commingFrom={'Home'} onPress={() => navigation.navigate('Notification')} onPressProfile={() => navigation.navigate('Profile')} />
+      <ExpiryNotificationBanner navigation={navigation} refreshTrigger={expiryRefreshTrigger} />
       <ScrollView style={styles.wrapper} refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#339999" colors={['#339999']} />
       }>
@@ -427,17 +505,11 @@ export default function HomeScreen({  }) {
                 <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: '#FF8C45', justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
                   <Text style={styles.secondCardSubText}>{shippingCompleted}</Text>
                 </View>
-                {/* <WebView
-  originWhitelist={['*']}
-  source={{ html: `<img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmhtZGpyczViZzZkOXJvcXRycHFjNjZkMDVlMTQya2I2bWZ1dXp0eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/duzpaTbCUy9Vu/giphy.gif" style="width:100%;height:100%;" />` }}
-  style={{ width: 200, height: 200 }}
-/> */}
                 <Text style={styles.firstCardTextSingle}>Completed Shipping Orders</Text>
               </View>
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15, marginBottom: 10 }}>
-            {/* <TouchableOpacity onPress={() => navigation.navigate('OrderScreen', { pageFrom: 'completed' })}> */}
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Orders', {
@@ -583,8 +655,8 @@ export default function HomeScreen({  }) {
           </View>
         </View>
       </Modal>
-      <LottieLoader 
-        visible={isLoading} 
+      <LottieLoader
+        visible={isLoading}
         size={100}
       />
     </SafeAreaView>
