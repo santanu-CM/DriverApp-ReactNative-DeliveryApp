@@ -503,22 +503,19 @@ export default function HomeScreen({ }) {
                 })
               }
             >
-              <LinearGradient
-                colors={['#FF8C45', '#FF6B1A', '#E55100']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.firstCardViewSingle}
-              >
-                <View style={styles.shippingCardBackground}>
-                  <View style={styles.cardIconContainer}>
-                    <Text style={styles.cardIconText}>{shippingCompleted}</Text>
-                  </View>
-                  <View style={styles.cardTextContainer}>
-                    <Text style={styles.firstCardTextSingle}>Completed</Text>
-                    <Text style={styles.cardSubtitle}>Shipping Orders</Text>
-                  </View>
+              <View style={styles.firstCardViewSingle}>
+                <View style={[styles.cardLeftAccent, { backgroundColor: '#FF8C45' }]} />
+                <View style={styles.cardIconContainerNew}>
+                  <Text style={styles.cardIconNew}>🚚</Text>
                 </View>
-              </LinearGradient>
+                <View style={styles.cardContentNew}>
+                  <Text style={styles.cardTitleNew}>Completed Shipping</Text>
+                  <Text style={styles.cardSubtitleNew}>View completed orders</Text>
+                </View>
+                <View style={styles.cardNumberContainer}>
+                  <Text style={styles.cardNumberNew}>{shippingCompleted}</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15, marginBottom: 10 }}>
@@ -531,20 +528,19 @@ export default function HomeScreen({ }) {
               }
               style={styles.cardTouchable}
             >
-              <LinearGradient
-                colors={['#10B981', '#059669', '#047857']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.firstCardView}
-              >
-                <View style={styles.cardGlow} />
-                <View style={styles.cardIconContainerSmall}>
-                  <Text style={styles.cardIconText}>✓</Text>
+              <View style={styles.firstCardView}>
+                <View style={[styles.cardLeftAccent, { backgroundColor: '#10B981' }]} />
+                <View style={styles.cardIconFloating}>
+                  <Text style={styles.floatingIcon}>✓</Text>
                 </View>
-                <Text style={styles.cardNumber}>{completed}</Text>
-                <Text style={styles.firstCardText}>Completed</Text>
-                <Text style={styles.cardSubtitleSmall}>Orders</Text>
-              </LinearGradient>
+                <View style={styles.cardNumberBadge}>
+                  <Text style={styles.cardNumberBadgeText}>{completed}</Text>
+                </View>
+                <View style={styles.cardContentCentered}>
+                  <Text style={styles.cardTitleWhite}>Completed</Text>
+                  <Text style={styles.cardSubtitleWhite}>Orders</Text>
+                </View>
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
@@ -555,20 +551,19 @@ export default function HomeScreen({ }) {
               }
               style={styles.cardTouchable}
             >
-              <LinearGradient
-                colors={['#EF4444', '#DC2626', '#B91C1C']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.firstCardView}
-              >
-                <View style={styles.cardGlow} />
-                <View style={styles.cardIconContainerSmall}>
-                  <Text style={styles.cardIconText}>✕</Text>
+              <View style={styles.firstCardView}>
+                <View style={[styles.cardLeftAccent, { backgroundColor: '#EF4444' }]} />
+                <View style={styles.cardIconFloating}>
+                  <Text style={styles.floatingIcon}>✕</Text>
                 </View>
-                <Text style={styles.cardNumber}>{declined}</Text>
-                <Text style={styles.secondCardText}>Declined</Text>
-                <Text style={styles.cardSubtitleSmall}>Orders</Text>
-              </LinearGradient>
+                <View style={styles.cardNumberBadge}>
+                  <Text style={styles.cardNumberBadgeText}>{declined}</Text>
+                </View>
+                <View style={styles.cardContentCentered}>
+                  <Text style={styles.cardTitleWhite}>Declined</Text>
+                  <Text style={styles.cardSubtitleWhite}>Orders</Text>
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
@@ -581,35 +576,33 @@ export default function HomeScreen({ }) {
               }
               style={styles.cardTouchable}
             >
-              <LinearGradient
-                colors={['#3B82F6', '#2563EB', '#1D4ED8']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.firstCardView}
-              >
-                <View style={styles.cardGlow} />
-                <View style={styles.cardIconContainerSmall}>
-                  <Text style={styles.cardIconText}>📋</Text>
+              <View style={styles.firstCardView}>
+                <View style={[styles.cardLeftAccent, { backgroundColor: '#3B82F6' }]} />
+                <View style={styles.cardIconFloating}>
+                  <Text style={styles.floatingIcon}>📋</Text>
                 </View>
-                <Text style={styles.cardNumber}>{accepted}</Text>
-                <Text style={styles.thirdCardText}>Accepted</Text>
-                <Text style={styles.cardSubtitleSmall}>Orders</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <LinearGradient
-              colors={['#F59E0B', '#D97706', '#B45309']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.firstCardView}
-            >
-              <View style={styles.cardGlow} />
-              <View style={styles.cardIconContainerSmall}>
-                <Text style={styles.cardIconText}>⭐</Text>
+                <View style={styles.cardNumberBadge}>
+                  <Text style={styles.cardNumberBadgeText}>{accepted}</Text>
+                </View>
+                <View style={styles.cardContentCentered}>
+                  <Text style={styles.cardTitleWhite}>Accepted</Text>
+                  <Text style={styles.cardSubtitleWhite}>Orders</Text>
+                </View>
               </View>
-              <Text style={styles.cardNumber}>{rating}</Text>
-              <Text style={styles.forthCardText}>Rating</Text>
-              <Text style={styles.cardSubtitleSmall}>Average</Text>
-            </LinearGradient>
+            </TouchableOpacity>
+            <View style={styles.firstCardView}>
+              <View style={[styles.cardLeftAccent, { backgroundColor: '#F59E0B' }]} />
+              <View style={styles.cardIconFloating}>
+                <Text style={styles.floatingIcon}>⭐</Text>
+              </View>
+              <View style={styles.cardNumberBadge}>
+                <Text style={styles.cardNumberBadgeText}>{rating}</Text>
+              </View>
+              <View style={styles.cardContentCentered}>
+                <Text style={styles.cardTitleWhite}>Rating</Text>
+                <Text style={styles.cardSubtitleWhite}>Average</Text>
+              </View>
+            </View>
           </View>
           <View
             style={{
@@ -831,29 +824,201 @@ const styles = StyleSheet.create({
     height: responsiveHeight(18),
     width: responsiveWidth(89),
     borderRadius: 20,
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    shadowColor: '#FF8C45',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 8,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.15,
     shadowRadius: 16,
     elevation: 12,
     paddingHorizontal: 24,
     paddingVertical: 20,
     overflow: 'hidden',
+    position: 'relative',
   },
-  shippingCardBackground: {
-    flexDirection: 'row',
+  cardGlowEffect: {
+    position: 'absolute',
+    top: -50,
+    right: -50,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  cardLeftAccent: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 6,
+    borderTopLeftRadius: 16,
+    borderBottomLeftRadius: 16,
+  },
+  cardIconContainerNew: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#F8FAFC',
+    justifyContent: 'center',
     alignItems: 'center',
-    flex: 1,
+    marginRight: 20,
+    borderWidth: 2,
+    borderColor: '#E2E8F0',
   },
-  cardTextContainer: {
-    marginLeft: 16,
+  iconGradientBg: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  cardIconContainerSmall: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F8FAFC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 8,
+  },
+  cardIconNew: {
+    fontSize: responsiveFontSize(2.5),
+  },
+  cardIconFloating: {
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    width: 35,
+    height: 35,
+    borderRadius: 17.5,
+    backgroundColor: '#F8FAFC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  floatingIcon: {
+    fontSize: responsiveFontSize(1.8),
+  },
+  cardNumberBadge: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    backgroundColor: '#F1F5F9',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  cardNumberBadgeText: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(1.8),
+  },
+  cardContentCentered: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardTitleWhite: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(2.2),
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  cardSubtitleWhite: {
+    color: '#64748B',
+    fontFamily: 'Outfit-Medium',
+    fontSize: responsiveFontSize(1.6),
+    textAlign: 'center',
+  },
+  cardIconSmall: {
+    fontSize: responsiveFontSize(1.8),
+  },
+  cardContentNew: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  cardContentSmall: {
+    flex: 1,
+    marginTop: 12,
+    alignItems: 'center',
+  },
+  cardContentSmallNoIcon: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardTitleNew: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(2.4),
+    marginBottom: 4,
+  },
+  cardTitleGradient: {
+    color: '#FFFFFF',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(2.2),
+    textAlign: 'center',
+    marginBottom: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  cardTitleSmall: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(1.8),
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  cardSubtitleNew: {
+    color: '#64748B',
+    fontFamily: 'Outfit-Medium',
+    fontSize: responsiveFontSize(1.6),
+  },
+  cardSubtitleSmall: {
+    color: '#64748B',
+    fontFamily: 'Outfit-Medium',
+    fontSize: responsiveFontSize(1.4),
+    textAlign: 'center',
+  },
+  cardNumberContainer: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    backgroundColor: '#F1F5F9',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  cardNumberContainerSmall: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: '#F1F5F9',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 16,
+  },
+  cardNumberNew: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(2),
+  },
+  cardNumberSmall: {
+    color: '#1E293B',
+    fontFamily: 'Outfit-Bold',
+    fontSize: responsiveFontSize(1.8),
   },
   firstCardTextSingle: {
     color: '#FFFFFF',
@@ -867,23 +1032,31 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(1.8),
   },
   firstCardView: {
-    height: responsiveHeight(22),
+    height: Platform.OS === 'ios' ? responsiveHeight(18) : responsiveHeight(19),
     width: responsiveWidth(42),
     borderRadius: 20,
+    backgroundColor: '#FFFFFF',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 8,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.15,
     shadowRadius: 16,
     elevation: 12,
-    paddingVertical: 24,
+    padding: 20,
     overflow: 'hidden',
     position: 'relative',
+  },
+  cardPattern: {
+    position: 'absolute',
+    top: -30,
+    right: -30,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   cardGlow: {
     position: 'absolute',
