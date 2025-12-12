@@ -505,6 +505,9 @@ export default function HomeScreen({ }) {
             >
               <View style={styles.firstCardViewSingle}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#FF8C45' }]} />
+                <View style={[styles.cardGlowEffect, { backgroundColor: 'rgba(255, 140, 69, 0.1)' }]} />
+                <View style={[styles.cardGlowEffectLeft, { backgroundColor: 'rgba(255, 140, 69, 0.08)' }]} />
+                <View style={[styles.cardGlowEffectBottom, { backgroundColor: 'rgba(255, 140, 69, 0.06)' }]} />
                 <View style={styles.cardIconContainerNew}>
                   <Text style={styles.cardIconNew}>🚚</Text>
                 </View>
@@ -530,6 +533,9 @@ export default function HomeScreen({ }) {
             >
               <View style={styles.firstCardView}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#10B981' }]} />
+                <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(16, 185, 129, 0.1)' }]} />
+                <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} />
+                <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(16, 185, 129, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
                   <Text style={styles.floatingIcon}>✓</Text>
                 </View>
@@ -553,6 +559,9 @@ export default function HomeScreen({ }) {
             >
               <View style={styles.firstCardView}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#EF4444' }]} />
+                <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]} />
+                <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(239, 68, 68, 0.08)' }]} />
+                <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(239, 68, 68, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
                   <Text style={styles.floatingIcon}>✕</Text>
                 </View>
@@ -578,6 +587,9 @@ export default function HomeScreen({ }) {
             >
               <View style={styles.firstCardView}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#3B82F6' }]} />
+                <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(59, 130, 246, 0.1)' }]} />
+                <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} />
+                <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(59, 130, 246, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
                   <Text style={styles.floatingIcon}>📋</Text>
                 </View>
@@ -592,6 +604,9 @@ export default function HomeScreen({ }) {
             </TouchableOpacity>
             <View style={styles.firstCardView}>
               <View style={[styles.cardLeftAccent, { backgroundColor: '#F59E0B' }]} />
+              <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]} />
+              <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(245, 158, 11, 0.08)' }]} />
+              <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(245, 158, 11, 0.06)' }]} />
               <View style={styles.cardIconFloating}>
                 <Text style={styles.floatingIcon}>⭐</Text>
               </View>
@@ -629,12 +644,11 @@ export default function HomeScreen({ }) {
             <Text style={styles.earningCardDate}>{todaysDate}</Text>
           </View>
           
-          <LinearGradient
-            colors={['#10B981', '#059669']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.earningSection}
-          >
+          <View style={styles.earningSection}>
+            <View style={[styles.cardLeftAccent, { backgroundColor: '#10B981' }]} />
+            <View style={[styles.earningGlowEffect, { backgroundColor: 'rgba(16, 185, 129, 0.1)' }]} />
+            <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} />
+            <View style={[styles.earningGlowEffectBottom, { backgroundColor: 'rgba(16, 185, 129, 0.06)' }]} />
             <View style={styles.earningSectionContent}>
               <Text style={styles.earningCardheader}>💼 Marketplace Orders</Text>
               <View style={styles.earningRow}>
@@ -649,16 +663,15 @@ export default function HomeScreen({ }) {
                 </View>
               </View>
             </View>
-          </LinearGradient>
+          </View>
           
           <View style={styles.divider} />
           
-          <LinearGradient
-            colors={['#3B82F6', '#2563EB']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.earningSection}
-          >
+          <View style={styles.earningSection}>
+            <View style={[styles.cardLeftAccent, { backgroundColor: '#3B82F6' }]} />
+            <View style={[styles.earningGlowEffect, { backgroundColor: 'rgba(59, 130, 246, 0.1)' }]} />
+            <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} />
+            <View style={[styles.earningGlowEffectBottom, { backgroundColor: 'rgba(59, 130, 246, 0.06)' }]} />
             <View style={styles.earningSectionContent}>
               <Text style={styles.earningCardheader}>🚚 Shipping Orders</Text>
               <View style={styles.earningRow}>
@@ -673,7 +686,7 @@ export default function HomeScreen({ }) {
                 </View>
               </View>
             </View>
-          </LinearGradient>
+          </View>
         </LinearGradient>
 
       </ScrollView>
@@ -847,7 +860,70 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  cardGlowEffectLeft: {
+    position: 'absolute',
+    top: 20,
+    left: -40,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  cardGlowEffectBottom: {
+    position: 'absolute',
+    bottom: -40,
+    right: 20,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+  },
+  cardGlowEffectSmall: {
+    position: 'absolute',
+    top: -30,
+    right: -30,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  cardGlowEffectSmallLeft: {
+    position: 'absolute',
+    top: 10,
+    left: -25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  cardGlowEffectSmallBottom: {
+    position: 'absolute',
+    bottom: -25,
+    right: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+  },
+  earningGlowEffect: {
+    position: 'absolute',
+    top: -30,
+    right: -30,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  earningGlowEffectLeft: {
+    position: 'absolute',
+    top: 10,
+    left: -25,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  earningGlowEffectBottom: {
+    position: 'absolute',
+    bottom: -25,
+    right: 15,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
   },
   cardLeftAccent: {
     position: 'absolute',
@@ -893,11 +969,11 @@ const styles = StyleSheet.create({
   },
   cardIconFloating: {
     position: 'absolute',
-    top: 16,
-    left: 16,
-    width: 35,
-    height: 35,
-    borderRadius: 17.5,
+    top: 12,
+    left: 12,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: '#F8FAFC',
     justifyContent: 'center',
     alignItems: 'center',
@@ -905,40 +981,44 @@ const styles = StyleSheet.create({
     borderColor: '#E2E8F0',
   },
   floatingIcon: {
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(1.6),
   },
   cardNumberBadge: {
     position: 'absolute',
-    top: 16,
-    right: 16,
+    top: 12,
+    right: 12,
     backgroundColor: '#F1F5F9',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: '#E2E8F0',
+    minWidth: 40,
+    alignItems: 'center',
   },
   cardNumberBadgeText: {
     color: '#1E293B',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(1.6),
   },
   cardContentCentered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 20,
+    paddingBottom: 8,
   },
   cardTitleWhite: {
     color: '#1E293B',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(2.2),
+    fontSize: responsiveFontSize(2),
     textAlign: 'center',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   cardSubtitleWhite: {
     color: '#64748B',
     fontFamily: 'Outfit-Medium',
-    fontSize: responsiveFontSize(1.6),
+    fontSize: responsiveFontSize(1.4),
     textAlign: 'center',
   },
   cardIconSmall: {
@@ -947,6 +1027,7 @@ const styles = StyleSheet.create({
   cardContentNew: {
     flex: 1,
     justifyContent: 'center',
+    paddingRight: 60,
   },
   cardContentSmall: {
     flex: 1,
@@ -994,12 +1075,16 @@ const styles = StyleSheet.create({
   },
   cardNumberContainer: {
     position: 'absolute',
-    top: 16,
-    right: 16,
+    top: 20,
+    right: 20,
     backgroundColor: '#F1F5F9',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    minWidth: 50,
+    alignItems: 'center',
   },
   cardNumberContainerSmall: {
     position: 'absolute',
@@ -1013,7 +1098,7 @@ const styles = StyleSheet.create({
   cardNumberNew: {
     color: '#1E293B',
     fontFamily: 'Outfit-Bold',
-    fontSize: responsiveFontSize(2),
+    fontSize: responsiveFontSize(2.2),
   },
   cardNumberSmall: {
     color: '#1E293B',
@@ -1184,13 +1269,17 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     overflow: 'hidden',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    position: 'relative',
   },
   earningSectionContent: {
     position: 'relative',
     zIndex: 1,
   },
   earningCardheader: {
-    color: '#FFFFFF',
+    color: '#1E293B',
     fontFamily: 'Outfit-Bold',
     fontSize: responsiveFontSize(1.8),
     marginBottom: 12,
@@ -1208,20 +1297,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   currencySymbol: {
-    color: '#FFFFFF',
+    color: '#10B981',
     fontFamily: 'Outfit-Bold',
     fontSize: responsiveFontSize(2.5),
     marginRight: 4,
   },
   earningCardTextAmount: {
-    color: '#FFFFFF',
+    color: '#1E293B',
     fontFamily: 'Outfit-Bold',
     fontSize: responsiveFontSize(3.5),
   },
   verticleLine: {
     height: 40,
     width: 2,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: '#E2E8F0',
     marginHorizontal: 16,
   },
   deliveryContainer: {
@@ -1229,12 +1318,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   deliveryNumber: {
-    color: '#FFFFFF',
+    color: '#1E293B',
     fontFamily: 'Outfit-Bold',
     fontSize: responsiveFontSize(2.8),
   },
   deliveryText: {
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: '#64748B',
     fontFamily: 'Outfit-Medium',
     fontSize: responsiveFontSize(1.6),
     textAlign: 'center',
