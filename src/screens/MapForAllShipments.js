@@ -423,12 +423,12 @@ const MapForAllShipments = ({ route }) => {
           <Text style={{ color: '#339999', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(3), textAlign: 'center' }}>
             No shipments found
           </Text>
-          <Text style={{ color: '#666', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), textAlign: 'center', marginTop: 10 }}>
+          {/* <Text style={{ color: '#666', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), textAlign: 'center', marginTop: 10 }}>
             Debug: Shipments count: {allShipmentList.length}
           </Text>
           <Text style={{ color: '#666', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(1.5), textAlign: 'center' }}>
             Coordinates count: {coordinates.length}
-          </Text>
+          </Text> */}
         </View>
       )}
       
