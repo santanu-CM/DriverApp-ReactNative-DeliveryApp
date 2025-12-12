@@ -99,7 +99,7 @@ const AuthStack = () => {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="My Availability"
         component={AvailabilityScreen}
         options={{
@@ -108,7 +108,7 @@ const AuthStack = () => {
             <Image source={availabilityImg} style={{ width: 25, height: 25 }} color={color} />
           ),
         }}
-      />
+      /> */}
       <Drawer.Screen
         name="Documents"
         component={EditDocuments}
