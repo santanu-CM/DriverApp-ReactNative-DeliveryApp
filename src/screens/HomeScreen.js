@@ -506,7 +506,7 @@ export default function HomeScreen({ }) {
               <View style={styles.firstCardViewSingle}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#FF8C45' }]} />
                 <View style={[styles.cardGlowEffect, { backgroundColor: 'rgba(255, 140, 69, 0.1)' }]} />
-                <View style={[styles.cardGlowEffectLeft, { backgroundColor: 'rgba(255, 140, 69, 0.08)' }]} />
+                {/* <View style={[styles.cardGlowEffectLeft, { backgroundColor: 'rgba(255, 140, 69, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectBottom, { backgroundColor: 'rgba(255, 140, 69, 0.06)' }]} />
                 <View style={styles.cardIconContainerNew}>
                   <Text style={styles.cardIconNew}>🚚</Text>
@@ -534,7 +534,7 @@ export default function HomeScreen({ }) {
               <View style={styles.firstCardView}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#10B981' }]} />
                 <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(16, 185, 129, 0.1)' }]} />
-                <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} />
+                {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(16, 185, 129, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
                   <Text style={styles.floatingIcon}>✓</Text>
@@ -560,7 +560,7 @@ export default function HomeScreen({ }) {
               <View style={styles.firstCardView}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#EF4444' }]} />
                 <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]} />
-                <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(239, 68, 68, 0.08)' }]} />
+                {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(239, 68, 68, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(239, 68, 68, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
                   <Text style={styles.floatingIcon}>✕</Text>
@@ -588,7 +588,7 @@ export default function HomeScreen({ }) {
               <View style={styles.firstCardView}>
                 <View style={[styles.cardLeftAccent, { backgroundColor: '#3B82F6' }]} />
                 <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(59, 130, 246, 0.1)' }]} />
-                <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} />
+                {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(59, 130, 246, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
                   <Text style={styles.floatingIcon}>📋</Text>
@@ -605,7 +605,7 @@ export default function HomeScreen({ }) {
             <View style={styles.firstCardView}>
               <View style={[styles.cardLeftAccent, { backgroundColor: '#F59E0B' }]} />
               <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]} />
-              <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(245, 158, 11, 0.08)' }]} />
+              {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(245, 158, 11, 0.08)' }]} /> */}
               <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(245, 158, 11, 0.06)' }]} />
               <View style={styles.cardIconFloating}>
                 <Text style={styles.floatingIcon}>⭐</Text>
@@ -647,7 +647,7 @@ export default function HomeScreen({ }) {
           <View style={styles.earningSection}>
             <View style={[styles.cardLeftAccent, { backgroundColor: '#10B981' }]} />
             <View style={[styles.earningGlowEffect, { backgroundColor: 'rgba(16, 185, 129, 0.1)' }]} />
-            <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} />
+            {/* <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} /> */}
             <View style={[styles.earningGlowEffectBottom, { backgroundColor: 'rgba(16, 185, 129, 0.06)' }]} />
             <View style={styles.earningSectionContent}>
               <Text style={styles.earningCardheader}>💼 Marketplace Orders</Text>
@@ -670,7 +670,7 @@ export default function HomeScreen({ }) {
           <View style={styles.earningSection}>
             <View style={[styles.cardLeftAccent, { backgroundColor: '#3B82F6' }]} />
             <View style={[styles.earningGlowEffect, { backgroundColor: 'rgba(59, 130, 246, 0.1)' }]} />
-            <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} />
+            {/* <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} /> */}
             <View style={[styles.earningGlowEffectBottom, { backgroundColor: 'rgba(59, 130, 246, 0.06)' }]} />
             <View style={styles.earningSectionContent}>
               <Text style={styles.earningCardheader}>🚚 Shipping Orders</Text>
