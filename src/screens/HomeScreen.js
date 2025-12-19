@@ -24,7 +24,7 @@ import CustomButton from '../components/CustomButton'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../store/cartSlice';
-import { allUserImg, chatImg, chatImgRed, documentImg, infoImg, newOrderArrived, newShippingArrived, requestImg, userPhoto } from '../utils/Images';
+import { allUserImg, chatImg, chatImgRed, documentImg, homeAcceptedOrderImg, homeCompletedOrderImg, homeCompleteShippingImg, homeDateImg, homeDeclinedOrderImg, homeMarketplaceOrderImg, homeMoneyImg, homeOverviewImg, homeRatingImg, homeShippingOrdersImg, infoImg, newOrderArrived, newShippingArrived, requestImg, userPhoto } from '../utils/Images';
 import Loader from '../utils/Loader';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import CustomHeader from '../components/CustomHeader';
@@ -461,7 +461,10 @@ export default function HomeScreen({ }) {
           : <></>}
         <View style={{ marginBottom: responsiveHeight(2) }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: responsiveHeight(1), paddingRight: 5 }}>
-            <Text style={[styles.dashboardHeader, { flex: 1, marginRight: 10 }]}>📈 Overview</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10, gap: 10 }}>
+              <Image source={homeOverviewImg} style={styles.iconImage} />
+              <Text style={styles.dashboardHeader}>Overview</Text>
+            </View>
             <View style={{ width: 100 }}>
             <Dropdown
               style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -509,7 +512,7 @@ export default function HomeScreen({ }) {
                 {/* <View style={[styles.cardGlowEffectLeft, { backgroundColor: 'rgba(255, 140, 69, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectBottom, { backgroundColor: 'rgba(255, 140, 69, 0.06)' }]} />
                 <View style={styles.cardIconContainerNew}>
-                  <Text style={styles.cardIconNew}>🚚</Text>
+                  <Image source={homeCompleteShippingImg} style={styles.cardIconNew} />
                 </View>
                 <View style={styles.cardContentNew}>
                   <Text style={styles.cardTitleNew}>Completed Shipping</Text>
@@ -537,7 +540,7 @@ export default function HomeScreen({ }) {
                 {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(16, 185, 129, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
-                  <Text style={styles.floatingIcon}>✓</Text>
+                  <Image source={homeCompletedOrderImg} style={styles.cardIconNew2} />
                 </View>
                 <View style={styles.cardNumberBadge}>
                   <Text style={styles.cardNumberBadgeText}>{completed}</Text>
@@ -563,7 +566,7 @@ export default function HomeScreen({ }) {
                 {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(239, 68, 68, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(239, 68, 68, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
-                  <Text style={styles.floatingIcon}>✕</Text>
+                <Image source={homeDeclinedOrderImg} style={styles.cardIconNew2} />
                 </View>
                 <View style={styles.cardNumberBadge}>
                   <Text style={styles.cardNumberBadgeText}>{declined}</Text>
@@ -591,7 +594,7 @@ export default function HomeScreen({ }) {
                 {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} /> */}
                 <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(59, 130, 246, 0.06)' }]} />
                 <View style={styles.cardIconFloating}>
-                  <Text style={styles.floatingIcon}>📋</Text>
+                  <Image source={homeAcceptedOrderImg} style={styles.cardIconNew3} />
                 </View>
                 <View style={styles.cardNumberBadge}>
                   <Text style={styles.cardNumberBadgeText}>{accepted}</Text>
@@ -608,7 +611,7 @@ export default function HomeScreen({ }) {
               {/* <View style={[styles.cardGlowEffectSmallLeft, { backgroundColor: 'rgba(245, 158, 11, 0.08)' }]} /> */}
               <View style={[styles.cardGlowEffectSmallBottom, { backgroundColor: 'rgba(245, 158, 11, 0.06)' }]} />
               <View style={styles.cardIconFloating}>
-                <Text style={styles.floatingIcon}>⭐</Text>
+                <Image source={homeRatingImg} style={styles.cardIconNew3} />
               </View>
               <View style={styles.cardNumberBadge}>
                 <Text style={styles.cardNumberBadgeText}>{rating}</Text>
@@ -628,7 +631,10 @@ export default function HomeScreen({ }) {
           />
         </View>
         <View style={{ marginTop: responsiveHeight(2) }}>
-          <Text style={styles.dashboardHeader}>📊 Today's Earnings</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10, gap: 10 }}>
+            <Image source={homeMoneyImg} style={styles.iconImage} />
+            <Text style={styles.dashboardHeader}>Today's Earnings</Text>
+          </View>
         </View>
         <LinearGradient
           colors={['#FFFFFF', '#F8FAFC', '#F1F5F9']}
@@ -639,7 +645,7 @@ export default function HomeScreen({ }) {
           <View style={styles.earningCardGlow} />
           <View style={styles.earningCardHeader}>
             <View style={styles.earningHeaderIcon}>
-              <Text style={styles.earningIcon}>💰</Text>
+              <Image source={homeDateImg} style={styles.earningIcon} />
             </View>
             <Text style={styles.earningCardDate}>{todaysDate}</Text>
           </View>
@@ -650,7 +656,10 @@ export default function HomeScreen({ }) {
             {/* <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(16, 185, 129, 0.08)' }]} /> */}
             <View style={[styles.earningGlowEffectBottom, { backgroundColor: 'rgba(16, 185, 129, 0.06)' }]} />
             <View style={styles.earningSectionContent}>
-              <Text style={styles.earningCardheader}>💼 Marketplace Orders</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10, gap: 10 }}>
+                <Image source={homeMarketplaceOrderImg} style={styles.cardIconNew4} />
+                <Text style={styles.earningCardheader}>Marketplace Orders</Text>
+              </View>
               <View style={styles.earningRow}>
                 <View style={styles.amountContainer}>
                   <Text style={styles.currencySymbol}>₵</Text>
@@ -673,7 +682,10 @@ export default function HomeScreen({ }) {
             {/* <View style={[styles.earningGlowEffectLeft, { backgroundColor: 'rgba(59, 130, 246, 0.08)' }]} /> */}
             <View style={[styles.earningGlowEffectBottom, { backgroundColor: 'rgba(59, 130, 246, 0.06)' }]} />
             <View style={styles.earningSectionContent}>
-              <Text style={styles.earningCardheader}>🚚 Shipping Orders</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 10, gap: 10 }}>
+                <Image source={homeShippingOrdersImg} style={styles.cardIconNew4} />
+                <Text style={styles.earningCardheader}>Shipping Orders</Text>
+              </View>
               <View style={styles.earningRow}>
                 <View style={styles.amountContainer}>
                   <Text style={styles.currencySymbol}>₵</Text>
@@ -762,7 +774,7 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     fontFamily: 'Outfit-SemiBold',
     fontSize: responsiveFontSize(2.8),
-    marginBottom: responsiveHeight(1)
+    
   },
   dropdown: {
     height: responsiveHeight(4.2),
@@ -965,7 +977,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   cardIconNew: {
-    fontSize: responsiveFontSize(2.5),
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
   },
   cardIconFloating: {
     position: 'absolute',
@@ -1256,7 +1270,9 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   earningIcon: {
-    fontSize: responsiveFontSize(2.5),
+    width: 28,
+    height: 28,
+    resizeMode: 'contain',
   },
   earningCardDate: {
     color: '#1E293B',
@@ -1282,7 +1298,7 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     fontFamily: 'Outfit-Bold',
     fontSize: responsiveFontSize(1.8),
-    marginBottom: 12,
+    //marginBottom: 12,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -1370,7 +1386,21 @@ const styles = StyleSheet.create({
     color: '#2E2E2E',
     fontFamily: 'Outfit-Medium',
     fontSize: responsiveFontSize(2)
+  },
+  cardIconNew2: {
+    width: 25,
+    height: 25,
+    resizeMode: 'contain',
+  }, 
+  cardIconNew3:{
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+  },
+  cardIconNew4:{
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
   }
-
 
 });
