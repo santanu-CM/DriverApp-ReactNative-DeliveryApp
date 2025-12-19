@@ -98,7 +98,13 @@ const Accepted = () => {
                       source={alertIconImg}
                       style={{ height: 18, width: 18, marginRight: 5, resizeMode: 'contain' }}
                     />
-                    <Text style={styles.shippingViewHeader}>Accepted</Text>
+                    <Text style={styles.shippingViewHeader}>
+                      {item?.other?.delivery_status === 'Pending' 
+                        ? 'waiting for pickup' 
+                        : item?.other?.delivery_status === 'Pickup' 
+                        ? 'waiting for delivery' 
+                        : item?.other?.delivery_status || item?.other?.assign_driver_status || 'Accepted'}
+                    </Text>
                   </View>
                 </View>
                 <View style={{ padding: 10 }}>
