@@ -108,7 +108,7 @@ const NewOrderScreen = () => {
                         });
                         fetchNewOrders()
                     } else {
-                        Alert.alert('Oops..', "Something went wrong", [
+                        Alert.alert('Oops..', res.data.response.status.message || 'Something went wrong', [
                             {
                                 text: 'Cancel',
                                 onPress: () => console.log('Cancel Pressed'),
@@ -122,14 +122,9 @@ const NewOrderScreen = () => {
                     setIsLoading(false)
                     console.log(`user register error ${e}`)
                     console.log(e.response.data)
-                    // Alert.alert('Oops..', e.response.data?., [
-                    //     {
-                    //         text: 'Cancel',
-                    //         onPress: () => console.log('Cancel Pressed'),
-                    //         style: 'cancel',
-                    //     },
-                    //     { text: 'OK', onPress: () => console.log('OK Pressed') },
-                    // ]);
+                    Alert.alert('Oops..', e.response.data?.response?.status?.message || 'Something went wrong', [
+                        { text: 'OK', onPress: () => console.log('OK Pressed') },
+                    ]);
                 });
         });
     }
