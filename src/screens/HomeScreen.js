@@ -136,6 +136,7 @@ export default function HomeScreen({ }) {
     const interval = setInterval(() => {
       console.log('Auto-refreshing shipping orders');
       fetchNewShippingOrders(); 
+      fetchNewOrders();
     }, 2 * 60 * 1000); // 2 minutes in milliseconds
 
     return () => clearInterval(interval);

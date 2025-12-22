@@ -21,7 +21,7 @@ import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { setNewOrder } from '../store/notificationSlice';
-import Share from 'react-native-share'; 
+import Share from 'react-native-share';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const NewOrderScreen = () => {
@@ -61,7 +61,7 @@ const NewOrderScreen = () => {
         });
     };
 
-    const acceptSingleOrder = (orderId,orderItemId, type) => {
+    const acceptSingleOrder = (orderId, orderItemId, type) => {
         setIsLoading(true)
         //console.log(type, 'for accept single order')
         //console.log(orderId, 'for accept single order')
@@ -76,7 +76,7 @@ const NewOrderScreen = () => {
             }
             option.status = 2;
             option.order_id = myArr;
-            option.batch_id = orderId;  
+            option.batch_id = orderId;
             //console.log(option,'batch order accept')
         } else if (type == "single") {
             myArr.push(orderId)
@@ -134,7 +134,7 @@ const NewOrderScreen = () => {
         });
     }
 
-    const declineSingleOrder = (orderId,itemId, type) => {
+    const declineSingleOrder = (orderId, itemId, type) => {
         setCurrentOrderId(orderId);
         setCurrentOrderItemId(itemId);
         setCurrentOrderType(type);
@@ -159,7 +159,7 @@ const NewOrderScreen = () => {
         setCustomReason('');
     }
 
-    const executeDeclineOrder = (orderId, itemId, type, reason) => {    
+    const executeDeclineOrder = (orderId, itemId, type, reason) => {
         setIsLoading(true)
         const myArr = []
         const myArr2 = []
@@ -171,7 +171,7 @@ const NewOrderScreen = () => {
             }
             option.status = 3;
             option.order_id = myArr;
-            option.id = myArr;    
+            option.id = myArr;
             option.batch_id = orderId;
             option.cancellation_reason = reason;
         } else if (type == "single") {
@@ -246,7 +246,7 @@ const NewOrderScreen = () => {
                     // console.log(JSON.stringify(userInfo), 'fetch new order')
                     // setFaq(userInfo)
                     // setIsLoading(false);
-                     console.log(res.data.pdf_url)
+                    console.log(res.data.pdf_url)
                     // return
                     invoiceDownload(res.data.pdf_url)
                 })
@@ -285,7 +285,7 @@ const NewOrderScreen = () => {
 
     const invoiceDownload = (url) => {
         const { dirs } = RNFetchBlob.fs;
-    
+
         // Separate configs for Android and iOS
         const configOptions = Platform.select({
             android: {
@@ -303,19 +303,19 @@ const NewOrderScreen = () => {
                 path: `${dirs.DocumentDir}/invoice.pdf`, // iOS sandbox
             },
         });
-    
+
         RNFetchBlob.config(configOptions)
             .fetch('GET', url)
             .then((res) => {
                 console.log('The file saved to', res.path());
-    
+
                 Toast.show({
                     type: 'success',
                     text2: 'PDF Downloaded successfully',
                     position: 'top',
                     topOffset: Platform.OS === 'ios' ? 55 : 20,
                 });
-    
+
                 // Optional: Share or preview file on iOS after download
                 if (Platform.OS === 'ios') {
                     Share.open({
@@ -398,16 +398,16 @@ const NewOrderScreen = () => {
                                         //     </TouchableOpacity>
                                         //     :
                                         item?.status === 'Accepted' ?
-                                            <TouchableOpacity onPress={() => declineSingleOrder(item?.order_item_id,item?.id, "single")}>    
+                                            <TouchableOpacity onPress={() => declineSingleOrder(item?.order_item_id, item?.id, "single")}>
                                                 <Image source={declineImg} style={styles.iconImage2} />
                                             </TouchableOpacity>
                                             :
                                             item?.status === 'Active' ?
                                                 <>
-                                                    <TouchableOpacity onPress={() => acceptSingleOrder(item?.order_item_id,item?.id, "single")}>
+                                                    <TouchableOpacity onPress={() => acceptSingleOrder(item?.order_item_id, item?.id, "single")}>
                                                         <Image source={acceptImg} style={styles.iconImage2} />
                                                     </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => declineSingleOrder(item?.order_item_id,item?.id, "single")}>    
+                                                    <TouchableOpacity onPress={() => declineSingleOrder(item?.order_item_id, item?.id, "single")}>
                                                         <Image source={declineImg} style={styles.iconImage2} />
                                                     </TouchableOpacity>
                                                 </>
@@ -469,7 +469,7 @@ const NewOrderScreen = () => {
                                     :
                                     <View style={styles.cellFootermain}>
 
-                                        <TouchableOpacity onPress={() => declineSingleOrder(item?.order_item_id,item?.id, "single")}>
+                                        <TouchableOpacity onPress={() => declineSingleOrder(item?.order_item_id, item?.id, "single")}>
                                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: responsiveWidth(40) }}>
                                                 <Text style={{ color: '#BA0909', fontFamily: 'Outfit-Regular', fontSize: responsiveFontSize(2), marginRight: 5 }}>Cancel Order</Text>
                                                 <Image source={dubbleArrowImg} style={styles.iconImage} tintColor={'#BA0909'} />
@@ -531,12 +531,12 @@ const NewOrderScreen = () => {
                     let totalExpectedEarning = 0;
 
                     userInfo.forEach(batch => {
-                        console.log(batch.total_expected_earning, 'batch.total_expected_earning') 
-                        if(batch.total_expected_earning){
+                        console.log(batch.total_expected_earning, 'batch.total_expected_earning')
+                        if (batch.total_expected_earning) {
                             totalExpectedEarning += parseFloat(batch.total_expected_earning);
-                        }  
+                        }
                     });
-                    settotalExpectedEarning(totalExpectedEarning||0)
+                    settotalExpectedEarning(totalExpectedEarning || 0)
                     setIsLoading(false);
                 })
                 .catch(e => {
@@ -558,6 +558,15 @@ const NewOrderScreen = () => {
         // Clear the new order notification when screen is mounted
         dispatch(setNewOrder(false));
     }, [dispatch]);
+
+    // Auto-refresh every 2 minutes
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchNewOrders();
+        }, 2 * 60 * 1000); // 2 minutes in milliseconds
+
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         fetchDeclineReasons();
@@ -613,7 +622,7 @@ const NewOrderScreen = () => {
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <Text style={styles.modalTitle}>Cancel Order</Text>
                             <Text style={styles.modalSubtitle}>Please select a reason for cancellation:</Text>
-                            
+
                             <View style={styles.dropdownContainer}>
                                 {declineReasons.map((reason) => (
                                     <TouchableOpacity
