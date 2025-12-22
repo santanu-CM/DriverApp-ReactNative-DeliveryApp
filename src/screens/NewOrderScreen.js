@@ -594,15 +594,18 @@ const NewOrderScreen = () => {
                     </View>
                 }
 
-                <Accordion
-                    activeSections={activeSections}
-                    sections={getFaq}
-                    touchableComponent={TouchableOpacity}
-                    renderHeader={renderHeader}
-                    renderContent={renderContent}
-                    duration={400}
-                    onChange={setSections}
-                />
+                <View style={{ marginBottom: responsiveHeight(10) }}>
+
+                    <Accordion
+                        activeSections={activeSections}
+                        sections={getFaq}
+                        touchableComponent={TouchableOpacity}
+                        renderHeader={renderHeader}
+                        renderContent={renderContent}
+                        duration={400}
+                        onChange={setSections}
+                    />
+                </View>
 
             </ScrollView>
 
