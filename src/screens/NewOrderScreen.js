@@ -214,7 +214,7 @@ const NewOrderScreen = () => {
                     setIsLoading(false)
                     console.log(`user register error ${e}`)
                     console.log(e.response.data)
-                    Alert.alert('Error', 'Failed to decline order. Please try again.', [
+                    Alert.alert('Error', e.response.data?.message || e.response.data?.response?.status?.message || 'Failed to decline order. Please try again.', [
                         {
                             text: 'Cancel',
                             onPress: () => console.log('Cancel Pressed'),
