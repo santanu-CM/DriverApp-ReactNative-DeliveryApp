@@ -109,7 +109,7 @@ const NewOrderScreen = () => {
                         });
                         fetchNewOrders()
                     } else {
-                        Alert.alert('Oops..', res.data.response.status.message || 'Something went wrong', [
+                        Alert.alert('Oops..', res.data.response.message || 'Something went wrong', [
                             {
                                 text: 'Cancel',
                                 onPress: () => console.log('Cancel Pressed'),
@@ -121,9 +121,9 @@ const NewOrderScreen = () => {
                 })
                 .catch(e => {
                     setIsLoading(false)
-                    console.log(`user register error ${e}`)
+                    console.log(`acceptSingleOrder error ${e}`)
                     console.log(e.response.data)
-                    Alert.alert('Oops..', e.response.data?.response?.status?.message || 'Something went wrong', [
+                    Alert.alert('Oops..', e.response.data?.message || e.response.data?.response?.status?.message || 'Something went wrong', [
                         { text: 'OK', onPress: () => console.log('OK Pressed') },
                     ]);
                 });
