@@ -426,6 +426,7 @@ export default function HomeScreen({ }) {
     setRefreshing(true);
     setValue('1');
     fetchNewOrders()
+    fetchNewShippingOrders()
     fetchData()
     fetchProfileDetails()
     setRefreshing(false);
