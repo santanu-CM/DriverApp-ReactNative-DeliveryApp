@@ -500,7 +500,7 @@ export default function HomeScreen({ }) {
             </View>
           </View>
           <View style={{ marginTop: 15, marginBottom: 10 }}>
-            <TouchableOpacity
+            <TouchableWithoutFeedback
               onPress={() =>
                 navigation.navigate('Shipping', {
                   screen: 'OrderShippingScreen',
@@ -524,10 +524,10 @@ export default function HomeScreen({ }) {
                   <Text style={styles.cardNumberNew}>{shippingCompleted}</Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15, marginBottom: 10 }}>
-            <TouchableOpacity
+            <TouchableWithoutFeedback
               onPress={() =>
                 navigation.navigate('Orders', {
                   screen: 'OrderScreen',
@@ -552,8 +552,8 @@ export default function HomeScreen({ }) {
                   <Text style={styles.cardSubtitleWhite}>Orders</Text>
                 </View>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
               onPress={() =>
                 navigation.navigate('Orders', {
                   screen: 'OrderScreen',
@@ -578,10 +578,10 @@ export default function HomeScreen({ }) {
                   <Text style={styles.cardSubtitleWhite}>Orders</Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
-            <TouchableOpacity
+            <TouchableWithoutFeedback
               onPress={() =>
                 navigation.navigate('Orders', {
                   screen: 'OrderScreen',
@@ -606,7 +606,7 @@ export default function HomeScreen({ }) {
                   <Text style={styles.cardSubtitleWhite}>Orders</Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
             <View style={styles.firstCardView}>
               <View style={[styles.cardLeftAccent, { backgroundColor: '#F59E0B' }]} />
               <View style={[styles.cardGlowEffectSmall, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]} />
