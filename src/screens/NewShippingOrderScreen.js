@@ -88,7 +88,7 @@ const NewShippingOrderScreen = () => {
                         Toast.show({
                             type: 'success',
                             text1: 'Hello',
-                            text2: "Order successfully accepted",
+                            text2: res.data.response.message || "Order successfully accepted",
                             position: 'top',
                             topOffset: Platform.OS == 'ios' ? 55 : 20
                         });
