@@ -508,7 +508,7 @@ const NewOrderScreen = () => {
         if (isRefresh) {
             setRefreshing(true);
         } else {
-            setIsLoading(true);
+            //setIsLoading(true);
         }
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
