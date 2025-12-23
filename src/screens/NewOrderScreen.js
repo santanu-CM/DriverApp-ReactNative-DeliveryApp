@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, Alert, Modal, TextInput, Platform } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image, TouchableOpacity, Alert, Modal, TextInput, Platform, RefreshControl } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../components/CustomHeader'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
@@ -28,6 +28,7 @@ const NewOrderScreen = () => {
     const { logout } = useContext(AuthContext);
     const [userInfo, setuserInfo] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [refreshing, setRefreshing] = useState(false)
     const navigation = useNavigation();
     const [activeSections, setActiveSections] = useState([0]);
     const [collapsed, setCollapsed] = useState(true);
@@ -503,7 +504,12 @@ const NewOrderScreen = () => {
             </Animatable.View>
         );
     }
-    const fetchNewOrders = () => {
+    const fetchNewOrders = (isRefresh = false) => {
+        if (isRefresh) {
+            setRefreshing(true);
+        } else {
+            setIsLoading(true);
+        }
         AsyncStorage.getItem('userToken', (err, usertoken) => {
             axios.get(`${process.env.API_URL}/api/driver/get-all-order-item`, {
                 headers: {
@@ -533,9 +539,12 @@ const NewOrderScreen = () => {
                     });
                     settotalExpectedEarning(totalExpectedEarning || 0)
                     setIsLoading(false);
+                    setRefreshing(false);
                 })
                 .catch(e => {
                     console.log(`User fetch error ${e}`)
+                    setIsLoading(false);
+                    setRefreshing(false);
                 });
         });
     }
@@ -576,7 +585,17 @@ const NewOrderScreen = () => {
     return (
         <SafeAreaView style={styles.Container}>
             <CustomHeader commingFrom={'New Order'} onPress={() => navigation.goBack()} title={'New Order'} />
-            <ScrollView style={styles.wrapper}>
+            <ScrollView 
+                style={styles.wrapper}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={() => fetchNewOrders(true)}
+                        colors={['#339999']}
+                        tintColor={'#339999'}
+                    />
+                }
+            >
                 {getFaq.length > 0 ?
                     <View style={styles.table}>
                         <View style={styles.toptableRow1}>
