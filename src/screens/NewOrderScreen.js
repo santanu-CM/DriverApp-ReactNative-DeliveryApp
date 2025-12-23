@@ -30,7 +30,7 @@ const NewOrderScreen = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
     const navigation = useNavigation();
-    const [activeSections, setActiveSections] = useState([0]);
+    const [activeSections, setActiveSections] = useState([]);
     const [collapsed, setCollapsed] = useState(true);
     const [totalExpectedEarning, settotalExpectedEarning] = useState(0)
     const dispatch = useDispatch();
@@ -575,6 +575,13 @@ const NewOrderScreen = () => {
     useEffect(() => {
         fetchDeclineReasons();
     }, []);
+
+    useEffect(() => {
+        // Open all accordion sections by default when data is loaded
+        if (getFaq.length > 0) {
+            setActiveSections(getFaq.map((_, index) => index));
+        }
+    }, [getFaq]);
 
     if (isLoading) {
         return (
